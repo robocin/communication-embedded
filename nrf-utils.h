@@ -3,13 +3,13 @@
 
 /************* AUXILIAR TYPES ************/
 
-enum class radioFunction
+enum class RadioFunction
 {
 	receiver,
 	sender
 };
 
-enum class networkType
+enum class NetworkType
 {
 	ssl,
 	vss,
@@ -24,23 +24,23 @@ typedef struct {
 	uint8_t sendChannel;
 	uint8_t 	pipeNum;
 	bool			reConfig;
-	radioFunction function;
-} networkConfig;
+	RadioFunction function;
+} NetworkConfig;
 
 typedef struct {
 	double m1 = 0;
 	double m2 = 0;
 	double m3 = 0;
 	double m4 = 0;
-} motorSpeed;
+} MotorSpeed;
 
 typedef struct {
 	double vx = 0;
 	double vy = 0;
 	double w = 0;
-} vectorSpeed;
+} VectorSpeed;
 
-typedef struct kickFlags {
+typedef struct KickFlags {
 	bool front = false;
 	bool chip = false;
 	bool charge = false;
@@ -49,7 +49,7 @@ typedef struct kickFlags {
 	bool dribbler = false;
 	float dribblerSpeed = 0;
 
-	kickFlags& operator=(const kickFlags& a)
+	KickFlags& operator=(const KickFlags& a)
 	{
 			front = a.front;
 			chip = a.chip;
@@ -60,7 +60,7 @@ typedef struct kickFlags {
 			dribblerSpeed = a.dribblerSpeed;
 			return *this;
 	}
-} kickFlags;
+} KickFlags;
 
 typedef struct
 {
@@ -73,6 +73,6 @@ typedef struct
     double kickLoad = 0;
     bool ball = false;
     double battery = 0;
-} robotTelemetry;
+} RobotTelemetry;
 
 #endif // NRF_UTILS_H

@@ -1,6 +1,5 @@
 #ifndef NRF24_COMMUNICATION_H
 #define NRF24_COMMUNICATION_H
-#pragma once
 
 #include <mbed.h>
 #include <SPI.h>		// Call SPI library so you can communicate with the nRF24L01+
@@ -11,7 +10,7 @@
 class nRF24Communication{
 public:
 	// Class constructor
-	nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN,PinName pinVCC, networkType network, radioFunction function);
+	nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN,PinName pinVCC, NetworkType network, RadioFunction function);
 	
 	// Class destructor
 	// ~nRF24Communication();
@@ -22,7 +21,7 @@ public:
 	int 	getRobotId();
 	void	printDetails();
 
-	bool	sendTelemetryPacket(robotTelemetry telemetry);
+	bool	sendTelemetryPacket(RobotTelemetry telemetry);
 	bool	updatePacket(bool reconnect = false);
 	int 	getTypeOfMessage();
 	void 	enable();
@@ -35,12 +34,12 @@ public:
 	void				clearVSSData();
 	
 	// SSL Info
-	vectorSpeed 	getRobotVectorSpeed();
+	VectorSpeed 	getRobotVectorSpeed();
 	void 					clearSSLData();
 	double 				getVx();
 	double 				getVy();
 	double 				getW();
-	kickFlags* 		getKick();
+	KickFlags* 		getKick();
 	bool 					getFront();
 	bool 					getChip();
 	bool 					getCharge();
@@ -59,7 +58,7 @@ private:
 	DigitalOut _vcc;
 
   private:
-	void	_network(networkType network);
+	void	_network(NetworkType network);
 	void	_configure();
 	void	_resetRadio();
 	void	_receive();
@@ -70,9 +69,9 @@ private:
 	packetTelemetrySSL _mSSLTelemetry;
 	packetGeneric	_rx;
 	
-	networkConfig _config;
-	kickFlags*		_kick;
-	vectorSpeed		_robotVectorSpeed;
+	NetworkConfig _config;
+	KickFlags*		_kick;
+	VectorSpeed		_robotVectorSpeed;
 
 	int			  	_leftMotorSpeed, _rightMotorSpeed;
 	char			_robotId;

@@ -1,7 +1,7 @@
 
 #include "nRF24Communication.h"
 
-nRF24Communication::nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN, PinName pinVCC, networkType network, radioFunction function)
+nRF24Communication::nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN, PinName pinVCC, NetworkType network, RadioFunction function)
 	: _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE), _vcc(pinVCC)
 {
 	this->_vcc = 1;
@@ -35,12 +35,12 @@ bool nRF24Communication::compareChannel(uint8_t channel){
 	return this->_radio.compareChannel(channel);
 }
 
-void nRF24Communication::_network(networkType network){
+void nRF24Communication::_network(NetworkType network){
 	this->_config.pipeNum = 0;
 	this->_config.reConfig = false;
 	this->_config.ack = ACK_RADIO;
 
-	if(network == networkType::ssl){
+	if(network == NetworkType::ssl){
 		this->_config.payload = SSL_PAYLOAD_LENGTH;
 		this->_config.receiveChannel = SSL_1_ROBOT_RECV_CH;
 		this->_config.sendChannel = SSL_2_ROBOT_SEND_CH;
@@ -48,7 +48,7 @@ void nRF24Communication::_network(networkType network){
 		this->_config.addr[0] = SSL_ADDR_1;
 		this->_config.addr[1] = SSL_ADDR_2;
 	} 
-	else if (network == networkType::vss) {
+	else if (network == NetworkType::vss) {
 		this->_config.payload = VSS_PAYLOAD_LENGTH;
 		this->_config.receiveChannel = VSS_CHANNEL;
 		this->_config.sendChannel = VSS_CHANNEL; // Future Telemetry
@@ -56,7 +56,7 @@ void nRF24Communication::_network(networkType network){
 		this->_config.addr[0] = VSS_ADDR_1;
 		this->_config.addr[1] = VSS_ADDR_2;
 	}
-	else if (network == networkType::deep) {
+	else if (network == NetworkType::deep) {
 		this->_config.payload = VSS_PAYLOAD_LENGTH;
 		this->_config.receiveChannel = DEEP_CHANNEL;
 		this->_config.sendChannel = DEEP_CHANNEL; // Future Telemetry
@@ -72,14 +72,14 @@ void nRF24Communication::_configure(){
 	this->_radio.setDataRate(RF24_2MBPS);
 	this->_radio.setAutoAck(_config.ack);
 	this->_radio.setPayloadSize(_config.payload); // Its possible to set Dynamic PayLoad Size.
-	if(_config.function == radioFunction::receiver){
+	if(_config.function == RadioFunction::receiver){
 		// Init communication as receiver
 		this->_radio.openWritingPipe(_config.addr[1]);
 		this->_radio.openReadingPipe(1, _config.addr[0]);
 		this->_radio.setChannel(this->_config.receiveChannel);
 		this->_radio.startListening(); 
 	}
-	else if(_config.function == radioFunction::sender){
+	else if(_config.function == RadioFunction::sender){
 		this->_radio.openWritingPipe(_config.addr[0]);
 		this->_radio.openReadingPipe(1, _config.addr[1]);
 		this->_radio.setChannel(this->_config.sendChannel);
@@ -135,7 +135,7 @@ int nRF24Communication::getTypeOfMessage(){										// Returning type of messag
 	return this->_rx.decoded.typeMsg;
 }
 
-bool nRF24Communication::sendTelemetryPacket(robotTelemetry telemetry){
+bool nRF24Communication::sendTelemetryPacket(RobotTelemetry telemetry){
 
 	this->_mSSLTelemetry.decoded.typeMsg = 	msgType_SSL_TELEMTRY;
     this->_mSSLTelemetry.decoded.id = 		(uint8_t) this->getRobotId();
@@ -227,7 +227,7 @@ void nRF24Communication::clearVSSData(){
 	this->_rightMotorSpeed = 0;
 }
 
-vectorSpeed nRF24Communication::getRobotVectorSpeed(){
+VectorSpeed nRF24Communication::getRobotVectorSpeed(){
 	_robotVectorSpeed.vx = this->_vx;
 	_robotVectorSpeed.vy = this->_vy;
 	_robotVectorSpeed.w = this->_w;
@@ -254,7 +254,7 @@ double nRF24Communication::getW(){
  return this->_w;
 }
 
-kickFlags* nRF24Communication::getKick(){
+KickFlags* nRF24Communication::getKick(){
  	this->_kick->front = this->getFront();
 	this->_kick->chip = this->getChip();
 	this->_kick->charge = this->getCharge();
