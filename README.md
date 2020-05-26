@@ -10,7 +10,7 @@ Every update here affects the reposities below and its' dependents:
 
 So, whenever changes are made at the `master`, go to the dependents repository and update the submodule:
 
-       git submodule update --init --resursive
+       git submodule update --init --recursive
 
 Make sure to update the changes into the dependent repository.
     
