@@ -31,6 +31,8 @@
 #define SSL_CONTROL_LENGTH 12
 #define SSL_TELEMETRY_LENGTH 13
 
+#pragma pack (push, 1)
+
 enum MESSAGE_TYPE
 {
   msgType_VSS_SPEED = 0,
@@ -44,7 +46,7 @@ typedef struct
   uint8_t id : 4;
   int64_t rest_a : 64;
   int64_t rest_b : 48;
-} __attribute__((packed)) packetTypeGeneric;
+} packetTypeGeneric;
 
 typedef union {
   unsigned char encoded[SSL_PAYLOAD_LENGTH];
@@ -66,7 +68,7 @@ typedef struct
   int8_t leftSpeed : 8;
   int8_t rightSpeed : 8;
   uint8_t flags : 8;
-} __attribute__((packed)) packetTypeVSS;
+} packetTypeVSS;
 
 typedef union packetVSS {
   unsigned char encoded[VSS_CONTROL_LENGTH];
@@ -97,7 +99,7 @@ typedef struct
   uint8_t speed : 8;
   uint8_t command : 8;
 
-} __attribute__((packed)) packetTypeSSL;
+} packetTypeSSL;
 
 typedef union packetSSL {
   unsigned char encoded[SSL_CONTROL_LENGTH];
@@ -117,11 +119,14 @@ typedef struct
   bool ball : 1;
   uint8_t battery : 8;
 
-} __attribute__((packed)) packetTypeTelemetrySSL;
+} packetTypeTelemetrySSL;
 
 typedef union packetSSLTelemetry {
   unsigned char encoded[SSL_TELEMETRY_LENGTH];
   packetTypeTelemetrySSL decoded;
 } packetTelemetrySSL;
+
+//restoring the standard alignment
+#pragma pack(pop)
 
 #endif // NRF_CONFIG_H

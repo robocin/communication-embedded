@@ -138,15 +138,15 @@ int nRF24Communication::getTypeOfMessage(){										// Returning type of messag
 bool nRF24Communication::sendTelemetryPacket(RobotTelemetry telemetry){
 
 	this->_mSSLTelemetry.decoded.typeMsg = 	msgType_SSL_TELEMTRY;
-    this->_mSSLTelemetry.decoded.id = 		(uint8_t) this->getRobotId();
-    this->_mSSLTelemetry.decoded.m1 = 		(int16_t) (telemetry.m1 * 100);
-    this->_mSSLTelemetry.decoded.m2 = 		(int16_t) (telemetry.m2 * 100);
-    this->_mSSLTelemetry.decoded.m3  = 		(int16_t) (telemetry.m3 * 100);
-    this->_mSSLTelemetry.decoded.m4 = 		(int16_t)(telemetry.m4 * 100);
-    this->_mSSLTelemetry.decoded.dribbler = (int16_t) (telemetry.dribbler * 10);
-    this->_mSSLTelemetry.decoded.kickLoad = (uint8_t) (telemetry.kickLoad * 100);
-	this->_mSSLTelemetry.decoded.ball = 	(bool) telemetry.ball;
-    this->_mSSLTelemetry.decoded.battery = 	(uint8_t) (telemetry.battery * 10);
+    this->_mSSLTelemetry.decoded.id = 		static_cast<uint8_t>(this->getRobotId());
+    this->_mSSLTelemetry.decoded.m1 = 		static_cast<uint8_t>(telemetry.m1 * 100);
+    this->_mSSLTelemetry.decoded.m2 = 		static_cast<uint8_t>(telemetry.m2 * 100);
+    this->_mSSLTelemetry.decoded.m3  = 		static_cast<uint8_t>(telemetry.m3 * 100);
+    this->_mSSLTelemetry.decoded.m4 = 		static_cast<uint8_t>(telemetry.m4 * 100);
+    this->_mSSLTelemetry.decoded.dribbler = static_cast<uint8_t>(telemetry.dribbler * 10);
+    this->_mSSLTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
+	this->_mSSLTelemetry.decoded.ball = 	static_cast<bool>(telemetry.ball);
+    this->_mSSLTelemetry.decoded.battery = 	static_cast<uint8_t>(telemetry.battery * 10);
 	this->enable();
 	bool answer = this->_radio.write(this->_mSSLTelemetry.encoded, SSL_TELEMETRY_LENGTH);
 	this->disable();
@@ -165,34 +165,34 @@ bool nRF24Communication::updatePacket(bool reconnect){
 		while (this->_radio.available(&(_config.pipeNum)))
 		{
 			this->_radio.read(&(this->_rx.encoded), SSL_PAYLOAD_LENGTH);
-			this->_typeMsg = (uint8_t)this->_rx.decoded.typeMsg; // Save the message type
-			
+			this->_typeMsg = static_cast<uint8_t>(this->_rx.decoded.typeMsg); // Save the message type
+
 			if (this->_rx.decoded.id == this->_robotId)
 			{
 
 				this->clearVSSData();
 				this->clearSSLData();
-
+				
 				// According to the type of message I assign certain variables
 				if (this->_typeMsg == msgType_VSS_SPEED) {
 				// VSS
-					memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_CONTROL_LENGTH);
-					this->_flags = (uint8_t)this->_mVSS.decoded.flags;
-					this->_leftMotorSpeed = (int8_t)this->_mVSS.decoded.leftSpeed;
-					this->_rightMotorSpeed = (int8_t)this->_mVSS.decoded.rightSpeed;
+					std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_CONTROL_LENGTH); //require std::, eventual error in copy
+					this->_flags = 			 static_cast<uint8_t>(this->_mVSS.decoded.flags);
+					this->_leftMotorSpeed =  static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
+					this->_rightMotorSpeed = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
 				} 
 				else if (this->_typeMsg == msgType_SSL_SPEED) { 
 				// SSL
-					memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_CONTROL_LENGTH);
-					this->_vx = (double)(this->_mSSL.decoded.vx / 10000.0);
-					this->_vy = (double)(this->_mSSL.decoded.vy / 10000.0);
-					this->_w = (double)(this->_mSSL.decoded.w / 10000.0);
-					this->_front = (bool)(this->_mSSL.decoded.front);
-					this->_chip = (bool)(this->_mSSL.decoded.chip);
-					this->_charge = (bool)(this->_mSSL.decoded.charge);
-					this->_kickStrength = (float)((this->_mSSL.decoded.strength) / 10.0);
-					this->_dribbler = (bool) (this->_mSSL.decoded.dribbler);
-					this->_dribblerSpeed = ((float)(this->_mSSL.decoded.speed) * 10.0);
+					std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_CONTROL_LENGTH); //require std::, eventual error in copy
+					this->_vx = 			static_cast<double>((this->_mSSL.decoded.vx)/10000.0);
+					this->_vy = 			static_cast<double>((this->_mSSL.decoded.vy)/10000.0);
+					this->_w = 				static_cast<double>((this->_mSSL.decoded.w)/10000.0);
+					this->_front = 			static_cast<bool>(this->_mSSL.decoded.front);
+					this->_chip = 			static_cast<bool>(this->_mSSL.decoded.chip);
+					this->_charge = 		static_cast<bool>(this->_mSSL.decoded.charge);
+					this->_kickStrength = 	static_cast<float>((this->_mSSL.decoded.strength)/10.0);
+					this->_dribbler = 		static_cast<bool>(this->_mSSL.decoded.dribbler);
+					this->_dribblerSpeed = 	static_cast<float>((this->_mSSL.decoded.speed)/10.0);
 				} 
 				else {
 					break;
@@ -227,12 +227,12 @@ void nRF24Communication::clearVSSData(){
 	this->_rightMotorSpeed = 0;
 }
 
-VectorSpeed nRF24Communication::getRobotVectorSpeed(){
-	_robotVectorSpeed.vx = this->_vx;
-	_robotVectorSpeed.vy = this->_vy;
-	_robotVectorSpeed.w = this->_w;
-	return _robotVectorSpeed;
+void nRF24Communication::getRobotVectorSpeed(VectorSpeed &mSpeed){
+	mSpeed.vx = this->getVx();
+	mSpeed.vy = this->getVy();
+	mSpeed.w = 	this->getW();
 }
+
 void nRF24Communication::clearSSLData(){
 	this->_vx = 0;
 	this->_vy = 0;
@@ -244,6 +244,7 @@ void nRF24Communication::clearSSLData(){
 	this->_dribbler = false;
 	this->_dribblerSpeed = 0;
 }
+
 double nRF24Communication::getVx(){
  return this->_vx;
 }
@@ -254,15 +255,15 @@ double nRF24Communication::getW(){
  return this->_w;
 }
 
-KickFlags* nRF24Communication::getKick(){
- 	this->_kick->front = this->getFront();
-	this->_kick->chip = this->getChip();
-	this->_kick->charge = this->getCharge();
-	this->_kick->kickStrength = this->getKickStrength();
-	this->_kick->dribbler = this->getDribbler();
-	this->_kick->dribblerSpeed = this->getDribblerSpeed();
-	return this->_kick;
+void nRF24Communication::getKick(KickFlags &isKick){
+ 	isKick.front =		 	this->getFront();
+	isKick.chip = 			this->getChip();
+	isKick.charge = 		this->getCharge();
+	isKick.kickStrength = 	this->getKickStrength();
+	isKick.dribbler =		this->getDribbler();
+	isKick.dribblerSpeed = 	this->getDribblerSpeed();
 }
+
 bool nRF24Communication::getFront(){
  return this->_front;
 }
