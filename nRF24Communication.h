@@ -29,23 +29,23 @@ public:
 
 
 	// VSS Info
-	int					getLeftMotorSpeed();
-	int					getRightMotorSpeed();
-	void				clearVSSData();
+	int 	getLeftMotorSpeed();
+	int		getRightMotorSpeed();
+	void	clearVSSData();
 	
 	// SSL Info
-	VectorSpeed 	getRobotVectorSpeed();
-	void 					clearSSLData();
-	double 				getVx();
-	double 				getVy();
-	double 				getW();
-	KickFlags* 		getKick();
-	bool 					getFront();
-	bool 					getChip();
-	bool 					getCharge();
-	float 				getKickStrength();
-	bool 					getDribbler();
-	float 				getDribblerSpeed();
+	void 	getRobotVectorSpeed(VectorSpeed &mSpeed);
+	void 	clearSSLData();
+	double 	getVx();
+	double 	getVy();
+	double 	getW();
+	void 	getKick(KickFlags &isKick);
+	bool 	getFront();
+	bool 	getChip();
+	bool 	getCharge();
+	float 	getKickStrength();
+	bool 	getDribbler();
+	float 	getDribblerSpeed();
 
 	// Aux Info
 	float 	getKP();
