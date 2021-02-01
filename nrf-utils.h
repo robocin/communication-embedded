@@ -32,13 +32,13 @@ typedef struct {
 	double m2 = 0;
 	double m3 = 0;
 	double m4 = 0;
-} MotorSpeed;
+} Motors;
 
 typedef struct {
-	double vx = 0;
-	double vy = 0;
+	double x = 0;
+	double y = 0;
 	double w = 0;
-} VectorSpeed;
+} Vector;
 
 typedef struct KickFlags {
 	bool front = false;

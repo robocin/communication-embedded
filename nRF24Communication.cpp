@@ -5,11 +5,11 @@ nRF24Communication::nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName
 	: _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE), _vcc(pinVCC)
 {
 	this->_vcc = 1;
-	
-	// VSS 
+
+	// VSS
 	this->_leftMotorSpeed = 0;
 	this->_rightMotorSpeed = 0;
-	
+
 	// SSL
 	this->_front = false;
 	this->_chip = false;
@@ -47,7 +47,7 @@ void nRF24Communication::_network(NetworkType network){
 
 		this->_config.addr[0] = SSL_ADDR_1;
 		this->_config.addr[1] = SSL_ADDR_2;
-	} 
+	}
 	else if (network == NetworkType::vss) {
 		this->_config.payload = VSS_PAYLOAD_LENGTH;
 		this->_config.receiveChannel = VSS_CHANNEL;
@@ -68,7 +68,7 @@ void nRF24Communication::_network(NetworkType network){
 
 void nRF24Communication::_configure(){
 	this->_radio.begin();									// Start the nRF24 module
-	this->_radio.setPALevel(RF24_PA_MAX);				
+	this->_radio.setPALevel(RF24_PA_MAX);
 	this->_radio.setDataRate(RF24_2MBPS);
 	this->_radio.setAutoAck(_config.ack);
 	this->_radio.setPayloadSize(_config.payload); // Its possible to set Dynamic PayLoad Size.
@@ -77,7 +77,7 @@ void nRF24Communication::_configure(){
 		this->_radio.openWritingPipe(_config.addr[1]);
 		this->_radio.openReadingPipe(1, _config.addr[0]);
 		this->_radio.setChannel(this->_config.receiveChannel);
-		this->_radio.startListening(); 
+		this->_radio.startListening();
 	}
 	else if(_config.function == RadioFunction::sender){
 		this->_radio.openWritingPipe(_config.addr[0]);
@@ -172,7 +172,7 @@ bool nRF24Communication::updatePacket(bool reconnect){
 
 				this->clearVSSData();
 				this->clearSSLData();
-				
+
 				// According to the type of message I assign certain variables
 				if (this->_typeMsg == msgType_VSS_SPEED) {
 				// VSS
@@ -180,8 +180,8 @@ bool nRF24Communication::updatePacket(bool reconnect){
 					this->_flags = 			 static_cast<uint8_t>(this->_mVSS.decoded.flags);
 					this->_leftMotorSpeed =  static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
 					this->_rightMotorSpeed = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
-				} 
-				else if (this->_typeMsg == msgType_SSL_SPEED) { 
+				}
+				else if (this->_typeMsg == msgType_SSL_SPEED) {
 				// SSL
 					std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_CONTROL_LENGTH); //require std::, eventual error in copy
 					this->_vx = 			static_cast<double>((this->_mSSL.decoded.vx)/10000.0);
@@ -193,7 +193,7 @@ bool nRF24Communication::updatePacket(bool reconnect){
 					this->_kickStrength = 	static_cast<float>((this->_mSSL.decoded.strength)/10.0);
 					this->_dribbler = 		static_cast<bool>(this->_mSSL.decoded.dribbler);
 					this->_dribblerSpeed = 	static_cast<float>((this->_mSSL.decoded.speed)/10.0);
-				} 
+				}
 				else {
 					break;
 				}
@@ -227,9 +227,9 @@ void nRF24Communication::clearVSSData(){
 	this->_rightMotorSpeed = 0;
 }
 
-void nRF24Communication::getRobotVectorSpeed(VectorSpeed &mSpeed){
-	mSpeed.vx = this->getVx();
-	mSpeed.vy = this->getVy();
+void nRF24Communication::getRobotVectorSpeed(Vector &mSpeed){
+	mSpeed.x = this->getVx();
+	mSpeed.y = this->getVy();
 	mSpeed.w = 	this->getW();
 }
 
