@@ -11,7 +11,7 @@ class nRF24Communication{
 public:
 	// Class constructor
 	nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN,PinName pinVCC, NetworkType network, RadioFunction function);
-	
+
 	// Class destructor
 	// ~nRF24Communication();
 
@@ -32,9 +32,9 @@ public:
 	int 	getLeftMotorSpeed();
 	int		getRightMotorSpeed();
 	void	clearVSSData();
-	
+
 	// SSL Info
-	void 	getRobotVectorSpeed(VectorSpeed &mSpeed);
+	void 	getRobotVectorSpeed(Vector &mSpeed);
 	void 	clearSSLData();
 	double 	getVx();
 	double 	getVy();
@@ -53,7 +53,7 @@ public:
 	float 	getAlpha();
 
 
-private:	
+private:
 	RF24 _radio;
 	DigitalOut _vcc;
 
@@ -63,15 +63,15 @@ private:
 	void	_resetRadio();
 	void	_receive();
 	void	_send();
-	
+
 	packetVSS 		_mVSS;
 	packetSSL		_mSSL;
 	packetTelemetrySSL _mSSLTelemetry;
 	packetGeneric	_rx;
-	
+
 	NetworkConfig _config;
 	KickFlags*		_kick;
-	VectorSpeed		_robotVectorSpeed;
+	Vector		_robotVectorSpeed;
 
 	int			  	_leftMotorSpeed, _rightMotorSpeed;
 	char			_robotId;
