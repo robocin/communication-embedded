@@ -34,10 +34,25 @@ typedef struct {
 	double m4 = 0;
 } Motors;
 
-typedef struct {
+typedef struct Vector{
 	double x = 0;
 	double y = 0;
 	double w = 0;
+
+  inline Vector operator+(Vector a)
+  {
+    return {x + a.x, y + a.y, w + a.w};
+  }
+
+  inline Vector operator-(Vector a)
+  {
+    return {x - a.x, y - a.y, w - a.w};
+  }
+
+  inline Vector operator*(double a)
+  {
+    return {x * a, y * a, w * a};
+  }
 } Vector;
 
 typedef struct KickFlags {
