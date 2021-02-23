@@ -1,7 +1,7 @@
 #ifndef NRF_CONFIG_H
 #define NRF_CONFIG_H
 
-// v2.3
+// v3.0
 
 #include <stdint.h>
 
