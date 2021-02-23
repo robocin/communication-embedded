@@ -27,9 +27,10 @@
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_CONTROL_LENGTH 4
 
-#define SSL_PAYLOAD_LENGTH 15 
+#define SSL_PAYLOAD_LENGTH 15
 #define SSL_CONTROL_LENGTH 12
 #define SSL_TELEMETRY_LENGTH 13
+#define SSL_ODOMETRY_LENGTH 11
 
 #pragma pack (push, 1)
 
@@ -37,7 +38,8 @@ enum MESSAGE_TYPE
 {
   msgType_VSS_SPEED = 0,
   msgType_SSL_SPEED,
-  msgType_SSL_TELEMTRY
+  msgType_SSL_TELEMTRY,
+  msgType_SSL_ODOMETRY,
 };
 
 typedef struct
@@ -125,6 +127,37 @@ typedef union packetSSLTelemetry {
   unsigned char encoded[SSL_TELEMETRY_LENGTH];
   packetTypeTelemetrySSL decoded;
 } packetTelemetrySSL;
+
+/*
+  * Structure for send robot basic status and position,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - X, Y and W of the robot.
+ *  - Dribbler speed and its speed.
+ *  - Kick capacitor load.
+ *  - Ball on robot?
+ *  - Battery load.
+  */
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  int16_t x : 16;
+  int16_t y : 16;
+  int16_t w : 16;
+  int16_t dribbler : 15;
+  uint8_t kickLoad : 8;
+  bool ball : 1;
+  uint8_t battery : 8;
+
+} packetTypeOdometrySSL;
+
+typedef union packetSSLOdometry
+{
+  unsigned char encoded[SSL_ODOMETRY_LENGTH];
+  packetTypeOdometrySSL decoded;
+} packetOdometrySSL;
 
 //restoring the standard alignment
 #pragma pack(pop)

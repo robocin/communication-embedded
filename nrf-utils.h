@@ -80,14 +80,21 @@ typedef struct KickFlags {
 typedef struct
 {
     int id = -1;
-    double m1 = 0;
-    double m2 = 0;
-    double m3 = 0;
-    double m4 = 0;
+    Motors m;
     double dribbler = 0;
     double kickLoad = 0;
     bool ball = false;
     double battery = 0;
 } RobotTelemetry;
+
+typedef struct
+{
+  int id = -1;
+  Vector v;
+  double dribbler = 0;
+  double kickLoad = 0;
+  bool ball = false;
+  double battery = 0;
+} RobotOdometry;
 
 #endif // NRF_UTILS_H
