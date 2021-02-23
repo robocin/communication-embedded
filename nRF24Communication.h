@@ -21,7 +21,6 @@ public:
 	int 	getRobotId();
 	void	printDetails();
 
-	bool	sendTelemetryPacket(RobotTelemetry telemetry);
 	bool	updatePacket(bool reconnect = false);
 	int 	getTypeOfMessage();
 	void 	enable();
@@ -35,7 +34,9 @@ public:
 
 	// SSL Info
 	void 	getRobotVectorSpeed(Vector &mSpeed);
-	void 	clearSSLData();
+  bool sendTelemetryPacket(RobotTelemetry telemetry);
+  bool sendOdometryPacket(RobotOdometry odometry);
+  void 	clearSSLData();
 	double 	getVx();
 	double 	getVy();
 	double 	getW();
@@ -67,6 +68,7 @@ private:
 	packetVSS 		_mVSS;
 	packetSSL		_mSSL;
 	packetTelemetrySSL _mSSLTelemetry;
+	packetOdometrySSL _mSSLOdometry;
 	packetGeneric	_rx;
 
 	NetworkConfig _config;
