@@ -41,17 +41,29 @@ typedef struct Vector{
 
   inline Vector operator+(Vector a)
   {
-    return {x + a.x, y + a.y, w + a.w};
+    Vector b;
+    b.x = x + a.x;
+    b.y = y + a.y;
+    b.w = w + a.w;
+    return b;
   }
 
   inline Vector operator-(Vector a)
   {
-    return {x - a.x, y - a.y, w - a.w};
+      Vector b;
+      b.x = x - a.x;
+      b.y = y - a.y;
+      b.w = w - a.w;
+      return b;
   }
 
   inline Vector operator*(double a)
   {
-    return {x * a, y * a, w * a};
+      Vector b;
+      b.x = x * a;
+      b.y = y * a;
+      b.w = w * a;
+      return b;
   }
 } Vector;
 
