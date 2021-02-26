@@ -178,7 +178,7 @@ bool nRF24Communication::sendOdometryPacket(RobotOdometry odometry)
   this->_mSSLOdometry.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mSSLOdometry.decoded.x = static_cast<int16_t>(odometry.v.x * 1000);
   this->_mSSLOdometry.decoded.y = static_cast<int16_t>(odometry.v.y * 1000);
-  this->_mSSLOdometry.decoded.w = static_cast<int16_t>(odometry.v.w * 1000);
+  this->_mSSLOdometry.decoded.w = static_cast<int16_t>(odometry.v.w * 10000);
   this->_mSSLOdometry.decoded.dribbler = static_cast<uint8_t>(odometry.dribbler * 10);
   this->_mSSLOdometry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
   this->_mSSLOdometry.decoded.ball = static_cast<bool>(odometry.ball);
