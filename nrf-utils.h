@@ -2,6 +2,7 @@
 #define NRF_UTILS_H
 
 /************* AUXILIAR TYPES ************/
+#include <stdint.h>
 
 enum class RadioFunction
 {
