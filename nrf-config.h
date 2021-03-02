@@ -23,6 +23,10 @@
 #define DEEP_ADDR_2 0x5D4ADC454BLL
 
 #define ACK_RADIO 0
+#define NRF_MAX_PAYLOAD 32
+
+
+#define BST_CONFIG_LENGTH 20
 
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_CONTROL_LENGTH 4
@@ -40,6 +44,7 @@ enum MESSAGE_TYPE
   msgType_SSL_SPEED,
   msgType_SSL_TELEMTRY,
   msgType_SSL_ODOMETRY,
+  msgType_BST_CONFIG
 };
 
 typedef struct
@@ -54,6 +59,37 @@ typedef union {
   unsigned char encoded[SSL_PAYLOAD_LENGTH];
   packetTypeGeneric decoded;
 } packetGeneric;
+
+/**
+ * Structure to configure the Base Station,
+ * This type sends:
+ *  - Message type
+ *  - Duplex communication?
+ *  - Team (follow NetworkType)
+ *  - nRF Address 1
+ *  - nRF Address 2
+ *  - Payload of nRF messages
+ *  - Channel of nRF send.
+ *  - Channel of nRF recv.
+ */
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  bool duplex: 1;
+  uint8_t team: 3;
+  uint64_t addr1: 64;
+  uint64_t addr2: 64;
+  uint8_t payload: 8;
+  uint8_t channel1: 8;
+  uint8_t channel2: 8;
+
+} packetTypeBStConfig;
+
+typedef union
+{
+  unsigned char encoded[BST_CONFIG_LENGTH];
+  packetTypeBStConfig decoded;
+} packetBStConfig;
 
 /**
  * Structure for sending speeds to bi-directional robot,
