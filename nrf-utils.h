@@ -10,7 +10,7 @@ enum class RadioFunction
 	sender
 };
 
-// Attencion: Limit of 
+// Attencion: Limit of 8
 enum class NetworkType
 {
 	unknown = 0,

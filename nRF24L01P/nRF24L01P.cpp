@@ -475,14 +475,14 @@ bool RF24::write( const void* buf, uint8_t len )
   // Monitor the send
   uint8_t observe_tx;
   uint8_t status;
-  uint32_t sent_at = mainTimer.read_ms();
-  const uint32_t timeout = 500; //ms to wait for timeout
+  uint32_t sent_at = mainTimer.read_us();
+  const uint32_t timeout = 500*1000; //ms to wait for timeout
   do
   {
     status = read_register(OBSERVE_TX,&observe_tx,1);
 //    IF_SERIAL_DEBUG(Serial.print(observe_tx,HEX));
   }
-  while( ! ( status & ( _BV(TX_DS) | _BV(MAX_RT) ) ) && ( mainTimer.read_ms() - sent_at < timeout ) );
+  while( ! ( status & ( _BV(TX_DS) | _BV(MAX_RT) ) ) && ( mainTimer.read_us() - (sent_at) < timeout ) );
 
   // The part above is what you could recreate with your own interrupt handler,
   // and then call this when you got an interrupt
