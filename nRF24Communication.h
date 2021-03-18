@@ -61,9 +61,6 @@ private:
   packetGeneric _rx;
 
   NetworkConfig _config;
-  KickFlags *_kick;
-  Vector _robotVectorSpeed;
-
   char _robotId;
   msgType _typeMsg;
   int _flags;
