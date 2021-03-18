@@ -20,6 +20,14 @@ enum class NetworkType
 	rl
 };
 
+// Attencion: Limit of 8
+enum class PositionType
+{
+	unknown = 0,
+	source,
+  destiny
+};
+
 typedef struct
 {
 	uint8_t payload;

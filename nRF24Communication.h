@@ -56,8 +56,8 @@ private:
 
   packetSpeedVSS _mVSS;
   packetSpeedSSL _mSSL;
-  packetTelemetry _mSSLTelemetry;
-  packetOdometry _mSSLOdometry;
+  packetTelemetry _mTelemetry;
+  packetOdometry _mOdometry;
   packetGeneric _rx;
 
   NetworkConfig _config;

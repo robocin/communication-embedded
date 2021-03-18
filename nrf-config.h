@@ -47,6 +47,7 @@ enum class msgType
   SSL_SPEED,
   TELEMTRY,
   ODOMETRY,
+  POSTION,
   BST_CONFIG
 };
 
@@ -131,7 +132,7 @@ typedef struct
   uint8_t id : 4;
   int32_t vx : 20;
   int32_t vy : 20;
-  int32_t w : 20;
+  int32_t vw : 20;
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
@@ -146,6 +147,33 @@ typedef union packetSpeedSSL {
   unsigned char encoded[SSL_SPEED_LENGTH];
   packetTypeSpeedSSL decoded;
 } packetSpeedSSL;
+
+/*
+  * Structure for sending position to a robot,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - x, y and w of the robot.
+ *  - Source or Destiny position.
+ *  - ....
+  */
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  int16_t x : 16;
+  int16_t y : 16;
+  int16_t w : 16;
+  uint16_t speed : 13;
+  uint8_t positionType : 3;
+
+} packetTypePostion;
+
+typedef union packetPostion
+{
+  unsigned char encoded[SSL_SPEED_LENGTH];
+  packetTypePostion decoded;
+} packetPostion;
 
 typedef struct
 {
