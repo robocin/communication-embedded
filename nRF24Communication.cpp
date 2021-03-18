@@ -194,7 +194,7 @@ bool nRF24Communication::updatePacket(bool reconnect)
   this->enable();
   if (reconnect)
   {
-    if (!this->compareChannel())
+    if (this->_radio.getPALevel() != RF24_PA_MAX)
     {
       this->_resetRadio();
       this->_configure();
