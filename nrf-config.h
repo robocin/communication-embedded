@@ -1,10 +1,12 @@
 #ifndef NRF_CONFIG_H
 #define NRF_CONFIG_H
 
-// v3.0
+// v3.1
 
 #include <stdint.h>
 
+
+// NRF Config Defitions
 #define SSL_1_BASE_SEND_CH 112
 #define SSL_2_BASE_RECV_CH 114
 
@@ -25,26 +27,27 @@
 #define ACK_RADIO 0
 #define NRF_MAX_PAYLOAD 32
 
-
+// PAYLOAD DEFINITIONS
 #define BST_CONFIG_LENGTH 20
 
 #define VSS_PAYLOAD_LENGTH 10
-#define VSS_CONTROL_LENGTH 4
+#define VSS_SPEED_LENGTH 4
 
 #define SSL_PAYLOAD_LENGTH 15
-#define SSL_CONTROL_LENGTH 12
-#define SSL_TELEMETRY_LENGTH 13
-#define SSL_ODOMETRY_LENGTH 11
+#define SSL_SPEED_LENGTH 12
+#define TELEMETRY_LENGTH 13
+#define ODOMETRY_LENGTH 11
 
 #pragma pack (push, 1)
 
-enum MESSAGE_TYPE
+enum class msgType
 {
-  msgType_VSS_SPEED = 0,
-  msgType_SSL_SPEED,
-  msgType_SSL_TELEMTRY,
-  msgType_SSL_ODOMETRY,
-  msgType_BST_CONFIG
+  NONE = -1,
+  VSS_SPEED,
+  SSL_SPEED,
+  TELEMTRY,
+  ODOMETRY,
+  BST_CONFIG
 };
 
 typedef struct
@@ -106,12 +109,12 @@ typedef struct
   int8_t leftSpeed : 8;
   int8_t rightSpeed : 8;
   uint8_t flags : 8;
-} packetTypeVSS;
+} packetTypeSpeedVSS;
 
-typedef union packetVSS {
-  unsigned char encoded[VSS_CONTROL_LENGTH];
-  packetTypeVSS decoded;
-} packetVSS;
+typedef union packetSpeedVSS {
+  unsigned char encoded[VSS_SPEED_LENGTH];
+  packetTypeSpeedVSS decoded;
+} packetSpeedVSS;
 
 /*
   * Structure for sending speeds omni-directional robot,
@@ -137,12 +140,12 @@ typedef struct
   uint8_t speed : 8;
   uint8_t command : 8;
 
-} packetTypeSSL;
+} packetTypeSpeedSSL;
 
-typedef union packetSSL {
-  unsigned char encoded[SSL_CONTROL_LENGTH];
-  packetTypeSSL decoded;
-} packetSSL;
+typedef union packetSpeedSSL {
+  unsigned char encoded[SSL_SPEED_LENGTH];
+  packetTypeSpeedSSL decoded;
+} packetSpeedSSL;
 
 typedef struct
 {
@@ -157,12 +160,12 @@ typedef struct
   bool ball : 1;
   uint8_t battery : 8;
 
-} packetTypeTelemetrySSL;
+} packetTypeTelemetry;
 
-typedef union packetSSLTelemetry {
-  unsigned char encoded[SSL_TELEMETRY_LENGTH];
-  packetTypeTelemetrySSL decoded;
-} packetTelemetrySSL;
+typedef union packetTelemetry {
+  unsigned char encoded[TELEMETRY_LENGTH];
+  packetTypeTelemetry decoded;
+} packetTelemetry;
 
 /*
   * Structure for send robot basic status and position,
@@ -187,13 +190,13 @@ typedef struct
   bool ball : 1;
   uint8_t battery : 8;
 
-} packetTypeOdometrySSL;
+} packetTypeOdometry;
 
-typedef union packetSSLOdometry
+typedef union packetOdometry
 {
-  unsigned char encoded[SSL_ODOMETRY_LENGTH];
-  packetTypeOdometrySSL decoded;
-} packetOdometrySSL;
+  unsigned char encoded[ODOMETRY_LENGTH];
+  packetTypeOdometry decoded;
+} packetOdometry;
 
 //restoring the standard alignment
 #pragma pack(pop)
