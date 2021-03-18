@@ -170,7 +170,7 @@ msgType nRF24Communication::updatePacket()
           std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
           this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
           this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
-          this->_v.w = static_cast<double>((this->_mSSL.decoded.w) / 10000.0);
+          this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
           this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
@@ -203,35 +203,35 @@ msgType nRF24Communication::updatePacket()
 bool nRF24Communication::sendTelemetryPacket(RobotTelemetry telemetry)
 {
 
-  this->_mSSLTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMTRY);
-  this->_mSSLTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mSSLTelemetry.decoded.m1 = static_cast<uint8_t>(telemetry.m.m1 * 100);
-  this->_mSSLTelemetry.decoded.m2 = static_cast<uint8_t>(telemetry.m.m2 * 100);
-  this->_mSSLTelemetry.decoded.m3 = static_cast<uint8_t>(telemetry.m.m3 * 100);
-  this->_mSSLTelemetry.decoded.m4 = static_cast<uint8_t>(telemetry.m.m4 * 100);
-  this->_mSSLTelemetry.decoded.dribbler = static_cast<uint8_t>(telemetry.dribbler * 10);
-  this->_mSSLTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
-  this->_mSSLTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
-  this->_mSSLTelemetry.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
+  this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMTRY);
+  this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetry.decoded.m1 = static_cast<uint8_t>(telemetry.m.m1 * 100);
+  this->_mTelemetry.decoded.m2 = static_cast<uint8_t>(telemetry.m.m2 * 100);
+  this->_mTelemetry.decoded.m3 = static_cast<uint8_t>(telemetry.m.m3 * 100);
+  this->_mTelemetry.decoded.m4 = static_cast<uint8_t>(telemetry.m.m4 * 100);
+  this->_mTelemetry.decoded.dribbler = static_cast<uint8_t>(telemetry.dribbler * 10);
+  this->_mTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
+  this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
+  this->_mTelemetry.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->enable();
-  bool answer = this->_radio.write(this->_mSSLTelemetry.encoded, TELEMETRY_LENGTH);
+  bool answer = this->_radio.write(this->_mTelemetry.encoded, TELEMETRY_LENGTH);
   this->disable();
   return answer;
 }
 
 bool nRF24Communication::sendOdometryPacket(RobotOdometry odometry)
 {
-  this->_mSSLOdometry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
-  this->_mSSLOdometry.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mSSLOdometry.decoded.x = static_cast<int16_t>(odometry.v.x * 1000);
-  this->_mSSLOdometry.decoded.y = static_cast<int16_t>(odometry.v.y * 1000);
-  this->_mSSLOdometry.decoded.w = static_cast<int16_t>(odometry.v.w * 10000);
-  this->_mSSLOdometry.decoded.dribbler = static_cast<uint8_t>(odometry.dribbler * 10);
-  this->_mSSLOdometry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
-  this->_mSSLOdometry.decoded.ball = static_cast<bool>(odometry.ball);
-  this->_mSSLOdometry.decoded.battery = static_cast<uint8_t>(odometry.battery * 10);
+  this->_mOdometry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
+  this->_mOdometry.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mOdometry.decoded.x = static_cast<int16_t>(odometry.v.x * 1000);
+  this->_mOdometry.decoded.y = static_cast<int16_t>(odometry.v.y * 1000);
+  this->_mOdometry.decoded.w = static_cast<int16_t>(odometry.v.w * 10000);
+  this->_mOdometry.decoded.dribbler = static_cast<uint8_t>(odometry.dribbler * 10);
+  this->_mOdometry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
+  this->_mOdometry.decoded.ball = static_cast<bool>(odometry.ball);
+  this->_mOdometry.decoded.battery = static_cast<uint8_t>(odometry.battery * 10);
   this->enable();
-  bool answer = this->_radio.write(this->_mSSLOdometry.encoded, ODOMETRY_LENGTH);
+  bool answer = this->_radio.write(this->_mOdometry.encoded, ODOMETRY_LENGTH);
   this->disable();
   return answer;
 }
