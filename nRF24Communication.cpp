@@ -152,13 +152,11 @@ msgType nRF24Communication::updatePacket()
       if (this->_rx.decoded.id == this->_robotId)
       {
 
-        this->clearVSSData();
-        this->clearSSLData();
-
         // According to the type of message assign variables
         if (this->_typeMsg == msgType::VSS_SPEED)
         {
           // VSS
+          this->clearVSSData();
           std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_SPEED_LENGTH); //require std::, eventual error in copy
           this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
           this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
@@ -167,6 +165,7 @@ msgType nRF24Communication::updatePacket()
         else if (this->_typeMsg == msgType::SSL_SPEED)
         {
           // SSL
+          this->clearSSLData();
           std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
           this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
           this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
@@ -177,6 +176,14 @@ msgType nRF24Communication::updatePacket()
           this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.strength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.speed) / 10.0);
+        }
+        else if (this->_typeMsg == msgType::POSITION) {
+          std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
+          this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) * 1000);
+          this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) * 1000);
+          this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) * 10000);
+          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.speed) * 100);
+          this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
         }
         else
         {
@@ -251,11 +258,8 @@ void nRF24Communication::clearVSSData()
 
 void nRF24Communication::getVectorSpeed(Vector &mSpeed)
 {
-  mSpeed.x = this->_v.x;
-  mSpeed.y = this->_v.y;
-  mSpeed.w = this->_v.w;
+  mSpeed = this->_v;
 }
-
 void nRF24Communication::clearSSLData()
 {
   this->_v.x = 0;
@@ -267,6 +271,10 @@ void nRF24Communication::clearSSLData()
   this->_kick.kickStrength = 0;
   this->_kick.dribbler = false;
   this->_kick.dribblerSpeed = 0;
+}
+
+void nRF24Communication::getPosition(RobotPosition &pos) {
+  pos = _pos;
 }
 
 void nRF24Communication::getKick(KickFlags &isKick)
