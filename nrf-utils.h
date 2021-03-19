@@ -10,7 +10,10 @@ enum class RadioFunction
 	sender
 };
 
-// Attencion: Limit of 8
+/*
+ * Network type / catergory configuration
+ *  Attencion: Limited in 8
+ */
 enum class NetworkType
 {
 	unknown = 0,
@@ -20,7 +23,11 @@ enum class NetworkType
 	rl
 };
 
-// Attencion: Limit of 8
+
+/*
+ * Type of the packet position.
+ *  Attencion: Limited in 8
+ */
 enum class PositionType
 {
 	unknown = 0,
@@ -104,6 +111,14 @@ typedef struct KickFlags
 		return *this;
 	}
 } KickFlags;
+
+typedef struct RobotPosition
+{
+  Vector v;
+  PositionType type;
+  double maxSpeed;
+
+} RobotPosition;
 
 typedef struct
 {

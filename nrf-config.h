@@ -35,6 +35,7 @@
 
 #define SSL_PAYLOAD_LENGTH 15
 #define SSL_SPEED_LENGTH 12
+#define POSITION_LENGTH 9
 #define TELEMETRY_LENGTH 13
 #define ODOMETRY_LENGTH 11
 
@@ -47,7 +48,7 @@ enum class msgType
   SSL_SPEED,
   TELEMTRY,
   ODOMETRY,
-  POSTION,
+  POSITION,
   BST_CONFIG
 };
 
@@ -167,13 +168,13 @@ typedef struct
   uint16_t speed : 13;
   uint8_t positionType : 3;
 
-} packetTypePostion;
+} packetTypePosition;
 
-typedef union packetPostion
+typedef union packetPosition
 {
-  unsigned char encoded[SSL_SPEED_LENGTH];
-  packetTypePostion decoded;
-} packetPostion;
+  unsigned char encoded[POSITION_LENGTH];
+  packetTypePosition decoded;
+} packetPosition;
 
 typedef struct
 {

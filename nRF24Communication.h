@@ -37,6 +37,7 @@ public:
   bool sendOdometryPacket(RobotOdometry odometry);
   void clearSSLData();
   void getKick(KickFlags &isKick);
+  void getPosition(RobotPosition &pos);
 
   // Aux Info
   float getKP();
@@ -58,15 +59,17 @@ private:
   packetSpeedSSL _mSSL;
   packetTelemetry _mTelemetry;
   packetOdometry _mOdometry;
+  packetPosition _mPostion;
   packetGeneric _rx;
 
   NetworkConfig _config;
   char _robotId;
   msgType _typeMsg;
-  int _flags;
   Motors _motorSpeed;
+  int _flags;
   Vector _v;
   KickFlags _kick;
+  RobotPosition _pos;
   float _kp, _kd, _ki, _alpha;
 };
 
