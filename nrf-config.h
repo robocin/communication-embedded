@@ -44,12 +44,12 @@
 enum class msgType
 {
   NONE = -1,
+  BST_CONFIG,
   VSS_SPEED,
   SSL_SPEED,
   TELEMTRY,
   ODOMETRY,
-  POSITION,
-  BST_CONFIG
+  POSITION
 };
 
 typedef struct
