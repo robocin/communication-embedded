@@ -57,11 +57,13 @@ typedef struct
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int64_t rest_a : 64;
-  int64_t rest_b : 48;
+  int64_t rest_b : 64;
+  int64_t rest_c : 64;
+  int64_t rest_d : 56;
 } packetTypeGeneric;
 
 typedef union {
-  unsigned char encoded[SSL_PAYLOAD_LENGTH];
+  unsigned char encoded[NRF_MAX_PAYLOAD];
   packetTypeGeneric decoded;
 } packetGeneric;
 
