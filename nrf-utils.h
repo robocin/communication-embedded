@@ -6,8 +6,8 @@
 
 enum class RadioFunction
 {
-	receiver,
-	sender
+  receiver,
+  sender
 };
 
 /*
@@ -16,13 +16,12 @@ enum class RadioFunction
  */
 enum class NetworkType
 {
-	unknown = 0,
-	generic,
-	ssl,
-	vss,
-	rl
+  unknown = 0,
+  generic,
+  ssl,
+  vss,
+  rl
 };
-
 
 /*
  * Type of the packet position.
@@ -30,86 +29,86 @@ enum class NetworkType
  */
 enum class PositionType
 {
-	unknown = 0,
-	source,
-  	destiny
+  unknown = 0,
+  source,
+  destiny
 };
 
 typedef struct
 {
-	uint8_t payload;
-	uint64_t addr[2];
-	bool ack;
-	uint8_t receiveChannel;
-	uint8_t sendChannel;
-	uint8_t pipeNum;
-	bool reConfig;
-	RadioFunction function;
+  uint8_t payload;
+  uint64_t addr[2];
+  bool ack;
+  uint8_t receiveChannel;
+  uint8_t sendChannel;
+  uint8_t pipeNum;
+  bool reConfig;
+  RadioFunction function;
 } NetworkConfig;
 
 typedef struct
 {
-	double m1 = 0;
-	double m2 = 0;
-	double m3 = 0;
-	double m4 = 0;
+  double m1 = 0;
+  double m2 = 0;
+  double m3 = 0;
+  double m4 = 0;
 } Motors;
 
 typedef struct Vector
 {
-	double x = 0;
-	double y = 0;
-	double w = 0;
+  double x = 0;
+  double y = 0;
+  double w = 0;
 
-	inline Vector operator+(Vector a)
-	{
-		Vector b;
-		b.x = x + a.x;
-		b.y = y + a.y;
-		b.w = w + a.w;
-		return b;
-	}
+  inline Vector operator+(Vector a)
+  {
+    Vector b;
+    b.x = x + a.x;
+    b.y = y + a.y;
+    b.w = w + a.w;
+    return b;
+  }
 
-	inline Vector operator-(Vector a)
-	{
-		Vector b;
-		b.x = x - a.x;
-		b.y = y - a.y;
-		b.w = w - a.w;
-		return b;
-	}
+  inline Vector operator-(Vector a)
+  {
+    Vector b;
+    b.x = x - a.x;
+    b.y = y - a.y;
+    b.w = w - a.w;
+    return b;
+  }
 
-	inline Vector operator*(double a)
-	{
-		Vector b;
-		b.x = x * a;
-		b.y = y * a;
-		b.w = w * a;
-		return b;
-	}
+  inline Vector operator*(double a)
+  {
+    Vector b;
+    b.x = x * a;
+    b.y = y * a;
+    b.w = w * a;
+    return b;
+  }
 } Vector;
 
 typedef struct KickFlags
 {
-	bool front = false;
-	bool chip = false;
-	bool charge = false;
-	float kickStrength = 0;
-	bool ball = false;
-	bool dribbler = false;
-	float dribblerSpeed = 0;
+  bool front = false;
+  bool chip = false;
+  bool charge = false;
+  float kickStrength = 0;
+  bool ball = false;
+  bool dribbler = false;
+  float dribblerSpeed = 0;
 
-	KickFlags &operator=(const KickFlags &a)
-	{
-		front = a.front;
-		chip = a.chip;
-		charge = a.charge;
-		kickStrength = a.kickStrength;
-		ball = a.ball;
-		dribbler = a.dribbler;
-		dribblerSpeed = a.dribblerSpeed;
-		return *this;
-	}
+  KickFlags &operator=(const KickFlags &a)
+  {
+    front = a.front;
+    chip = a.chip;
+    charge = a.charge;
+    kickStrength = a.kickStrength;
+    ball = a.ball;
+    dribbler = a.dribbler;
+    dribblerSpeed = a.dribblerSpeed;
+    return *this;
+  }
 } KickFlags;
 
 typedef struct RobotPosition
@@ -122,22 +121,22 @@ typedef struct RobotPosition
 
 typedef struct
 {
-	int id = -1;
-	Motors m;
-	double dribbler = 0;
-	double kickLoad = 0;
-	bool ball = false;
-	double battery = 0;
+  int id = -1;
+  Motors m;
+  double dribbler = 0;
+  double kickLoad = 0;
+  bool ball = false;
+  double battery = 0;
 } RobotTelemetry;
 
 typedef struct
 {
-	int id = -1;
-	Vector v;
-	double dribbler = 0;
-	double kickLoad = 0;
-	bool ball = false;
-	double battery = 0;
+  int id = -1;
+  Vector v;
+  double dribbler = 0;
+  double kickLoad = 0;
+  bool ball = false;
+  double battery = 0;
 } RobotOdometry;
 
 #endif // NRF_UTILS_H
