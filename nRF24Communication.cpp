@@ -177,12 +177,13 @@ msgType nRF24Communication::updatePacket()
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.speed) / 10.0);
         }
-        else if (this->_typeMsg == msgType::POSITION) {
+        else if (this->_typeMsg == msgType::POSITION)
+        {
           std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
-          this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) * 1000);
-          this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) * 1000);
-          this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) * 10000);
-          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.speed) * 100);
+          this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000);
+          this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000);
+          this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000);
+          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.speed) / 100);
           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
         }
         else
@@ -273,7 +274,8 @@ void nRF24Communication::clearSSLData()
   this->_kick.dribblerSpeed = 0;
 }
 
-void nRF24Communication::getPosition(RobotPosition &pos) {
+void nRF24Communication::getPosition(RobotPosition &pos)
+{
   pos = _pos;
 }
 
