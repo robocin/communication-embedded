@@ -17,7 +17,7 @@ public:
   // ~nRF24Communication();
 
   int setup(int robotSwitches);
-  bool compareChannel(uint8_t channel = SSL_1_ROBOT_RECV_CH);
+  bool compareChannel(uint8_t channel);
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
