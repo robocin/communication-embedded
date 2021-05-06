@@ -4,8 +4,8 @@
 #include <mbed.h>
 #include <SPI.h>                 // Call SPI library so you can communicate with the nRF24L01+
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
-#include <nrf-config.h>
-#include <nrf-utils.h>
+#include <config.h>
+#include <types.h>
 
 class nRF24Communication
 {

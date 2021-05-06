@@ -1,5 +1,5 @@
-#ifndef NRF_UTILS_H
-#define NRF_UTILS_H
+#ifndef TYPES_H
+#define TYPES_H
 
 /************* AUXILIAR TYPES ************/
 #include <stdint.h>
@@ -139,4 +139,4 @@ typedef struct
   double battery = 0;
 } RobotOdometry;
 
-#endif // NRF_UTILS_H
+#endif // TYPES_H
