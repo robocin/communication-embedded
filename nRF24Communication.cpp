@@ -145,7 +145,7 @@ msgType nRF24Communication::updatePacket()
   {
     while (this->_radio.available(&(_config.pipeNum)))
     {
-      this->_radio.read(&(this->_rx.encoded), SSL_PAYLOAD_LENGTH);
+      this->_radio.read(&(this->_rx.encoded), _config.payload);
       // Save the message type
       this->_typeMsg = static_cast<msgType>(this->_rx.decoded.typeMsg);
 
