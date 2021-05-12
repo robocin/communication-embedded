@@ -1,5 +1,5 @@
-#ifndef NRF_CONFIG_H
-#define NRF_CONFIG_H
+#ifndef CONFIG_H
+#define CONFIG_H
 
 // v3.1
 
@@ -232,4 +232,4 @@ typedef union packetOdometry
 //restoring the standard alignment
 #pragma pack(pop)
 
-#endif // NRF_CONFIG_H
+#endif // CONFIG_H
