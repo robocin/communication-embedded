@@ -1,5 +1,5 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef COMM_TYPES_H
+#define COMM_TYPES_H
 
 /************* AUXILIAR TYPES ************/
 #include <stdint.h>
@@ -139,4 +139,4 @@ typedef struct
   double battery = 0;
 } RobotOdometry;
 
-#endif // TYPES_H
+#endif // COMM_TYPES_H

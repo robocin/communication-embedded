@@ -1,5 +1,5 @@
-#ifndef CONFIG_H
-#define CONFIG_H
+#ifndef COMM_CONFIG_H
+#define COMM_CONFIG_H
 
 // v3.1
 
@@ -232,4 +232,4 @@ typedef union packetOdometry
 //restoring the standard alignment
 #pragma pack(pop)
 
-#endif // CONFIG_H
+#endif // COMM_CONFIG_H
