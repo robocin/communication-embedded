@@ -12,7 +12,7 @@ enum class RadioFunction
 
 /*
  * Network type / catergory configuration
- *  Attencion: Limited in 8
+ *  Attencion: Limited in 15
  */
 enum class NetworkType
 {
