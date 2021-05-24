@@ -3,6 +3,7 @@
 
 /************* AUXILIAR TYPES ************/
 #include <stdint.h>
+#include <commConfig.h>
 
 enum class RadioFunction
 {
@@ -122,21 +123,13 @@ typedef struct RobotPosition
 typedef struct
 {
   int id = -1;
+  msgType type;
   Motors m;
-  double dribbler = 0;
-  double kickLoad = 0;
-  bool ball = false;
-  double battery = 0;
-} RobotTelemetry;
-
-typedef struct
-{
-  int id = -1;
   Vector v;
   double dribbler = 0;
   double kickLoad = 0;
   bool ball = false;
   double battery = 0;
-} RobotOdometry;
+} RobotInfo;
 
 #endif // COMM_TYPES_H

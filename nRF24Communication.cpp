@@ -208,7 +208,7 @@ msgType nRF24Communication::updatePacket()
   return msgType::NONE;
 }
 
-bool nRF24Communication::sendTelemetryPacket(RobotTelemetry telemetry)
+bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
 {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMTRY);
@@ -227,7 +227,7 @@ bool nRF24Communication::sendTelemetryPacket(RobotTelemetry telemetry)
   return answer;
 }
 
-bool nRF24Communication::sendOdometryPacket(RobotOdometry odometry)
+bool nRF24Communication::sendOdometryPacket(RobotInfo odometry)
 {
   this->_mOdometry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
   this->_mOdometry.decoded.id = static_cast<uint8_t>(this->getRobotId());

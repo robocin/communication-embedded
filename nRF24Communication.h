@@ -33,8 +33,8 @@ public:
 
   // SSL Info
   void getVectorSpeed(Vector &mSpeed);
-  bool sendTelemetryPacket(RobotTelemetry telemetry);
-  bool sendOdometryPacket(RobotOdometry odometry);
+  bool sendTelemetryPacket(RobotInfo telemetry);
+  bool sendOdometryPacket(RobotInfo odometry);
   void clearSSLData();
   void getKick(KickFlags &isKick);
   void getPosition(RobotPosition &pos);
