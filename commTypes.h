@@ -3,7 +3,7 @@
 
 /************* AUXILIAR TYPES ************/
 #include <stdint.h>
-#include <commConfig.h>
+#include "commConfig.h"
 
 enum class RadioFunction
 {
