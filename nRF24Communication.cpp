@@ -141,7 +141,7 @@ msgType nRF24Communication::updatePacket()
 {
   this->enable();
 
-  if (this->_radio.isChipConnected())
+  if (this->_radio.getPALevel() != RF24_PA_MAX)
   {
     while (this->_radio.available(&(_config.pipeNum)))
     {
