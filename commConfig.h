@@ -33,11 +33,11 @@
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_SPEED_LENGTH 4
 
-#define SSL_PAYLOAD_LENGTH 15
-#define SSL_SPEED_LENGTH 12
-#define POSITION_LENGTH 9
-#define TELEMETRY_LENGTH 13
-#define ODOMETRY_LENGTH 11
+#define SSL_PAYLOAD_LENGTH 20 //15 //
+#define SSL_SPEED_LENGTH 20   //12 // 
+#define POSITION_LENGTH 20    // 9 //
+#define TELEMETRY_LENGTH 20   //13 //
+#define ODOMETRY_LENGTH 20    //11 //
 
 #pragma pack (push, 1)
 
@@ -145,6 +145,7 @@ typedef struct
   uint8_t dribbler : 1;
   uint8_t speed : 8;
   uint8_t command : 8;
+  uint64_t free_1 : 64;
 
 } packetTypeSpeedSSL;
 
@@ -171,6 +172,8 @@ typedef struct
   int16_t w : 16;
   uint16_t speed : 13;
   uint8_t positionType : 3;
+  uint64_t free_1 : 64;
+  uint32_t free_2 : 22;
 
 } packetTypePosition;
 
@@ -192,6 +195,7 @@ typedef struct
   uint8_t kickLoad : 8;
   bool ball : 1;
   uint8_t battery : 8;
+  uint64_t free_1 : 54;
 
 } packetTypeTelemetry;
 
@@ -222,6 +226,8 @@ typedef struct
   uint8_t kickLoad : 8;
   bool ball : 1;
   uint8_t battery : 8;
+  uint64_t free_1 : 64;
+  uint8_t free_2 : 8;
 
 } packetTypeOdometry;
 
