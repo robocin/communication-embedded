@@ -195,7 +195,7 @@ typedef struct
   uint8_t kickLoad : 8;
   bool ball : 1;
   uint8_t battery : 8;
-  uint64_t free_1 : 54;
+  uint64_t free_1 : 56;
 
 } packetTypeTelemetry;
 
