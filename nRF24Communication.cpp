@@ -91,7 +91,7 @@ void nRF24Communication::_configure()
 void nRF24Communication::_resetRadio()
 {
   this->_vcc = 0;
-  wait_us(100);
+  wait_us(1000);
   this->_vcc = 1;
   wait_us(50);
 }
@@ -141,7 +141,7 @@ msgType nRF24Communication::updatePacket()
 {
   this->enable();
 
-  if (this->_radio.isChipConnected())
+  if (this->_radio.getPALevel() == RF24_PA_MAX)
   {
     while (this->_radio.available(&(_config.pipeNum)))
     {
