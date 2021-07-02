@@ -23,6 +23,17 @@ int nRF24Communication::setup(int robotSwitches)
   return 0;
 }
 
+bool nRF24Communication::resetRadio()
+{
+  this->enable();
+  this->_resetRadio();
+  wait_us(1000);
+  this->_configure();
+  bool connected = this->_radio.getPALevel() == RF24_PA_MAX;
+  this->disable();
+  return connected;
+}
+
 bool nRF24Communication::compareChannel(uint8_t channel)
 {
   return this->_radio.compareChannel(channel);
@@ -93,7 +104,7 @@ void nRF24Communication::_resetRadio()
   this->_vcc = 0;
   wait_us(1000);
   this->_vcc = 1;
-  wait_us(50);
+  wait_us(1000);
 }
 
 void nRF24Communication::_receive()
