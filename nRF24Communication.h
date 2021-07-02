@@ -17,6 +17,7 @@ public:
   // ~nRF24Communication();
 
   int setup(int robotSwitches);
+  bool resetRadio();
   bool compareChannel(uint8_t channel);
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
