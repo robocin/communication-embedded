@@ -194,7 +194,8 @@ msgType nRF24Communication::updatePacket()
           this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
           this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
-          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.speed) / 100.0);
+          this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
+          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 100.0);
           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
         }
         else
@@ -224,11 +225,11 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMTRY);
   this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mTelemetry.decoded.m1 = static_cast<uint8_t>(telemetry.m.m1 * 100);
-  this->_mTelemetry.decoded.m2 = static_cast<uint8_t>(telemetry.m.m2 * 100);
-  this->_mTelemetry.decoded.m3 = static_cast<uint8_t>(telemetry.m.m3 * 100);
-  this->_mTelemetry.decoded.m4 = static_cast<uint8_t>(telemetry.m.m4 * 100);
-  this->_mTelemetry.decoded.dribbler = static_cast<uint8_t>(telemetry.dribbler * 10);
+  this->_mTelemetry.decoded.m1 = static_cast<int16_t>(telemetry.m.m1 * 100);
+  this->_mTelemetry.decoded.m2 = static_cast<int16_t>(telemetry.m.m2 * 100);
+  this->_mTelemetry.decoded.m3 = static_cast<int16_t>(telemetry.m.m3 * 100);
+  this->_mTelemetry.decoded.m4 = static_cast<int16_t>(telemetry.m.m4 * 100);
+  this->_mTelemetry.decoded.dribbler = static_cast<int16_t>(telemetry.dribbler * 10);
   this->_mTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
   this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
   this->_mTelemetry.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);

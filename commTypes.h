@@ -61,6 +61,19 @@ typedef struct Vector
   double y = 0;
   double w = 0;
 
+  Vector()
+  {
+    x = 0;
+    y = 0;
+    w = 0;
+  }
+
+  Vector(double _x, double _y, double _w){
+    x = _x;
+    y = _y;
+    w = _w;
+  }
+
   inline Vector operator+(Vector a)
   {
     Vector b;
@@ -116,8 +129,8 @@ typedef struct RobotPosition
 {
   Vector v;
   PositionType type;
+  double minSpeed;
   double maxSpeed;
-
 } RobotPosition;
 
 typedef struct
