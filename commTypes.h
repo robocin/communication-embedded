@@ -32,7 +32,7 @@ enum class PositionType
 {
   unknown = 0,
   source,
-  destiny
+  target
 };
 
 typedef struct
