@@ -34,7 +34,7 @@
 #define VSS_SPEED_LENGTH 4
 
 #define SSL_PAYLOAD_LENGTH 20 //15 //
-#define SSL_SPEED_LENGTH 20   //12 // 
+#define SSL_SPEED_LENGTH 20   //12 //
 #define POSITION_LENGTH 20    // 9 //
 #define TELEMETRY_LENGTH 20   //13 //
 #define ODOMETRY_LENGTH 20    //11 //
@@ -172,9 +172,14 @@ typedef struct
   int16_t w : 16;
   uint16_t speed : 13;
   uint8_t positionType : 3;
-  uint64_t free_1 : 64;
-  uint32_t free_2 : 22;
-
+  uint8_t front : 1;
+  uint8_t chip : 1;
+  uint8_t charge : 1;
+  uint8_t strength : 8;
+  uint8_t dribbler : 1;
+  uint8_t speed : 8;
+  uint8_t command : 8;
+  uint64_t free_1 : 60;
 } packetTypePosition;
 
 typedef union packetPosition
