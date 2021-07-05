@@ -167,11 +167,13 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;
-  int16_t y : 16;
-  int16_t w : 16;
-  uint16_t speed : 13;
+  int16_t x : 16; // -32.767 - 32.767 m
+  int16_t y : 16; // -32.767 - 32.767 m
+  int16_t w : 16; // 0 - 6.5535 rad
+  uint16_t maxSpeed : 13; // 0 - 81.91 m/s
+  uint16_t minSpeed : 13; // 0 - 8.191 m/s
   uint8_t positionType : 3;
+  // Kick Options
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
@@ -192,14 +194,14 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t m1 : 16;
-  int16_t m2 : 16;
-  int16_t m3 : 16;
-  int16_t m4 : 16;
-  int16_t dribbler : 15;
-  uint8_t kickLoad : 8;
+  int16_t m1 : 16; // -327.67 - 327.67 m/s
+  int16_t m2 : 16; // -327.67 - 327.67 m/s
+  int16_t m3 : 16; // -327.67 - 327.67 m/s
+  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  int16_t dribbler : 15;  // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8;
+  uint8_t battery : 8; // 0 - 25.5 V
   uint64_t free_1 : 56;
 
 } packetTypeTelemetry;
@@ -224,13 +226,13 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;
-  int16_t y : 16;
-  int16_t w : 16;
-  int16_t dribbler : 15;
-  uint8_t kickLoad : 8;
+  int16_t x : 16; // -32.767 - 32.767 m
+  int16_t y : 16; // -32.767 - 32.767 m
+  int16_t w : 16; // 0 - 6.5535 rad
+  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8;
+  uint8_t battery : 8; // 0 - 25.5 V
   uint64_t free_1 : 64;
   uint8_t free_2 : 8;
 
