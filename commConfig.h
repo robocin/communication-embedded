@@ -233,8 +233,11 @@ typedef struct
   uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
   uint8_t battery : 8; // 0 - 25.5 V
-  uint64_t free_1 : 64;
-  uint8_t free_2 : 8;
+  int16_t m1 : 16; // -327.67 - 327.67 m/s
+  int16_t m2 : 16; // -327.67 - 327.67 m/s
+  int16_t m3 : 16; // -327.67 - 327.67 m/s
+  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  uint8_t free_1 : 8;
 
 } packetTypeOdometry;
 
