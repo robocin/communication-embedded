@@ -250,6 +250,10 @@ bool nRF24Communication::sendOdometryPacket(RobotInfo odometry)
   this->_mOdometry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
   this->_mOdometry.decoded.ball = static_cast<bool>(odometry.ball);
   this->_mOdometry.decoded.battery = static_cast<uint8_t>(odometry.battery * 10);
+  this->_mOdometry.decoded.m1 = static_cast<int16_t>(odometry.m.m1 * 100);
+  this->_mOdometry.decoded.m2 = static_cast<int16_t>(odometry.m.m2 * 100);
+  this->_mOdometry.decoded.m3 = static_cast<int16_t>(odometry.m.m3 * 100);
+  this->_mOdometry.decoded.m4 = static_cast<int16_t>(odometry.m.m4 * 100);
   this->enable();
   bool answer = this->_radio.write(this->_mOdometry.encoded, ODOMETRY_LENGTH);
   this->disable();
