@@ -32,7 +32,10 @@ enum class PositionType
 {
   unknown = 0,
   source,
-  target
+  target,
+  motionControl,
+  rotateControl,
+  rotateInPoint
 };
 
 typedef struct
