@@ -141,9 +141,9 @@ typedef struct
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
-  uint8_t strength : 8;
+  uint8_t kickStrength : 8;
   uint8_t dribbler : 1;
-  uint8_t speed : 8;
+  uint8_t dribSpeed : 8;
   uint8_t command : 8;
   uint64_t free_1 : 64;
 
@@ -177,9 +177,9 @@ typedef struct
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
-  uint8_t strength : 8;
+  uint8_t kickStrength : 8;
   uint8_t dribbler : 1;
-  uint8_t speed : 8;
+  uint8_t dribSpeed : 8;
   uint8_t command : 8;
   uint64_t free_1 : 60;
 } packetTypePosition;
