@@ -184,9 +184,9 @@ msgType nRF24Communication::updatePacket()
           this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
-          this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.strength) / 10.0);
+          this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
-          this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.speed) / 10.0);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribSpeed) / 10.0);
         }
         else if (this->_typeMsg == msgType::POSITION)
         {
@@ -201,9 +201,9 @@ msgType nRF24Communication::updatePacket()
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
-          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.strength) / 10.0);
+          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
-          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.speed) / 10.0);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribSpeed) / 10.0);
         }
         else
         {
