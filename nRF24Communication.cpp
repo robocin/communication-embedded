@@ -190,6 +190,7 @@ msgType nRF24Communication::updatePacket()
         }
         else if (this->_typeMsg == msgType::POSITION)
         {
+          this->clearSSLData();
           std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
           this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
@@ -197,6 +198,12 @@ msgType nRF24Communication::updatePacket()
           this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
           this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 100.0);
           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+          this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
+          this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
+          this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
+          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.strength) / 10.0);
+          this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.speed) / 10.0);
         }
         else
         {
