@@ -20,10 +20,10 @@ void RF24::csn(int mode)
 //  spi.setBitOrder(MSBFIRST);
 //  spi.setDataMode(spi_MODE0);
 //  spi.setClockDivider(spi_CLOCK_DIV4);
-//#endif 
+//#endif
 //  digitalWrite(csn_pin,mode);
     csn_pin = mode;
-    
+
 }
 
 /****************************************************************************/
@@ -104,9 +104,9 @@ uint8_t RF24::write_payload(const void* buf, uint8_t len)
 
   uint8_t data_len = min(len,payload_size);
   uint8_t blank_len = dynamic_payloads_enabled ? 0 : payload_size - data_len;
-  
+
   //printf("[Writing %u bytes %u blanks]",data_len,blank_len);
-  
+
   csn(LOW);
   status = spi.write( W_TX_PAYLOAD );
   while ( data_len-- )
@@ -127,9 +127,9 @@ uint8_t RF24::read_payload(void* buf, uint8_t len)
 
   uint8_t data_len = min(len,payload_size);
   uint8_t blank_len = dynamic_payloads_enabled ? 0 : payload_size - data_len;
-  
+
   //printf("[Reading %u bytes %u blanks]",data_len,blank_len);
-  
+
   csn(LOW);
   status = spi.write( R_RX_PAYLOAD );
   while ( data_len-- )
@@ -240,7 +240,7 @@ void RF24::print_address_register(const char* name, uint8_t reg, uint8_t qty)
 /****************************************************************************/
 
 RF24::RF24(PinName mosi, PinName miso, PinName sck, PinName _csnpin, PinName _cepin):
-  ce_pin(_cepin), csn_pin(_csnpin), wide_band(true), p_variant(false), 
+  ce_pin(_cepin), csn_pin(_csnpin), wide_band(true), p_variant(false),
   payload_size(32), ack_payload_available(false), dynamic_payloads_enabled(false),
   pipe0_reading_address(0), spi(mosi, miso, sck)
 {
@@ -302,7 +302,7 @@ static const char rf24_pa_dbm_e_str_0[]  = "PA_MIN";
 static const char rf24_pa_dbm_e_str_1[]  = "PA_LOW";
 static const char rf24_pa_dbm_e_str_2[]  = "PA_MED";
 static const char rf24_pa_dbm_e_str_3[]  = "PA_HIGH";
-static const char * const rf24_pa_dbm_e_str_P[]  = { 
+static const char * const rf24_pa_dbm_e_str_P[]  = {
   rf24_pa_dbm_e_str_0,
   rf24_pa_dbm_e_str_1,
   rf24_pa_dbm_e_str_2,
@@ -379,14 +379,14 @@ void RF24::begin(void)
   {
     p_variant = true ;
   }
-  
+
   // Then set the data rate to the slowest (and most reliable) speed supported by all
   // hardware.
   setDataRate( RF24_1MBPS ) ;
 
   // Initialize CRC and request 2-byte (16bit) CRC
   setCRCLength( RF24_CRC_16 ) ;
-  
+
   // Disable dynamic payloads, to match dynamic_payloads_enabled setting
   write_register(DYNPD,0);
 
@@ -402,7 +402,7 @@ void RF24::begin(void)
   // Flush buffers
   flush_rx();
   flush_tx();
-  
+
   // set EN_RXADDRR to 0 to fix pipe 0 from receiving
   write_register(EN_RXADDR, 0);
 }
@@ -475,14 +475,14 @@ bool RF24::write( const void* buf, uint8_t len )
   // Monitor the send
   uint8_t observe_tx;
   uint8_t status;
-  uint32_t sent_at = mainTimer.read_us();
+  uint32_t sent_at = chrono::duration_cast<chrono::microseconds>(mainTimer.elapsed_time()).count();
   const uint32_t timeout = 500*1000; //us to wait for timeout
   do
   {
     status = read_register(OBSERVE_TX,&observe_tx,1);
 //    IF_SERIAL_DEBUG(Serial.print(observe_tx,HEX));
   }
-  while( ! ( status & ( _BV(TX_DS) | _BV(MAX_RT) ) ) && ( (mainTimer.read_us() - sent_at) < timeout ) );
+  while (!(status & (_BV(TX_DS) | _BV(MAX_RT))) && ((chrono::duration_cast<chrono::microseconds>(mainTimer.elapsed_time()).count() - sent_at) < timeout));
 
   // The part above is what you could recreate with your own interrupt handler,
   // and then call this when you got an interrupt
@@ -495,7 +495,7 @@ bool RF24::write( const void* buf, uint8_t len )
   // * There is an ack packet waiting (RX_DR)
   bool tx_ok, tx_fail;
   whatHappened(tx_ok,tx_fail,ack_payload_available);
-  
+
   //printf("%u%u%u\r\n",tx_ok,tx_fail,ack_payload_available);
 
   result = tx_ok;
@@ -534,7 +534,7 @@ void RF24::startWrite( const void* buf, uint8_t len )
   // Allons!
   ce(HIGH);
 //  wait_msMicroseconds(15);
-    wait_us(15); 
+    wait_us(15);
   ce(LOW);
 }
 
@@ -630,7 +630,7 @@ void RF24::openWritingPipe(uint64_t value)
 
   const uint8_t max_payload_size = 32;
   write_register(RX_PW_P0,min(payload_size,max_payload_size));
-  
+
   flush_tx();
 }
 
@@ -926,7 +926,7 @@ rf24_datarate_e RF24::getDataRate( void )
 {
   rf24_datarate_e result ;
   uint8_t dr = read_register(RF_SETUP) & (_BV(RF_DR_LOW) | _BV(RF_DR_HIGH));
-  
+
   // switch uses RAM (evil!)
   // Order matters in our case below
   if ( dr == _BV(RF_DR_LOW) )
@@ -962,10 +962,10 @@ bool RF24::isChipConnected()
 void RF24::setCRCLength(rf24_crclength_e length)
 {
   uint8_t config = read_register(CONFIG) & ~( _BV(CRCO) | _BV(EN_CRC)) ;
- 
+
   if ( length == RF24_CRC_DISABLED )
   {
-    // Do nothing, we turned it off above. 
+    // Do nothing, we turned it off above.
   }
   else if ( length == RF24_CRC_8 )
   {
