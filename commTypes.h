@@ -50,12 +50,30 @@ typedef struct
   RadioFunction function;
 } NetworkConfig;
 
-typedef struct
+typedef struct Motors
 {
   double m1 = 0;
   double m2 = 0;
   double m3 = 0;
   double m4 = 0;
+
+  Motors()
+  {
+    m1 = 0;
+    m2 = 0;
+    m3 = 0;
+    m4 = 0;
+  }
+
+  inline Motors operator+(Motors a)
+  {
+    Motors b;
+    b.m1 = m1 + a.m1;
+    b.m2 = m2 + a.m2;
+    b.m3 = m3 + a.m3;
+    b.m4 = m4 + a.m4;
+    return b;
+  }
 } Motors;
 
 typedef struct Vector
