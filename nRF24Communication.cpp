@@ -253,7 +253,7 @@ bool nRF24Communication::sendOdometryPacket(RobotInfo odometry)
   this->_mOdometry.decoded.x = static_cast<int16_t>(odometry.v.x * 1000);
   this->_mOdometry.decoded.y = static_cast<int16_t>(odometry.v.y * 1000);
   this->_mOdometry.decoded.w = static_cast<int16_t>(odometry.v.w * 10000);
-  this->_mOdometry.decoded.dribbler = static_cast<uint8_t>(odometry.dribbler * 10);
+  this->_mOdometry.decoded.dribbler = static_cast<uint16_t>(odometry.dribbler * 10);
   this->_mOdometry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
   this->_mOdometry.decoded.ball = static_cast<bool>(odometry.ball);
   this->_mOdometry.decoded.battery = static_cast<uint8_t>(odometry.battery * 10);
