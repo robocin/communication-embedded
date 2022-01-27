@@ -35,6 +35,7 @@ public:
   void getVectorSpeed(Vector &mSpeed);
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
+  bool sendVSSTelemetryPacket(VSSRobotInfo telemetryVSS);
   void clearSSLData();
   void getKick(KickFlags &isKick);
   void getPosition(RobotPosition &pos);
@@ -58,6 +59,7 @@ private:
   packetSpeedVSS _mVSS;
   packetSpeedSSL _mSSL;
   packetTelemetry _mTelemetry;
+  packetVSSTelemetry _mTelemetryVSS;
   packetOdometry _mOdometry;
   packetPosition _mPostion;
   packetGeneric _rx;

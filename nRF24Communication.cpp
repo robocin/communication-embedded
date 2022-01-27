@@ -227,6 +227,20 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
   return answer;
 }
 
+bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
+{
+
+  this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
+  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetryVSS.decoded.leftSpeed = static_cast<uint8_t>(telemetry.m1 * 100);
+  this->_mTelemetryVSS.decoded.rightSpeed = static_cast<uint8_t>(telemetry.m2 * 100);
+  this->_mTelemetryVSS.decoded.flags = static_cast<uint8_t>(telemetry.battery * 10);
+  this->enable();
+  bool answer = this->_radio.write(this->_mTelemetry.encoded, VSS_TELEMETRY_LENGTH);
+  this->disable();
+  return answer;
+}
+
 bool nRF24Communication::sendOdometryPacket(RobotInfo odometry)
 {
   this->_mOdometry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
