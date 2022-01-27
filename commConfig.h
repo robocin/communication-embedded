@@ -32,12 +32,13 @@
 
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_SPEED_LENGTH 4
+#define VSS_TELEMETRY_LENGTH 4
 
-#define SSL_PAYLOAD_LENGTH 15
-#define SSL_SPEED_LENGTH 12
-#define POSITION_LENGTH 9
-#define TELEMETRY_LENGTH 13
-#define ODOMETRY_LENGTH 11
+#define SSL_PAYLOAD_LENGTH 20 //15 //
+#define SSL_SPEED_LENGTH 20   //12 //
+#define POSITION_LENGTH 20    // 9 //
+#define TELEMETRY_LENGTH 20   //13 //
+#define ODOMETRY_LENGTH 20    //11 //
 
 #pragma pack (push, 1)
 
@@ -47,7 +48,7 @@ enum class msgType
   BST_CONFIG,
   VSS_SPEED,
   SSL_SPEED,
-  TELEMTRY,
+  TELEMETRY,
   ODOMETRY,
   POSITION
 };
@@ -145,6 +146,7 @@ typedef struct
   uint8_t dribbler : 1;
   uint8_t speed : 8;
   uint8_t command : 8;
+  uint64_t free_1 : 64;
 
 } packetTypeSpeedSSL;
 
@@ -166,12 +168,21 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;
-  int16_t y : 16;
-  int16_t w : 16;
-  uint16_t speed : 13;
+  int16_t x : 16; // -32.767 - 32.767 m
+  int16_t y : 16; // -32.767 - 32.767 m
+  int16_t w : 16; // 0 - 6.5535 rad
+  uint16_t maxSpeed : 13; // 0 - 81.91 m/s
+  uint16_t minSpeed : 13; // 0 - 8.191 m/s
   uint8_t positionType : 3;
-
+  // Kick Options
+  uint8_t front : 1;
+  uint8_t chip : 1;
+  uint8_t charge : 1;
+  uint8_t strength : 8;
+  uint8_t dribbler : 1;
+  uint8_t speed : 8;
+  uint8_t command : 8;
+  uint64_t free_1 : 60;
 } packetTypePosition;
 
 typedef union packetPosition
@@ -184,14 +195,15 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t m1 : 16;
-  int16_t m2 : 16;
-  int16_t m3 : 16;
-  int16_t m4 : 16;
-  int16_t dribbler : 15;
-  uint8_t kickLoad : 8;
+  int16_t m1 : 16; // -327.67 - 327.67 m/s
+  int16_t m2 : 16; // -327.67 - 327.67 m/s
+  int16_t m3 : 16; // -327.67 - 327.67 m/s
+  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  int16_t dribbler : 15;  // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8;
+  uint8_t battery : 8; // 0 - 25.5 V
+  uint64_t free_1 : 56;
 
 } packetTypeTelemetry;
 
@@ -199,6 +211,21 @@ typedef union packetTelemetry {
   unsigned char encoded[TELEMETRY_LENGTH];
   packetTypeTelemetry decoded;
 } packetTelemetry;
+
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  int8_t leftSpeed : 8;
+  int8_t rightSpeed : 8;
+  uint8_t flags : 8;
+
+} packetTypeVSSTelemetry;
+
+typedef union packetVSSTelemetry {
+  unsigned char encoded[VSS_TELEMETRY_LENGTH];
+  packetTypeVSSTelemetry decoded;
+} packetVSSTelemetry;
 
 /*
   * Structure for send robot basic status and position,
@@ -215,13 +242,18 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;
-  int16_t y : 16;
-  int16_t w : 16;
-  int16_t dribbler : 15;
-  uint8_t kickLoad : 8;
+  int16_t x : 16; // -32.767 - 32.767 m
+  int16_t y : 16; // -32.767 - 32.767 m
+  int16_t w : 16; // 0 - 6.5535 rad
+  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8;
+  uint8_t battery : 8; // 0 - 25.5 V
+  int16_t m1 : 16; // -327.67 - 327.67 m/s
+  int16_t m2 : 16; // -327.67 - 327.67 m/s
+  int16_t m3 : 16; // -327.67 - 327.67 m/s
+  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  uint8_t free_1 : 8;
 
 } packetTypeOdometry;
 

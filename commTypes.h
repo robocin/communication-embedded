@@ -32,7 +32,7 @@ enum class PositionType
 {
   unknown = 0,
   source,
-  destiny
+  target
 };
 
 typedef struct
@@ -60,6 +60,19 @@ typedef struct Vector
   double x = 0;
   double y = 0;
   double w = 0;
+
+  Vector()
+  {
+    x = 0;
+    y = 0;
+    w = 0;
+  }
+
+  Vector(double _x, double _y, double _w){
+    x = _x;
+    y = _y;
+    w = _w;
+  }
 
   inline Vector operator+(Vector a)
   {
@@ -116,8 +129,8 @@ typedef struct RobotPosition
 {
   Vector v;
   PositionType type;
+  double minSpeed;
   double maxSpeed;
-
 } RobotPosition;
 
 typedef struct
@@ -131,5 +144,14 @@ typedef struct
   bool ball = false;
   double battery = 0;
 } RobotInfo;
+
+typedef struct
+{
+    int id = -1;
+    msgType type;
+    double m1;
+    double m2;
+    double battery = 0;
+} VSSRobotInfo;
 
 #endif // COMM_TYPES_H
