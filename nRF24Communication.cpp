@@ -211,7 +211,7 @@ msgType nRF24Communication::updatePacket()
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
 {
 
-  this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMTRY);
+  this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mTelemetry.decoded.m1 = static_cast<uint8_t>(telemetry.m.m1 * 100);
   this->_mTelemetry.decoded.m2 = static_cast<uint8_t>(telemetry.m.m2 * 100);
@@ -231,7 +231,7 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
 {
 
   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
-  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(telemetry.id);
   this->_mTelemetryVSS.decoded.leftSpeed = static_cast<uint8_t>(telemetry.m1 * 100);
   this->_mTelemetryVSS.decoded.rightSpeed = static_cast<uint8_t>(telemetry.m2 * 100);
   this->_mTelemetryVSS.decoded.flags = static_cast<uint8_t>(telemetry.battery * 10);
