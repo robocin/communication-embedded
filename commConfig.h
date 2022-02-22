@@ -213,13 +213,21 @@ typedef union packetTelemetry {
   packetTypeTelemetry decoded;
 } packetTelemetry;
 
+/**
+ * Structure for sending speeds to bi-directional robot,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - The left and right motor speeds
+ *  - One byte of free for optional flags.
+ */
 typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int8_t leftSpeed : 8;
-  int8_t rightSpeed : 8;
-  uint8_t flags : 8;
+  int8_t  m1 : 8;   // Left   // -25.5 - 25.5 m/s
+  int8_t  m2 : 8;   // Rigth  // -25.5 - 25.5 m/s
+  uint8_t battery : 7;  // 0 - 12.8 V
 
 } packetTypeVSSTelemetry;
 
