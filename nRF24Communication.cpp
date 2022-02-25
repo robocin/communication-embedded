@@ -46,8 +46,8 @@ void nRF24Communication::_network(NetworkType network)
   else if (network == NetworkType::vss)
   {
     this->_config.payload = VSS_PAYLOAD_LENGTH;
-    this->_config.receiveChannel = VSS_CHANNEL;
-    this->_config.sendChannel = VSS_CHANNEL; // Future Telemetry
+    this->_config.receiveChannel = VSS_RECV_CHANNEL;
+    this->_config.sendChannel = VSS_SEND_CHANNEL; // Future Telemetry
 
     this->_config.addr[0] = VSS_ADDR_1;
     this->_config.addr[1] = VSS_ADDR_2;
@@ -234,7 +234,7 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(telemetry.id);
   this->_mTelemetryVSS.decoded.m1 = static_cast<int8_t>(telemetry.m1 * 10);
   this->_mTelemetryVSS.decoded.m2 = static_cast<int8_t>(telemetry.m2 * 10);
-  this->_mTelemetryVSS.decoded.flags = static_cast<uint8_t>(telemetry.battery * 10);
+  this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
   this->disable();
