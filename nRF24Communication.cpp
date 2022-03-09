@@ -46,8 +46,8 @@ void nRF24Communication::_network(NetworkType network)
   else if (network == NetworkType::vss)
   {
     this->_config.payload = VSS_PAYLOAD_LENGTH;
-    this->_config.receiveChannel = VSS_RECV_CHANNEL;
-    this->_config.sendChannel = VSS_SEND_CHANNEL; // Future Telemetry
+    this->_config.receiveChannel = VSS_ROBOT_RECV_CHANNEL;
+    this->_config.sendChannel = VSS_ROBOT_SEND_CHANNEL;
 
     this->_config.addr[0] = VSS_ADDR_1;
     this->_config.addr[1] = VSS_ADDR_2;
