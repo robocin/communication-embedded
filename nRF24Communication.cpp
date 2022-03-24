@@ -149,13 +149,12 @@ void nRF24Communication::printDetails()
 }
 
 msgType nRF24Communication::updatePacket()
-{
+{ 
   this->enable();
-
   if (this->_radio.getPALevel() == RF24_PA_MAX)
   {
     while (this->_radio.available(&(_config.pipeNum)))
-    {
+    { 
       this->_radio.read(&(this->_rx.encoded), _config.payload);
       //this->showBitsReceived(_config.payload);
       // Save the message type
@@ -163,7 +162,6 @@ msgType nRF24Communication::updatePacket()
 
       if (this->_rx.decoded.id == this->_robotId)
       {
-
         // According to the type of message assign variables
         if (this->_typeMsg == msgType::VSS_SPEED)
         {
@@ -226,6 +224,70 @@ msgType nRF24Communication::updatePacket()
   }
   this->disable();
   return msgType::NONE;
+}
+
+/******************** ETHERNET RECEIVER ********************/
+msgType nRF24Communication::updateEthernetPacket()
+{
+  if (this->_radio.available(&(_config.pipeNum)))
+  { 
+    // substitui a leitura do NRF por uma cópia do buffer recebido por ethernet
+    std::memcpy(this->_rx.encoded, this->_public_rx.encoded, SSL_SPEED_LENGTH);
+    // Save the message type
+    this->_typeMsg = static_cast<msgType>(_rx.decoded.typeMsg);
+    printf("%d", this->_rx.decoded.id);
+    if (this->_rx.decoded.id == static_cast<uint8_t>(this->_robotId))
+    {
+      printf("id bateu");
+      // According to the type of message assign variables
+      if (this->_typeMsg == msgType::VSS_SPEED)
+      {
+        // VSS
+        this->clearVSSData();
+        std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_SPEED_LENGTH); //require std::, eventual error in copy
+        this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
+        this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
+        this->_motorSpeed.m2 = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
+      }
+      else if (this->_typeMsg == msgType::SSL_SPEED)
+      {
+        printf("type msg bateu");
+        // SSL
+        this->clearSSLData();
+        std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
+        this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
+        this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
+        this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
+        printf("vw = %f", this->_v.w);
+        this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
+        this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
+        this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
+        this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
+        this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
+        this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribSpeed) / 10.0);
+      }
+      else if (this->_typeMsg == msgType::POSITION)
+      {
+        // POSITION
+        this->clearSSLData();
+        std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
+        this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
+        this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
+        this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
+        this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
+        this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 100.0);
+        this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+        this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
+        this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
+        this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
+        this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.kickStrength) / 10.0);
+        this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
+        this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribSpeed) / 10.0);
+      }
+      this->disable();
+      return this->_typeMsg;
+    }
+  }
 }
 
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)

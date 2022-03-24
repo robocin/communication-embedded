@@ -6,6 +6,7 @@
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
 #include <commConfig.h>
 #include <commTypes.h>
+#include <EthernetInterface.h>
 
 class nRF24Communication
 {
@@ -24,6 +25,7 @@ public:
   void printDetails();
 
   msgType updatePacket();
+  msgType updateEthernetPacket();
   int getTypeOfMessage();
   void showBitsReceived(int payload);
   void enable();
@@ -45,6 +47,9 @@ public:
   float getKP();
   float getKD();
   float getAlpha();
+
+  /******** CREATED PUBLIC RX FOR ETHERNET CONFIG ***********/
+  packetGeneric _public_rx;
 
 private:
   RF24 _radio;
