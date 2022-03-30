@@ -290,6 +290,24 @@ msgType nRF24Communication::updateEthernetPacket()
   }
 }
 
+/******************** ETHERNET RECEIVER ********************/
+/*
+msgType nRF24Communication::updateEthernetPacket(protoSpeedSSL protoMessage){
+  // Save the message type
+  this->_typeMsg = msgType::SSL_SPEED;
+  this->clearSSLData();
+  this->_v.x = protoMessage.vx;
+  this->_v.y = protoMessage.vy;
+  this->_v.w = protoMessage.vw;
+  this->_kick.front = protoMessage.front;
+  this->_kick.chip = protoMessage.chip;
+  this->_kick.charge = protoMessage.charge;
+  this->_kick.kickStrength = protoMessage.kickStrength;
+  this->_kick.dribbler = protoMessage.dribbler;
+  this->_kick.dribblerSpeed = protoMessage.dribSpeed;
+  return this->_typeMsg;
+}*/
+
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
 {
 

@@ -7,6 +7,7 @@
 #include <commConfig.h>
 #include <commTypes.h>
 #include <EthernetInterface.h>
+//#include <CommTypes.pb.h>
 
 class nRF24Communication
 {
@@ -26,6 +27,7 @@ public:
 
   msgType updatePacket();
   msgType updateEthernetPacket();
+  //msgType updateEthernetPacket(protoSpeedSSL protoMessage);
   int getTypeOfMessage();
   void showBitsReceived(int payload);
   void enable();
