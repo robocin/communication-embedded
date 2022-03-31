@@ -290,23 +290,24 @@ msgType nRF24Communication::updateEthernetPacket()
   }
 }
 
-/******************** ETHERNET RECEIVER ********************/
-/*
-msgType nRF24Communication::updateEthernetPacket(protoSpeedSSL protoMessage){
+/******************** ETHERNET UPDATE ********************/
+msgType nRF24Communication::updatePacket(double vx, double vy, double vw, bool charge, bool chip, bool front, double kickStrength, bool dribbler, double dribblerSpeed){
   // Save the message type
-  this->_typeMsg = msgType::SSL_SPEED;
   this->clearSSLData();
-  this->_v.x = protoMessage.vx;
-  this->_v.y = protoMessage.vy;
-  this->_v.w = protoMessage.vw;
-  this->_kick.front = protoMessage.front;
-  this->_kick.chip = protoMessage.chip;
-  this->_kick.charge = protoMessage.charge;
-  this->_kick.kickStrength = protoMessage.kickStrength;
-  this->_kick.dribbler = protoMessage.dribbler;
-  this->_kick.dribblerSpeed = protoMessage.dribSpeed;
+
+  this->_typeMsg = msgType::SSL_SPEED;
+  this->_v.x = vx;
+  this->_v.y = vy;
+  this->_v.w = vw;
+  this->_kick.front = front;
+  this->_kick.chip = chip;
+  this->_kick.charge = charge;
+  this->_kick.kickStrength = kickStrength;
+  this->_kick.dribbler = dribbler;
+  this->_kick.dribblerSpeed = dribblerSpeed;
+  printf("velocity %f %f %f, charge %d, chip %d, front %d, force %f, dribbler %d, dribblerSpeed %f \n", vx, vy, vw, charge,chip,front, kickStrength, dribbler, dribblerSpeed);
   return this->_typeMsg;
-}*/
+}
 
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
 {
@@ -394,6 +395,7 @@ void nRF24Communication::getKick(KickFlags &isKick)
   isKick.bypassIR = (_kick.front | _kick.chip) & _kick.charge;
   isKick.dribbler = _kick.dribbler;
   isKick.dribblerSpeed = _kick.dribblerSpeed;
+  printf("charge %d, chip %d, front %d, force %f, dribbler %d, dribblerSpeed %f \n",isKick.charge, isKick.chip,isKick.front,isKick.kickStrength,isKick.dribbler,isKick.dribblerSpeed );
 }
 
 void nRF24Communication::showBitsReceived(int payload){
