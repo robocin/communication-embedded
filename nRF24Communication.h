@@ -8,6 +8,10 @@
 #include <commTypes.h>
 #include <EthernetInterface.h>
 
+#include <CommTypes.pb.h>
+#include <pb_decode.h>
+#include <pb_encode.h>
+
 class nRF24Communication
 {
 public:
@@ -23,6 +27,7 @@ public:
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
+  void setEthConnection(uint8_t *rcvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage);
 
   msgType updatePacket();
   msgType updateEthernetPacket();

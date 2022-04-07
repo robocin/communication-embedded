@@ -1,4 +1,3 @@
-
 #include "nRF24Communication.h"
 
 nRF24Communication::nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN, PinName pinVCC, NetworkType network, RadioFunction function)
@@ -291,6 +290,17 @@ msgType nRF24Communication::updateEthernetPacket()
 }
 
 /******************** ETHERNET UPDATE ********************/
+  void nRF24Communication::setEthConnection(uint8_t *recvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage){
+  printf("entrou");
+  std::memset(recvBuf,0, sizeBuf);
+  uint16_t bufLen = (*socket).recvfrom(recvAddr, recvBuf, sizeBuf);
+  pb_istream_t recvStream = pb_istream_from_buffer(recvBuf, bufLen);
+
+  if(pb_decode(&recvStream, &protoSpeedSSL_msg, &protoMessage)){
+    msgType recvType = this->updatePacket(protoMessage.vx, protoMessage.vy, protoMessage.vw, protoMessage.charge,protoMessage.chip,protoMessage.front, protoMessage.kickStrength, protoMessage.dribbler, protoMessage.dribSpeed);
+  }
+}
+
 msgType nRF24Communication::updatePacket(double vx, double vy, double vw, bool charge, bool chip, bool front, double kickStrength, bool dribbler, double dribblerSpeed){
   // Save the message type
   this->clearSSLData();
