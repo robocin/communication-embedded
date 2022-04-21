@@ -7,6 +7,7 @@
 #include <commConfig.h>
 #include <commTypes.h>
 #include <EthernetInterface.h>
+#include <iostream>
 
 #include <CommTypes.pb.h>
 #include <pb_decode.h>
@@ -27,11 +28,11 @@ public:
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
-  void setEthConnection(uint8_t *rcvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage);
+  //void setEthConnection(uint8_t *rcvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage);
 
   msgType updatePacket();
   msgType updateEthernetPacket();
-  msgType updatePacket(double vx, double vy, double vw, bool charge, bool chip, bool front, double kickStrength, bool dribbler, double dribblerSpeed);
+  msgType updatePacket(protoPositionSSL protoMessage);
   int getTypeOfMessage();
   void showBitsReceived(int payload);
   void enable();

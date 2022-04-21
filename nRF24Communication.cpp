@@ -290,7 +290,8 @@ msgType nRF24Communication::updateEthernetPacket()
 }
 
 /******************** ETHERNET UPDATE ********************/
-  void nRF24Communication::setEthConnection(uint8_t *recvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage){
+/*
+void nRF24Communication::setEthConnection(uint8_t *recvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage){
   printf("entrou");
   std::memset(recvBuf,0, sizeBuf);
   uint16_t bufLen = (*socket).recvfrom(recvAddr, recvBuf, sizeBuf);
@@ -298,24 +299,19 @@ msgType nRF24Communication::updateEthernetPacket()
 
   if(pb_decode(&recvStream, &protoSpeedSSL_msg, &protoMessage)){
     msgType recvType = this->updatePacket(protoMessage.vx, protoMessage.vy, protoMessage.vw, protoMessage.charge,protoMessage.chip,protoMessage.front, protoMessage.kickStrength, protoMessage.dribbler, protoMessage.dribSpeed);
-  }
-}
+    }
+} 
+*/
 
-msgType nRF24Communication::updatePacket(double vx, double vy, double vw, bool charge, bool chip, bool front, double kickStrength, bool dribbler, double dribblerSpeed){
+msgType nRF24Communication::updatePacket(protoPositionSSL protomessage){
   // Save the message type
   this->clearSSLData();
 
-  this->_typeMsg = msgType::SSL_SPEED;
-  this->_v.x = vx;
-  this->_v.y = vy;
-  this->_v.w = vw;
-  this->_kick.front = front;
-  this->_kick.chip = chip;
-  this->_kick.charge = charge;
-  this->_kick.kickStrength = kickStrength;
-  this->_kick.dribbler = dribbler;
-  this->_kick.dribblerSpeed = dribblerSpeed;
-  printf("velocity %f %f %f, charge %d, chip %d, front %d, force %f, dribbler %d, dribblerSpeed %f \n", vx, vy, vw, charge,chip,front, kickStrength, dribbler, dribblerSpeed);
+  this->_typeMsg = msgType::POSITION;
+  this->_pos.v.x = protomessage.x;
+  this->_pos.v.y = protomessage.y;
+  this->_pos.v.w = protomessage.w;
+  this->_pos.type = static_cast<PositionType>(protomessage.posType);
   return this->_typeMsg;
 }
 
