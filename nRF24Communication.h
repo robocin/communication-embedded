@@ -28,10 +28,8 @@ public:
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
-  //void setEthConnection(uint8_t *rcvBuf, UDPSocket *socket, SocketAddress *recvAddr, size_t sizeBuf, protoSpeedSSL protoMessage);
 
   msgType updatePacket();
-  msgType updateEthernetPacket();
   msgType updatePacket(protoPositionSSL protoMessage);
   int getTypeOfMessage();
   void showBitsReceived(int payload);
@@ -44,6 +42,7 @@ public:
 
   // SSL Info
   void getVectorSpeed(Vector &mSpeed);
+  bool getState();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
   void clearSSLData();
@@ -81,6 +80,7 @@ private:
   msgType _typeMsg;
   Motors _motorSpeed;
   int _flags;
+  bool _halt;
   Vector _v;
   KickFlags _kick;
   RobotPosition _pos;
