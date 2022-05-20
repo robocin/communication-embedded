@@ -232,8 +232,8 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
 
   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(telemetry.id);
-  this->_mTelemetryVSS.decoded.m1 = static_cast<int8_t>(telemetry.m1 * 10);
-  this->_mTelemetryVSS.decoded.m2 = static_cast<int8_t>(telemetry.m2 * 10);
+  this->_mTelemetryVSS.decoded.m1 = static_cast<int8_t>(telemetry.m1);
+  this->_mTelemetryVSS.decoded.m2 = static_cast<int8_t>(telemetry.m2);
   this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
