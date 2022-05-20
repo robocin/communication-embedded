@@ -149,8 +149,8 @@ typedef struct
 {
     int id = -1;
     msgType type;
-    double m1;
-    double m2;
+    int8_t m1;
+    int8_t m2;
     double battery = 0;
 } VSSRobotInfo;
 
