@@ -185,8 +185,6 @@ msgType nRF24Communication::updatePacket()
           this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
-          this->_kick.bypassIR = static_cast<bool>(this->_mSSL.decoded.bypassIR);
-          this->_kick.waitMaxCharge = static_cast<bool>(this->_mSSL.decoded.waitMaxCharge);
           this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
@@ -296,7 +294,6 @@ void nRF24Communication::clearSSLData()
   this->_kick.chip = false;
   this->_kick.charge = false;
   this->_kick.bypassIR = false;
-  this->_kick.waitMaxCharge = false;
   this->_kick.kickStrength = 0;
   this->_kick.dribbler = false;
   this->_kick.dribblerSpeed = 0;
@@ -314,8 +311,7 @@ void nRF24Communication::getKick(KickFlags &isKick)
   isKick.charge = _kick.charge;
   isKick.kickStrength = _kick.kickStrength;
   isKick.dribbler = _kick.dribbler;
-  isKick.bypassIR = _kick.bypassIR;
-  isKick.waitMaxCharge = _kick.waitMaxCharge;
+  isKick.bypassIR = (_kick.front | _kick.chip) & _kick.charge;
   isKick.dribbler = _kick.dribbler;
   isKick.dribblerSpeed = _kick.dribblerSpeed;
 }

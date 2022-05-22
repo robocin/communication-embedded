@@ -132,7 +132,6 @@ typedef struct KickFlags
   bool ball = false;
   bool dribbler = false;
   bool bypassIR = false;
-  bool waitMaxCharge = false;
   float dribblerSpeed = 0;
 
   KickFlags &operator=(const KickFlags &a)
@@ -144,7 +143,6 @@ typedef struct KickFlags
     ball = a.ball;
     dribbler = a.dribbler;
     bypassIR = a.bypassIR;
-    waitMaxCharge = a.waitMaxCharge;
     dribblerSpeed = a.dribblerSpeed;
     return *this;
   }
