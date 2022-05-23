@@ -176,17 +176,10 @@ msgType nRF24Communication::updatePacket()
           // SSL
           this->clearSSLData();
           std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
-          this->_halt = static_cast<bool>(this->_mSSL.decoded.command);
-          if (_halt){
-            this->_v.x = 0;
-            this->_v.y = 0;
-            this->_v.w = 0;
-          }
-          else{
-            this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
-            this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
-            this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
-          }
+          this->_gameState = static_cast<Command>(this->_mSSL.decoded.command);
+          this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
+          this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
+          this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
           this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
@@ -297,9 +290,11 @@ void nRF24Communication::clearVSSData()
   this->_motorSpeed.m1 = 0;
   this->_motorSpeed.m2 = 0;
 }
-bool nRF24Communication::getState(){
-  return this->_halt;
+
+Command nRF24Communication::getGameState(){
+  return this->_gameState;
 }
+
 void nRF24Communication::getVectorSpeed(Vector &mSpeed)
 {
   mSpeed = this->_v;

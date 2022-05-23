@@ -42,12 +42,12 @@ public:
 
   // SSL Info
   void getVectorSpeed(Vector &mSpeed);
-  bool getState();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
   void clearSSLData();
   void getKick(KickFlags &isKick);
   void getPosition(RobotPosition &pos);
+  Command getGameState();
 
   // Aux Info
   float getKP();
@@ -78,9 +78,9 @@ private:
   NetworkConfig _config;
   char _robotId;
   msgType _typeMsg;
+  Command _gameState;
   Motors _motorSpeed;
   int _flags;
-  bool _halt;
   Vector _v;
   KickFlags _kick;
   RobotPosition _pos;

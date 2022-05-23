@@ -33,9 +33,20 @@ enum class PositionType
   unknown = 0,
   source,
   target,
-  motionControl,
+  dock,
   rotateControl,
-  rotateInPoint
+  rotateInPoint,
+  rotateOnSelf,
+  stop
+};
+
+enum class Command
+{
+  unknown = 0,
+  halt,
+  stop,
+  forceStart,
+  normalStart
 };
 
 typedef struct
