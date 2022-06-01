@@ -157,6 +157,7 @@ msgType nRF24Communication::updatePacket()
     while (this->_radio.available(&(_config.pipeNum)))
     {
       this->_radio.read(&(this->_rx.encoded), _config.payload);
+      //this->showBitsReceived(_config.payload);
       // Save the message type
       this->_typeMsg = static_cast<msgType>(this->_rx.decoded.typeMsg);
 
@@ -186,7 +187,7 @@ msgType nRF24Communication::updatePacket()
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
           this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
-          this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribSpeed) / 10.0);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
         }
         else if (this->_typeMsg == msgType::POSITION)
         {
@@ -292,6 +293,7 @@ void nRF24Communication::clearSSLData()
   this->_kick.front = false;
   this->_kick.chip = false;
   this->_kick.charge = false;
+  this->_kick.bypassIR = false;
   this->_kick.kickStrength = 0;
   this->_kick.dribbler = false;
   this->_kick.dribblerSpeed = 0;
@@ -309,7 +311,28 @@ void nRF24Communication::getKick(KickFlags &isKick)
   isKick.charge = _kick.charge;
   isKick.kickStrength = _kick.kickStrength;
   isKick.dribbler = _kick.dribbler;
+  isKick.bypassIR = (_kick.front | _kick.chip) & _kick.charge;
+  isKick.dribbler = _kick.dribbler;
   isKick.dribblerSpeed = _kick.dribblerSpeed;
+}
+
+void nRF24Communication::showBitsReceived(int payload){
+  // A sequencia de campos segue o da declaracao da estrutura em commConfig.h, mas os bits estao
+  // em little endian
+  for (int i = 0; i < payload; i++) {
+    int val = this->_rx.encoded[i];
+    int mask = 1;
+    for(int j = 0; j < 8; j++){
+      if(mask & val){
+        printf("1");
+      }else{
+        printf("0");
+      }
+      mask = mask<<1;
+    }
+    printf("|");
+  }
+  printf("\n");
 }
 
 float nRF24Communication::getKP()

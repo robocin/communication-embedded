@@ -25,6 +25,7 @@ public:
 
   msgType updatePacket();
   int getTypeOfMessage();
+  void showBitsReceived(int payload);
   void enable();
   void disable();
 

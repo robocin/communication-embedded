@@ -143,9 +143,9 @@ typedef struct
   uint8_t charge : 1;
   uint8_t kickStrength : 8;
   uint8_t dribbler : 1;
-  uint8_t dribSpeed : 8;
+  int16_t dribblerSpeed : 11;
   uint8_t command : 8;
-  uint64_t free_1 : 64;
+  uint64_t free_1 : 61;
 
 } packetTypeSpeedSSL;
 
