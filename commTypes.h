@@ -166,6 +166,7 @@ typedef struct
   double kickLoad = 0;
   bool ball = false;
   double battery = 0;
+  uint8_t count = 0;
 } RobotInfo;
 
 #endif // COMM_TYPES_H
