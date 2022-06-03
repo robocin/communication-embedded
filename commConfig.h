@@ -205,7 +205,7 @@ typedef struct
   int16_t m2 : 16; // -327.67 - 327.67 m/s
   int16_t m3 : 16; // -327.67 - 327.67 m/s
   int16_t m4 : 16; // -327.67 - 327.67 m/s
-  uint8_t packtCount : 8;
+  uint8_t pcktCount : 8;
 
 } packetTypeTelemetry;
 
@@ -240,7 +240,7 @@ typedef struct
   int16_t m2 : 16; // -327.67 - 327.67 m/s
   int16_t m3 : 16; // -327.67 - 327.67 m/s
   int16_t m4 : 16; // -327.67 - 327.67 m/s
-  uint8_t packtCount : 8;
+  uint8_t pcktCount : 8;
 
 } packetTypeOdometry;
 
