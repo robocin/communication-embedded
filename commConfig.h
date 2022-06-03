@@ -194,15 +194,18 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t m1 : 16; // -327.67 - 327.67 m/s
-  int16_t m2 : 16; // -327.67 - 327.67 m/s
-  int16_t m3 : 16; // -327.67 - 327.67 m/s
-  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  int16_t x : 16; // -32.767 - 32.767 m/s
+  int16_t y : 16; // -32.767 - 32.767 m/s
+  int16_t w : 16; // 0 - 6.5535 rad/s
   int16_t dribbler : 15;  // -1638.3 - 1638.3 rad/s
   uint8_t kickLoad : 8; // 0 - 2.55
   bool ball : 1;
   uint8_t battery : 8; // 0 - 25.5 V
-  uint64_t free_1 : 56;
+  int16_t m1 : 16; // -327.67 - 327.67 m/s
+  int16_t m2 : 16; // -327.67 - 327.67 m/s
+  int16_t m3 : 16; // -327.67 - 327.67 m/s
+  int16_t m4 : 16; // -327.67 - 327.67 m/s
+  uint8_t packtCount : 8;
 
 } packetTypeTelemetry;
 
@@ -237,7 +240,7 @@ typedef struct
   int16_t m2 : 16; // -327.67 - 327.67 m/s
   int16_t m3 : 16; // -327.67 - 327.67 m/s
   int16_t m4 : 16; // -327.67 - 327.67 m/s
-  uint8_t free_1 : 8;
+  uint8_t packtCount : 8;
 
 } packetTypeOdometry;
 
