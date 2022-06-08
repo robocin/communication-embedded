@@ -1,5 +1,6 @@
 
 #include "nRF24Communication.h"
+#include "commTypes.h"
 
 nRF24Communication::nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN, PinName pinVCC, NetworkType network, RadioFunction function)
     : _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE), _vcc(pinVCC)
@@ -197,14 +198,17 @@ msgType nRF24Communication::updatePacket()
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
           this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
           this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
-          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 100.0);
+          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 1000.0);
+          this->_pos.rotateKp = static_cast<double>((this->_mPostion.decoded.rotateKp) / 100.0);
+          this->_pos.usingPropSpeed = static_cast<bool>(this->_mPostion.decoded.usingPropSpeed);
+          this->_pos.minDistanceToPropSpeed = static_cast<double>((this->_mPostion.decoded.minDistanceToPropSpeed) / 1000.0);
           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
           this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
-          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribSpeed) / 10.0);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribblerSpeed) / 10.0);
         }
         else
         {
@@ -295,6 +299,15 @@ void nRF24Communication::clearSSLData()
   this->_v.x = 0;
   this->_v.y = 0;
   this->_v.w = 0;
+
+  this->_pos.v = Vector();
+  this->_pos.type = PositionType::unknown;
+  this->_pos.maxSpeed = 0;
+  this->_pos.minSpeed = 0;  
+  this->_pos.rotateKp = 0;
+  this->_pos.usingPropSpeed = false;
+  this->_pos.minDistanceToPropSpeed = 0;
+
   this->_kick.front = false;
   this->_kick.chip = false;
   this->_kick.charge = false;

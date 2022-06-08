@@ -154,6 +154,9 @@ typedef struct RobotPosition
   PositionType type;
   double minSpeed;
   double maxSpeed;
+  double rotateKp;
+  bool usingPropSpeed;
+  double minDistanceToPropSpeed;
 } RobotPosition;
 
 typedef struct
