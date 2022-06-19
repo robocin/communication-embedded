@@ -194,19 +194,25 @@ msgType nRF24Communication::updatePacket()
         {
           this->clearSSLData();
           std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
+           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+
           this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
           this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
-          this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
+
           this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 1000.0);
+          this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
           this->_pos.rotateKp = static_cast<double>((this->_mPostion.decoded.rotateKp) / 100.0);
           this->_pos.usingPropSpeed = static_cast<bool>(this->_mPostion.decoded.usingPropSpeed);
           this->_pos.minDistanceToPropSpeed = static_cast<double>((this->_mPostion.decoded.minDistanceToPropSpeed) / 1000.0);
-          this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+          this->_pos.rotateInClockWise = static_cast<bool>(this->_mPostion.decoded.clockwise);
+          this->_pos.orbitRadius = static_cast<double>((this->_mPostion.decoded.orbitRadius) / 1000.0);
+          this->_pos.approachKp = static_cast<double>((this->_mPostion.decoded.approachKp) / 100.0);
+
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
-          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.kickStrength) / 10.0);
+          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.strength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribblerSpeed) / 10.0);
         }
@@ -307,6 +313,9 @@ void nRF24Communication::clearSSLData()
   this->_pos.rotateKp = 0;
   this->_pos.usingPropSpeed = false;
   this->_pos.minDistanceToPropSpeed = 0;
+  this->_pos.rotateInClockWise = false;
+  this->_pos.orbitRadius = 0;
+  this->_pos.approachKp = 0;
 
   this->_kick.front = false;
   this->_kick.chip = false;

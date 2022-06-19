@@ -151,12 +151,15 @@ typedef struct KickFlags
 typedef struct RobotPosition
 {
   Vector v;
-  PositionType type;
-  double minSpeed;
-  double maxSpeed;
-  double rotateKp;
-  bool usingPropSpeed;
-  double minDistanceToPropSpeed;
+  PositionType type = PositionType::unknown;
+  double maxSpeed{};
+  double minSpeed{};
+  double rotateKp{};
+  bool usingPropSpeed{};
+  double minDistanceToPropSpeed{};
+  bool rotateInClockWise{};
+  double orbitRadius{};
+  double approachKp{};
 } RobotPosition;
 
 typedef struct
