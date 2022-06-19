@@ -171,21 +171,24 @@ typedef struct
   int16_t x : 16; // -32.767 - 32.767 m
   int16_t y : 16; // -32.767 - 32.767 m
   int16_t w : 16; // 0 - 6.5535 rad
-  uint16_t maxSpeed : 13; // 0 - 8.191 m/s
-  uint16_t minSpeed : 13; // 0 - 8.191 m/s
-  uint16_t rotateKp : 10; // 0 - 10.23 m/s
+  // motion parameters
+  uint16_t maxSpeed : 12; // 0 - 4.095 m/s
+  uint16_t minSpeed : 12; // 0 - 4.095 m/s
+  uint16_t rotateKp : 10; // 0 - 10.23
   uint8_t usingPropSpeed : 1;
-  uint16_t minDistanceToPropSpeed : 13; // 0 - 8.191 m
+  uint16_t minDistanceToPropSpeed : 12; // 0 - 4.095 m
+  uint8_t clockwise : 1;
+  uint16_t orbitRadius : 12; // 0 - 4.095 m
+  uint16_t approachKp : 10;  // 0 - 10.23
   uint8_t positionType : 3;
   // Kick Options
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
-  uint8_t kickStrength : 8;
+  uint8_t strength : 8;
   uint8_t dribbler : 1;
   int16_t dribblerSpeed : 11;
   uint8_t command : 8;
-  uint64_t free_1 : 34;
 } packetTypePosition;
 
 typedef union packetPosition
