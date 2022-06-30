@@ -234,6 +234,7 @@ msgType nRF24Communication::updatePacket(protoPositionSSL protomessage){
   this->_pos.v.x = protomessage.x;
   this->_pos.v.y = protomessage.y;
   this->_pos.v.w = protomessage.w;
+  this->_pos.resetOdometry = protomessage.resetOdometry;
   this->_pos.type = static_cast<PositionType>(protomessage.posType);
   this->_kick.front = static_cast<bool>(protomessage.front);
   this->_kick.chip = static_cast<bool>(protomessage.chip);
@@ -241,6 +242,7 @@ msgType nRF24Communication::updatePacket(protoPositionSSL protomessage){
   this->_kick.kickStrength = protomessage.kickStrength/10;
   this->_kick.dribbler = static_cast<bool>(protomessage.dribbler);
   this->_kick.dribblerSpeed = protomessage.dribSpeed/10;
+
   return this->_typeMsg;
 }
 

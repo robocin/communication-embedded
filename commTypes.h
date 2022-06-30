@@ -165,6 +165,7 @@ typedef struct RobotPosition
   PositionType type;
   double minSpeed;
   double maxSpeed;
+  bool resetOdometry;
 } RobotPosition;
 
 typedef struct
