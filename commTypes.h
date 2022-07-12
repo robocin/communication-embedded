@@ -42,11 +42,9 @@ enum class PositionType
 
 enum class Command
 {
-  unknown = 0,
-  halt,
-  stop,
-  forceStart,
-  normalStart
+  halt = 0,
+  stop = 4,
+  forceStart = 11
 };
 
 typedef struct
