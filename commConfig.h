@@ -8,10 +8,10 @@
 
 // NRF Config Defitions
 #define SSL_1_BASE_SEND_CH 125
-#define SSL_2_BASE_RECV_CH 115
+#define SSL_2_BASE_RECV_CH 5
 
 #define SSL_1_ROBOT_RECV_CH 125
-#define SSL_2_ROBOT_SEND_CH 115
+#define SSL_2_ROBOT_SEND_CH 5
 
 #define SSL_ADDR_1 0xABAAADA99ALL
 #define SSL_ADDR_2 0xADAADC9A4BLL
