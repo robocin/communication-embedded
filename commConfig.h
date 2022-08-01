@@ -7,10 +7,10 @@
 #include <stdint.h>
 
 // NRF Config Defitions
-#define SSL_1_BASE_SEND_CH 125
+#define SSL_1_BASE_SEND_CH 103
 #define SSL_2_BASE_RECV_CH 115
 
-#define SSL_1_ROBOT_RECV_CH 125
+#define SSL_1_ROBOT_RECV_CH 103
 #define SSL_2_ROBOT_SEND_CH 115
 
 #define SSL_ADDR_1 0xABAAADA99ALL
