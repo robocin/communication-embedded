@@ -2,22 +2,34 @@
 #define COMM_TYPES_H
 
 /************* AUXILIAR TYPES ************/
-#include "commConfig.h"
 #include <stdint.h>
+#include "commConfig.h"
 
-enum class RadioFunction { network0, network1 };
+enum class RadioFunction
+{
+  receiver,
+  sender
+};
 
 /*
  * Network type / catergory configuration
  *  Attencion: Limited in 15
  */
-enum class NetworkType { unknown = 0, generic, ssl, vss, rl };
+enum class NetworkType
+{
+  unknown = 0,
+  generic,
+  ssl,
+  vss,
+  rl
+};
 
 /*
  * Type of the packet position.
  *  Attencion: Limited in 8
  */
-enum class PositionType {
+enum class PositionType
+{
   unknown = 0,
   source,
   target,
@@ -26,7 +38,8 @@ enum class PositionType {
   rotateInPoint
 };
 
-typedef struct {
+typedef struct
+{
   uint8_t payload;
   uint64_t addr[2];
   bool ack;
@@ -37,20 +50,23 @@ typedef struct {
   RadioFunction function;
 } NetworkConfig;
 
-typedef struct Motors {
+typedef struct Motors
+{
   double m1 = 0;
   double m2 = 0;
   double m3 = 0;
   double m4 = 0;
 
-  Motors() {
+  Motors()
+  {
     m1 = 0;
     m2 = 0;
     m3 = 0;
     m4 = 0;
   }
 
-  inline Motors operator+(Motors a) {
+  inline Motors operator+(Motors a)
+  {
     Motors b;
     b.m1 = m1 + a.m1;
     b.m2 = m2 + a.m2;
@@ -60,24 +76,27 @@ typedef struct Motors {
   }
 } Motors;
 
-typedef struct Vector {
+typedef struct Vector
+{
   double x = 0;
   double y = 0;
   double w = 0;
 
-  Vector() {
+  Vector()
+  {
     x = 0;
     y = 0;
     w = 0;
   }
 
-  Vector(double _x, double _y, double _w) {
+  Vector(double _x, double _y, double _w){
     x = _x;
     y = _y;
     w = _w;
   }
 
-  inline Vector operator+(Vector a) {
+  inline Vector operator+(Vector a)
+  {
     Vector b;
     b.x = x + a.x;
     b.y = y + a.y;
@@ -85,7 +104,8 @@ typedef struct Vector {
     return b;
   }
 
-  inline Vector operator-(Vector a) {
+  inline Vector operator-(Vector a)
+  {
     Vector b;
     b.x = x - a.x;
     b.y = y - a.y;
@@ -93,7 +113,8 @@ typedef struct Vector {
     return b;
   }
 
-  inline Vector operator*(double a) {
+  inline Vector operator*(double a)
+  {
     Vector b;
     b.x = x * a;
     b.y = y * a;
@@ -102,7 +123,8 @@ typedef struct Vector {
   }
 } Vector;
 
-typedef struct KickFlags {
+typedef struct KickFlags
+{
   bool front = false;
   bool chip = false;
   bool charge = false;
@@ -112,7 +134,8 @@ typedef struct KickFlags {
   bool bypassIR = false;
   float dribblerSpeed = 0;
 
-  KickFlags &operator=(const KickFlags &a) {
+  KickFlags &operator=(const KickFlags &a)
+  {
     front = a.front;
     chip = a.chip;
     charge = a.charge;
@@ -125,7 +148,8 @@ typedef struct KickFlags {
   }
 } KickFlags;
 
-typedef struct RobotPosition {
+typedef struct RobotPosition
+{
   Vector v;
   PositionType type = PositionType::unknown;
   double maxSpeed{};
@@ -138,7 +162,8 @@ typedef struct RobotPosition {
   double approachKp{};
 } RobotPosition;
 
-typedef struct {
+typedef struct
+{
   int id = -1;
   msgType type;
   Motors m;
