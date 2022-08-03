@@ -181,7 +181,8 @@ bool nRF24Communication::updatePacket()
         else if (this->_lastPacketType == msgType::SSL_SPEED)
         {
           // SSL
-          this->clearSSLData();
+          this->clearSSLDataSpeed();
+          this->clearSSLDataKick();
           std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
           this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
           this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
@@ -195,9 +196,10 @@ bool nRF24Communication::updatePacket()
         }
         else if (this->_lastPacketType == msgType::POSITION)
         {
-          this->clearSSLData();
+          this->clearSSLDataPosition();
+          this->clearSSLDataKick();
           std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
-           this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+          this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
 
           this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
@@ -211,7 +213,10 @@ bool nRF24Communication::updatePacket()
           this->_pos.rotateInClockWise = static_cast<bool>(this->_mPostion.decoded.clockwise);
           this->_pos.orbitRadius = static_cast<double>((this->_mPostion.decoded.orbitRadius) / 1000.0);
           this->_pos.approachKp = static_cast<double>((this->_mPostion.decoded.approachKp) / 100.0);
-
+          if(_pos.type != PositionType::source)
+          {
+            _lastTargetPos = _pos;
+          }
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
@@ -303,11 +308,16 @@ void nRF24Communication::getVectorSpeed(Vector &mSpeed)
 {
   mSpeed = this->_v;
 }
-void nRF24Communication::clearSSLData()
+
+void nRF24Communication::clearSSLDataSpeed()
 {
   this->_v.x = 0;
   this->_v.y = 0;
   this->_v.w = 0;
+}
+
+void nRF24Communication::clearSSLDataPosition()
+{
 
   this->_pos.v = Vector();
   this->_pos.type = PositionType::unknown;
@@ -319,7 +329,10 @@ void nRF24Communication::clearSSLData()
   this->_pos.rotateInClockWise = false;
   this->_pos.orbitRadius = 0;
   this->_pos.approachKp = 0;
+}
 
+void nRF24Communication::clearSSLDataKick()
+{
   this->_kick.front = false;
   this->_kick.chip = false;
   this->_kick.charge = false;
@@ -329,9 +342,15 @@ void nRF24Communication::clearSSLData()
   this->_kick.dribblerSpeed = 0;
 }
 
-void nRF24Communication::getPosition(RobotPosition &pos)
+
+RobotPosition nRF24Communication::getLastPosition()
 {
-  pos = _pos;
+  return _pos;
+}
+
+RobotPosition nRF24Communication::getLastTargetPosition()
+{
+  return _lastTargetPos;
 }
 
 void nRF24Communication::getKick(KickFlags &isKick)

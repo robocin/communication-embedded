@@ -160,6 +160,21 @@ typedef struct RobotPosition
   bool rotateInClockWise{};
   double orbitRadius{};
   double approachKp{};
+
+  RobotPosition& operator=(const RobotPosition& a)
+  {
+    v = a.v;
+    type = a.type;
+    maxSpeed = a.maxSpeed;
+    minSpeed = a.minSpeed;
+    rotateKp = a.rotateKp;
+    usingPropSpeed = a.usingPropSpeed;
+    minDistanceToPropSpeed = a.minDistanceToPropSpeed;
+    rotateInClockWise = a.rotateInClockWise;
+    orbitRadius = a.orbitRadius;
+    approachKp = a.approachKp;
+    return *this;
+  }
 } RobotPosition;
 
 typedef struct
