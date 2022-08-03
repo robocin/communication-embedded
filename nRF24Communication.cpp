@@ -149,24 +149,27 @@ void nRF24Communication::printDetails()
   this->_radio.printDetails();
 }
 
-msgType nRF24Communication::updatePacket()
+msgType nRF24Communication::getPacketType()
+{
+  return this->_lastPacketType;
+}
+
+bool nRF24Communication::updatePacket()
 {
   this->enable();
-
   if (this->_radio.getPALevel() == RF24_PA_MAX)
   {
     while (this->_radio.available(&(_config.pipeNum)))
     {
       this->_radio.read(&(this->_rx.encoded), _config.payload);
-      //this->showBitsReceived(_config.payload);
-      // Save the message type
-      this->_typeMsg = static_cast<msgType>(this->_rx.decoded.typeMsg);
+      //this->showBitsReceived(_config.payload); // Debug
 
       if (this->_rx.decoded.id == this->_robotId)
       {
-
+        // Save the message type
+        this->_lastPacketType = static_cast<msgType>(this->_rx.decoded.typeMsg);
         // According to the type of message assign variables
-        if (this->_typeMsg == msgType::VSS_SPEED)
+        if (this->_lastPacketType == msgType::VSS_SPEED)
         {
           // VSS
           this->clearVSSData();
@@ -175,7 +178,7 @@ msgType nRF24Communication::updatePacket()
           this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
           this->_motorSpeed.m2 = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
         }
-        else if (this->_typeMsg == msgType::SSL_SPEED)
+        else if (this->_lastPacketType == msgType::SSL_SPEED)
         {
           // SSL
           this->clearSSLData();
@@ -190,7 +193,7 @@ msgType nRF24Communication::updatePacket()
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
         }
-        else if (this->_typeMsg == msgType::POSITION)
+        else if (this->_lastPacketType == msgType::POSITION)
         {
           this->clearSSLData();
           std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
@@ -221,7 +224,7 @@ msgType nRF24Communication::updatePacket()
           break;
         }
         this->disable();
-        return this->_typeMsg;
+        return true;
       }
       else
       {
@@ -235,7 +238,7 @@ msgType nRF24Communication::updatePacket()
     this->_configure();
   }
   this->disable();
-  return msgType::NONE;
+  return false;
 }
 
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry)
@@ -309,7 +312,7 @@ void nRF24Communication::clearSSLData()
   this->_pos.v = Vector();
   this->_pos.type = PositionType::unknown;
   this->_pos.maxSpeed = 0;
-  this->_pos.minSpeed = 0;  
+  this->_pos.minSpeed = 0;
   this->_pos.rotateKp = 0;
   this->_pos.usingPropSpeed = false;
   this->_pos.minDistanceToPropSpeed = 0;

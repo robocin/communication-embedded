@@ -23,8 +23,8 @@ public:
   int getRobotId();
   void printDetails();
 
-  msgType updatePacket();
-  int getTypeOfMessage();
+  bool updatePacket();
+  msgType getPacketType();
   void showBitsReceived(int payload);
   void enable();
   void disable();
@@ -66,7 +66,7 @@ private:
 
   NetworkConfig _config;
   char _robotId;
-  msgType _typeMsg;
+  msgType _lastPacketType;
   Motors _motorSpeed;
   int _flags;
   Vector _v;
