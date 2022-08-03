@@ -43,6 +43,7 @@ public:
   void getKick(KickFlags &isKick);
   RobotPosition getLastPosition();
   RobotPosition getLastTargetPosition();
+  RobotPosition getLastSourcePosition();
 
   // Aux Info
   float getKP();
@@ -76,6 +77,7 @@ private:
   KickFlags _kick;
   RobotPosition _pos;
   RobotPosition _lastTargetPos;
+  RobotPosition _lastSourcePos;
   float _kp, _kd, _ki, _alpha;
 };
 

@@ -217,6 +217,10 @@ bool nRF24Communication::updatePacket()
           {
             _lastTargetPos = _pos;
           }
+          else
+          {
+            _lastSourcePos = _pos;
+          }
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
@@ -351,6 +355,11 @@ RobotPosition nRF24Communication::getLastPosition()
 RobotPosition nRF24Communication::getLastTargetPosition()
 {
   return _lastTargetPos;
+}
+
+RobotPosition nRF24Communication::getLastSourcePosition()
+{
+  return _lastSourcePos;
 }
 
 void nRF24Communication::getKick(KickFlags &isKick)
