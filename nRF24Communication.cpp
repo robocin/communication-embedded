@@ -121,7 +121,7 @@ void nRF24Communication::_send()
 void nRF24Communication::enable()
 {
   this->_radio.csn(LOW);
-  wait_us(5);
+  wait_us(10);
 }
 
 void nRF24Communication::disable()
