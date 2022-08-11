@@ -32,9 +32,7 @@ enum class PositionType
 {
   unknown = 0,
   source,
-  target,
-  dock,
-  rotateControl,
+  driveToTarget,
   rotateInPoint,
   rotateOnSelf,
   stop
