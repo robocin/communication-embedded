@@ -6,6 +6,7 @@
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
 #include <commConfig.h>
 #include <commTypes.h>
+#include "utils.h"
 
 class nRF24Communication
 {
@@ -22,10 +23,11 @@ public:
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
+  bool radioStillConfigured();
 
   bool updatePacket();
   msgType getPacketType();
-  void showBitsReceived(int payload);
+  void showBitsReceived(int payload, unsigned char* data);
   void enable();
   void disable();
 

@@ -149,6 +149,12 @@ void nRF24Communication::printDetails()
   this->_radio.printDetails();
 }
 
+bool nRF24Communication::radioStillConfigured() {
+  return this->_radio.getPALevel() == RF24_PA_MAX 
+          && this->_radio.getCRCLength() == RF24_CRC_16
+            && this->compareChannel(this->_config.receiveChannel);
+}
+
 msgType nRF24Communication::getPacketType()
 {
   return this->_lastPacketType;
@@ -157,12 +163,13 @@ msgType nRF24Communication::getPacketType()
 bool nRF24Communication::updatePacket()
 {
   this->enable();
-  if (this->_radio.getPALevel() == RF24_PA_MAX)
+  if (radioStillConfigured())
   {
+    //printDetails();
     while (this->_radio.available(&(_config.pipeNum)))
     {
       this->_radio.read(&(this->_rx.encoded), _config.payload);
-      //this->showBitsReceived(_config.payload); // Debug
+      //this->showBitsReceived(_config.payload,this->_rx.encoded); // Debug
 
       if (this->_rx.decoded.id == this->_robotId)
       {
@@ -245,6 +252,7 @@ bool nRF24Communication::updatePacket()
   {
     this->_resetRadio();
     this->_configure();
+    utils::beep(100, 420); // warning reset signal
   }
   this->disable();
   return false;
@@ -374,11 +382,11 @@ void nRF24Communication::getKick(KickFlags &isKick)
   isKick.dribblerSpeed = _kick.dribblerSpeed;
 }
 
-void nRF24Communication::showBitsReceived(int payload){
+void nRF24Communication::showBitsReceived(int payload, unsigned char* data){
   // A sequencia de campos segue o da declaracao da estrutura em commConfig.h, mas os bits estao
   // em little endian
   for (int i = 0; i < payload; i++) {
-    int val = this->_rx.encoded[i];
+    int val = data[i];
     int mask = 1;
     for(int j = 0; j < 8; j++){
       if(mask & val){
