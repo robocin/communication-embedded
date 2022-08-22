@@ -252,7 +252,7 @@ bool nRF24Communication::updatePacket()
   {
     this->_resetRadio();
     this->_configure();
-    utils::beep(100, 420); // warning reset signal
+    utils::beep(100, 320); // warning reset signal
   }
   this->disable();
   return false;
