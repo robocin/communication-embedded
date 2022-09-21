@@ -5,12 +5,11 @@
 
 #include <stdint.h>
 
-
 // NRF Config Defitions
-#define SSL_1_BASE_SEND_CH 125
+#define SSL_1_BASE_SEND_CH 103
 #define SSL_2_BASE_RECV_CH 115
 
-#define SSL_1_ROBOT_RECV_CH 125
+#define SSL_1_ROBOT_RECV_CH 103
 #define SSL_2_ROBOT_SEND_CH 115
 
 #define SSL_ADDR_1 0xABAAADA99ALL
@@ -33,16 +32,15 @@
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_SPEED_LENGTH 4
 
-#define SSL_PAYLOAD_LENGTH 20 //15 //
-#define SSL_SPEED_LENGTH 20   //12 //
+#define SSL_PAYLOAD_LENGTH 20 // 15 //
+#define SSL_SPEED_LENGTH 20   // 12 //
 #define POSITION_LENGTH 20    // 9 //
-#define TELEMETRY_LENGTH 20   //13 //
-#define ODOMETRY_LENGTH 20    //11 //
+#define TELEMETRY_LENGTH 20   // 13 //
+#define ODOMETRY_LENGTH 20    // 11 //
 
-#pragma pack (push, 1)
+#pragma pack(push, 1)
 
-enum class msgType
-{
+enum class msgType {
   NONE = -1,
   BST_CONFIG,
   VSS_SPEED,
@@ -52,8 +50,7 @@ enum class msgType
   POSITION
 };
 
-typedef struct
-{
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int64_t rest_a : 64;
@@ -79,23 +76,21 @@ typedef union {
  *  - Channel of nRF send.
  *  - Channel of nRF recv.
  */
-typedef struct
-{
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  bool duplex: 1;
-  uint8_t team: 4;
-  uint64_t addr1: 64;
-  uint64_t addr2: 64;
-  uint8_t payload: 8;
-  uint8_t channel1: 8;
-  uint8_t channel2: 8;
-  uint8_t free: 3;
+  bool duplex : 1;
+  uint8_t team : 4;
+  uint64_t addr1 : 64;
+  uint64_t addr2 : 64;
+  uint8_t payload : 8;
+  uint8_t channel1 : 8;
+  uint8_t channel2 : 8;
+  uint8_t free : 3;
 
 } packetTypeBStConfig;
 
-typedef union
-{
+typedef union {
   unsigned char encoded[BST_CONFIG_LENGTH];
   packetTypeBStConfig decoded;
 } packetBStConfig;
@@ -108,8 +103,7 @@ typedef union
  *  - The left and right motor speeds
  *  - One byte of free for optional flags.
  */
-typedef struct
-{
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int8_t leftSpeed : 8;
@@ -123,16 +117,15 @@ typedef union packetSpeedVSS {
 } packetSpeedVSS;
 
 /*
-  * Structure for sending speeds omni-directional robot,
+ * Structure for sending speeds omni-directional robot,
  * This type sends:
  *  - Message type
  *  - Robot Id
  *  - Vx, Vy and Vw of the robot.
  *  - Type and Strength of Kick.
  *  - Dribbler flag and its speed.
-  */
-typedef struct
-{
+ */
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int32_t vx : 20;
@@ -155,21 +148,20 @@ typedef union packetSpeedSSL {
 } packetSpeedSSL;
 
 /*
-  * Structure for sending position to a robot,
+ * Structure for sending position to a robot,
  * This type sends:
  *  - Message type
  *  - Robot Id
  *  - x, y and w of the robot.
  *  - Source or Destiny position.
  *  - ....
-  */
-typedef struct
-{
+ */
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16; // -32.767 - 32.767 m
-  int16_t y : 16; // -32.767 - 32.767 m
-  int16_t w : 16; // 0 - 6.5535 rad
+  int16_t x : 16;         // -32.767 - 32.767 m
+  int16_t y : 16;         // -32.767 - 32.767 m
+  int16_t w : 16;         // 0 - 6.5535 rad
   uint16_t maxSpeed : 13; // 0 - 81.91 m/s
   uint16_t minSpeed : 13; // 0 - 8.191 m/s
   uint8_t positionType : 3;
@@ -184,22 +176,20 @@ typedef struct
   uint64_t free_1 : 60;
 } packetTypePosition;
 
-typedef union packetPosition
-{
+typedef union packetPosition {
   unsigned char encoded[POSITION_LENGTH];
   packetTypePosition decoded;
 } packetPosition;
 
-typedef struct
-{
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t m1 : 16; // -327.67 - 327.67 m/s
-  int16_t m2 : 16; // -327.67 - 327.67 m/s
-  int16_t m3 : 16; // -327.67 - 327.67 m/s
-  int16_t m4 : 16; // -327.67 - 327.67 m/s
-  int16_t dribbler : 15;  // -1638.3 - 1638.3 rad/s
-  uint8_t kickLoad : 8; // 0 - 2.55
+  int16_t m1 : 16;       // -327.67 - 327.67 m/s
+  int16_t m2 : 16;       // -327.67 - 327.67 m/s
+  int16_t m3 : 16;       // -327.67 - 327.67 m/s
+  int16_t m4 : 16;       // -327.67 - 327.67 m/s
+  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8;  // 0 - 2.55
   bool ball : 1;
   uint8_t battery : 8; // 0 - 25.5 V
   uint64_t free_1 : 56;
@@ -212,7 +202,7 @@ typedef union packetTelemetry {
 } packetTelemetry;
 
 /*
-  * Structure for send robot basic status and position,
+ * Structure for send robot basic status and position,
  * This type sends:
  *  - Message type
  *  - Robot Id
@@ -221,33 +211,31 @@ typedef union packetTelemetry {
  *  - Kick capacitor load.
  *  - Ball on robot?
  *  - Battery load.
-  */
-typedef struct
-{
+ */
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16; // -32.767 - 32.767 m
-  int16_t y : 16; // -32.767 - 32.767 m
-  int16_t w : 16; // 0 - 6.5535 rad
+  int16_t x : 16;        // -32.767 - 32.767 m
+  int16_t y : 16;        // -32.767 - 32.767 m
+  int16_t w : 16;        // 0 - 6.5535 rad
   int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
-  uint8_t kickLoad : 8; // 0 - 2.55
+  uint8_t kickLoad : 8;  // 0 - 2.55
   bool ball : 1;
   uint8_t battery : 8; // 0 - 25.5 V
-  int16_t m1 : 16; // -327.67 - 327.67 m/s
-  int16_t m2 : 16; // -327.67 - 327.67 m/s
-  int16_t m3 : 16; // -327.67 - 327.67 m/s
-  int16_t m4 : 16; // -327.67 - 327.67 m/s
-  uint8_t free_1 : 8;
+  int16_t m1 : 16;     // -327.67 - 327.67 m/s
+  int16_t m2 : 16;     // -327.67 - 327.67 m/s
+  int16_t m3 : 16;     // -327.67 - 327.67 m/s
+  int16_t m4 : 16;     // -327.67 - 327.67 m/s
+  uint8_t pcktCount : 8;
 
 } packetTypeOdometry;
 
-typedef union packetOdometry
-{
+typedef union packetOdometry {
   unsigned char encoded[ODOMETRY_LENGTH];
   packetTypeOdometry decoded;
 } packetOdometry;
 
-//restoring the standard alignment
+// restoring the standard alignment
 #pragma pack(pop)
 
 #endif // COMM_CONFIG_H
