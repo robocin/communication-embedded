@@ -25,10 +25,6 @@
 #define VSS_ADDR_1 0x752FAF0A9ALL
 #define VSS_ADDR_2 0x5D4BFBC2BBLL
 
-#define DEEP_CHANNEL 105
-#define DEEP_ADDR_1 0x752FAB239ALL
-#define DEEP_ADDR_2 0x5D4ADC454BLL
-
 #define ACK_RADIO 0
 #define NRF_MAX_PAYLOAD 32
 
@@ -112,15 +108,17 @@ typedef union
  *  - Message type
  *  - Robot Id
  *  - The left and right motor speeds
+ *  - 
  *  - One byte of free for optional flags.
  */
 typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int8_t leftSpeed : 8;
-  int8_t rightSpeed : 8;
-  uint8_t flags : 8;
+  int16_t m1 : 15;   // (-16.384 <-> 16.384 rad/s or -100 <-> 100 pwm) // left motor speed
+  int16_t m2 : 15;   // (-16.384 <-> 16.384 rad/s or -100 <-> 100 pwm) // right motor speed
+  uint8_t flags : 1; // Bit indication for speed type (0 -> rad/s, 1 -> pwm)
+
 } packetTypeSpeedVSS;
 
 typedef union packetSpeedVSS {

@@ -52,15 +52,6 @@ void nRF24Communication::_network(NetworkType network)
     this->_config.addr[0] = VSS_ADDR_1;
     this->_config.addr[1] = VSS_ADDR_2;
   }
-  else if (network == NetworkType::rl)
-  {
-    this->_config.payload = VSS_PAYLOAD_LENGTH;
-    this->_config.receiveChannel = DEEP_CHANNEL;
-    this->_config.sendChannel = DEEP_CHANNEL; // Future Telemetry
-
-    this->_config.addr[0] = DEEP_ADDR_1;
-    this->_config.addr[1] = DEEP_ADDR_2;
-  }
 }
 
 void nRF24Communication::_configure()
@@ -159,8 +150,8 @@ msgType nRF24Communication::updatePacket()
           this->clearVSSData();
           std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_SPEED_LENGTH); //require std::, eventual error in copy
           this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
-          this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
-          this->_motorSpeed.m2 = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
+          this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100.0);
+          this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 100.0);
         }
         else if (this->_typeMsg == msgType::SSL_SPEED)
         {
@@ -231,9 +222,9 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
 {
 
   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
-  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(telemetry.id);
-  this->_mTelemetryVSS.decoded.m1 = static_cast<int8_t>(telemetry.m1);
-  this->_mTelemetryVSS.decoded.m2 = static_cast<int8_t>(telemetry.m2);
+  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetryVSS.decoded.m1 = static_cast<uint8_t>(telemetry.m1 * 100);
+  this->_mTelemetryVSS.decoded.m2 = static_cast<uint8_t>(telemetry.m2 * 100);
   this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
