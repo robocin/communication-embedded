@@ -263,7 +263,7 @@ void nRF24Communication::getDifferentialSpeed(Motors &mSpeed)
 
 void nRF24Communication::clearVSSData()
 {
-  this->_flags = 0;
+  this->_isPWM = 0;
   this->_motorSpeed.m1 = 0;
   this->_motorSpeed.m2 = 0;
 }
