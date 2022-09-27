@@ -153,7 +153,7 @@ msgType nRF24Communication::updatePacket()
           if(_isPWM)
           {
             this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
-            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 100000.0);
           }else{
             this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 1000.0);
             this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 1000.0);
