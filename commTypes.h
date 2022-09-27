@@ -20,8 +20,7 @@ enum class NetworkType
   unknown = 0,
   generic,
   ssl,
-  vss,
-  rl
+  vss
 };
 
 /*

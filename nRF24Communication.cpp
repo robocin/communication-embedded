@@ -149,9 +149,15 @@ msgType nRF24Communication::updatePacket()
           // VSS
           this->clearVSSData();
           std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_SPEED_LENGTH); //require std::, eventual error in copy
-          this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
-          this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100.0);
-          this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 100.0);
+          this->_isPWM = static_cast<bool>(this->_mVSS.decoded.isPWM);
+          if(_isPWM)
+          {
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
+          }else{
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 1000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 1000.0);
+          }
         }
         else if (this->_typeMsg == msgType::SSL_SPEED)
         {
@@ -223,8 +229,8 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
 
   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mTelemetryVSS.decoded.m1 = static_cast<uint8_t>(telemetry.m1 * 100);
-  this->_mTelemetryVSS.decoded.m2 = static_cast<uint8_t>(telemetry.m2 * 100);
+  this->_mTelemetryVSS.decoded.m1 = static_cast<uint16_t>(telemetry.m1 * 1000);
+  this->_mTelemetryVSS.decoded.m2 = static_cast<uint16_t>(telemetry.m2 * 1000);
   this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);

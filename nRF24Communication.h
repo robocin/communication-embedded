@@ -68,7 +68,7 @@ private:
   char _robotId;
   msgType _typeMsg;
   Motors _motorSpeed;
-  int _flags;
+  bool _isPWM;
   Vector _v;
   KickFlags _kick;
   RobotPosition _pos;
