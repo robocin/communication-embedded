@@ -50,6 +50,7 @@ enum class msgType
   VSS_SPEED,
   SSL_SPEED,
   TELEMETRY,
+  VSS_TELEMETRY,
   ODOMETRY,
   POSITION
 };
