@@ -101,7 +101,7 @@ void nRF24Communication::_send() { this->_radio.stopListening(); }
 
 void nRF24Communication::enable() {
   this->_radio.csn(LOW);
-  wait_us(5);
+  wait_us(10);
 }
 
 void nRF24Communication::disable() {
@@ -121,105 +121,131 @@ int nRF24Communication::getRobotId() { return this->_robotId; }
 
 void nRF24Communication::printDetails() { this->_radio.printDetails(); }
 
-msgType nRF24Communication::updatePacket() {
-  this->enable();
-  if (this->_radio.getPALevel() == RF24_PA_MAX) {
-    while (this->_radio.available(&(_config.pipeNum))) {
-      this->_radio.read(&(this->_rx.encoded), _config.payload);
-      // this->showBitsReceived(_config.payload);
-      //  Save the message type
-      this->_typeMsg = static_cast<msgType>(this->_rx.decoded.typeMsg);
+bool nRF24Communication::radioStillConfigured() {
+  return this->_radio.getPALevel() == RF24_PA_MAX 
+          && this->_radio.getCRCLength() == RF24_CRC_16
+            && this->compareChannel(this->_config.receiveChannel);
+}
 
-      if (this->_rx.decoded.id == this->_robotId) {
+msgType nRF24Communication::getPacketType()
+{
+  return this->_lastPacketType;
+}
+
+bool nRF24Communication::updatePacket()
+{
+  this->enable();
+  if (radioStillConfigured())
+  {
+    //printDetails();
+    while (this->_radio.available(&(_config.pipeNum)))
+    {
+      this->_radio.read(&(this->_rx.encoded), _config.payload);
+      //this->showBitsReceived(_config.payload,this->_rx.encoded); // Debug
+
+      if (this->_rx.decoded.id == this->_robotId)
+      {
+        // Save the message type
+        this->_lastPacketType = static_cast<msgType>(this->_rx.decoded.typeMsg);
         // According to the type of message assign variables
-        if (this->_typeMsg == msgType::VSS_SPEED) {
+        if (this->_lastPacketType == msgType::VSS_SPEED)
+        {
           // VSS
           this->clearVSSData();
           std::memcpy(
               this->_mVSS.encoded, this->_rx.encoded,
               VSS_SPEED_LENGTH); // require std::, eventual error in copy
           this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
-          this->_motorSpeed.m1 =
-              static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
-          this->_motorSpeed.m2 =
-              static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
-        } else if (this->_typeMsg == msgType::SSL_SPEED) {
+          this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
+          this->_motorSpeed.m2 = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
+        }
+        else if (this->_lastPacketType == msgType::SSL_SPEED)
+        {
           // SSL
-          this->clearSSLData();
-          std::memcpy(
-              this->_mSSL.encoded, this->_rx.encoded,
-              SSL_SPEED_LENGTH); // require std::, eventual error in copy
-          this->_gameState = static_cast<Command>(this->_mSSL.decoded.command);
+          this->clearSSLDataSpeed();
+          this->clearSSLDataKick();
+          std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
           this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
           this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
           this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
           this->_kick.front = static_cast<bool>(this->_mSSL.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mSSL.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mSSL.decoded.charge);
-          this->_kick.kickStrength =
-              static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
-          this->_kick.dribbler =
-              static_cast<bool>(this->_mSSL.decoded.dribbler);
-          this->_kick.dribblerSpeed =
-              static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
-        } else if (this->_typeMsg == msgType::POSITION) {
-          this->clearSSLData();
-          std::memcpy(this->_mPostion.encoded, this->_rx.encoded,
-                      POSITION_LENGTH);
-          this->_pos.v.x =
-              static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
-          this->_pos.v.y =
-              static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
-          this->_pos.v.w =
-              static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
-          this->_pos.minSpeed =
-              static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
-          this->_pos.maxSpeed =
-              static_cast<double>((this->_mPostion.decoded.maxSpeed) / 100.0);
-          this->_pos.type =
-              static_cast<PositionType>((this->_mPostion.decoded.positionType));
+          this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
+          this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
+        }
+        else if (this->_lastPacketType == msgType::POSITION)
+        {
+          this->clearSSLDataPosition();
+          this->clearSSLDataKick();
+          std::memcpy(this->_mPostion.encoded, this->_rx.encoded, POSITION_LENGTH);
+          this->_pos.type = static_cast<PositionType>((this->_mPostion.decoded.positionType));
+
+          this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
+          this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
+          this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
+
+          this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 1000.0);
+          this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
+          this->_pos.rotateKp = static_cast<double>((this->_mPostion.decoded.rotateKp) / 100.0);
+          this->_pos.usingPropSpeed = static_cast<bool>(this->_mPostion.decoded.usingPropSpeed);
+          this->_pos.minDistanceToPropSpeed = static_cast<double>((this->_mPostion.decoded.minDistanceToPropSpeed) / 1000.0);
+          this->_pos.rotateInClockWise = static_cast<bool>(this->_mPostion.decoded.clockwise);
+          this->_pos.orbitRadius = static_cast<double>((this->_mPostion.decoded.orbitRadius) / 1000.0);
+          this->_pos.approachKp = static_cast<double>((this->_mPostion.decoded.approachKp) / 100.0);
+          if(_pos.type != PositionType::source)
+          {
+            _lastTargetPos = _pos;
+          }
+          else
+          {
+            _lastSourcePos = _pos;
+          }
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
-          this->_kick.charge =
-              static_cast<bool>(this->_mPostion.decoded.charge);
-          this->_kick.kickStrength =
-              static_cast<float>((this->_mPostion.decoded.kickStrength) / 10.0);
-          this->_kick.dribbler =
-              static_cast<bool>(this->_mPostion.decoded.dribbler);
-          this->_kick.dribblerSpeed =
-              static_cast<float>((this->_mPostion.decoded.dribSpeed) / 10.0);
-        } else {
+          this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
+          this->_kick.kickStrength = static_cast<float>((this->_mPostion.decoded.strength) / 10.0);
+          this->_kick.dribbler = static_cast<bool>(this->_mPostion.decoded.dribbler);
+          this->_kick.dribblerSpeed = static_cast<float>((this->_mPostion.decoded.dribblerSpeed) / 10.0);
+        }
+        else
+        {
           break;
         }
         this->disable();
-        return this->_typeMsg;
-      } else {
+        return true;
+      }
+      else
+      {
         break;
       }
     }
   } else {
     this->_resetRadio();
     this->_configure();
+    utils::beep(100); // warning reset signal
   }
   this->disable();
-  return msgType::NONE;
+  return false;
 }
 
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetry.decoded.x = static_cast<int16_t>(telemetry.v.x * 1000);
+  this->_mTelemetry.decoded.y = static_cast<int16_t>(telemetry.v.y * 1000);
+  this->_mTelemetry.decoded.w = static_cast<int16_t>(telemetry.v.w * 10000);
+  this->_mTelemetry.decoded.dribbler = static_cast<int16_t>(telemetry.dribbler * 10);
+  this->_mTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
+  this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
+  this->_mTelemetry.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
   this->_mTelemetry.decoded.m1 = static_cast<int16_t>(telemetry.m.m1 * 100);
   this->_mTelemetry.decoded.m2 = static_cast<int16_t>(telemetry.m.m2 * 100);
   this->_mTelemetry.decoded.m3 = static_cast<int16_t>(telemetry.m.m3 * 100);
   this->_mTelemetry.decoded.m4 = static_cast<int16_t>(telemetry.m.m4 * 100);
-  this->_mTelemetry.decoded.dribbler =
-      static_cast<int16_t>(telemetry.dribbler * 10);
-  this->_mTelemetry.decoded.kickLoad =
-      static_cast<uint8_t>(telemetry.kickLoad * 100);
-  this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
-  this->_mTelemetry.decoded.battery =
-      static_cast<uint8_t>(telemetry.battery * 10);
+  this->_mTelemetry.decoded.pcktCount = static_cast<uint8_t>(telemetry.count);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetry.encoded, TELEMETRY_LENGTH);
   this->disable();
@@ -271,10 +297,30 @@ Command nRF24Communication::getGameState() {
 
 void nRF24Communication::getVectorSpeed(Vector &mSpeed) { mSpeed = this->_v; }
 
-void nRF24Communication::clearSSLData() {
+void nRF24Communication::clearSSLDataSpeed()
+{
   this->_v.x = 0;
   this->_v.y = 0;
   this->_v.w = 0;
+}
+
+void nRF24Communication::clearSSLDataPosition()
+{
+
+  this->_pos.v = Vector();
+  this->_pos.type = PositionType::unknown;
+  this->_pos.maxSpeed = 0;
+  this->_pos.minSpeed = 0;
+  this->_pos.rotateKp = 0;
+  this->_pos.usingPropSpeed = false;
+  this->_pos.minDistanceToPropSpeed = 0;
+  this->_pos.rotateInClockWise = false;
+  this->_pos.orbitRadius = 0;
+  this->_pos.approachKp = 0;
+}
+
+void nRF24Communication::clearSSLDataKick()
+{
   this->_kick.front = false;
   this->_kick.chip = false;
   this->_kick.charge = false;
@@ -285,6 +331,21 @@ void nRF24Communication::clearSSLData() {
 }
 
 void nRF24Communication::getPosition(RobotPosition &pos) { pos = _pos; }
+
+RobotPosition nRF24Communication::getLastPosition()
+{
+  return _pos;
+}
+
+RobotPosition nRF24Communication::getLastTargetPosition()
+{
+  return _lastTargetPos;
+}
+
+RobotPosition nRF24Communication::getLastSourcePosition()
+{
+  return _lastSourcePos;
+}
 
 void nRF24Communication::getKick(KickFlags &isKick) {
   isKick.front = _kick.front;
@@ -301,11 +362,11 @@ void nRF24Communication::getKick(KickFlags &isKick) {
   // );
 }
 
-void nRF24Communication::showBitsReceived(int payload) {
-  // A sequencia de campos segue o da declaracao da estrutura em commConfig.h,
-  // mas os bits estao em little endian
+void nRF24Communication::showBitsReceived(int payload, unsigned char* data){
+  // A sequencia de campos segue o da declaracao da estrutura em commConfig.h, mas os bits estao
+  // em little endian
   for (int i = 0; i < payload; i++) {
-    int val = this->_rx.encoded[i];
+    int val = data[i];
     int mask = 1;
     for (int j = 0; j < 8; j++) {
       if (mask & val) {

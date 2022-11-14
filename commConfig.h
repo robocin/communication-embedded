@@ -3,6 +3,7 @@
 
 // v3.1
 
+#include <cstdint>
 #include <stdint.h>
 
 // NRF Config Defitions
@@ -32,11 +33,13 @@
 #define VSS_PAYLOAD_LENGTH 10
 #define VSS_SPEED_LENGTH 4
 
-#define SSL_PAYLOAD_LENGTH 20 // 15 //
-#define SSL_SPEED_LENGTH 20   // 12 //
-#define POSITION_LENGTH 20    // 9 //
-#define TELEMETRY_LENGTH 20   // 13 //
-#define ODOMETRY_LENGTH 20    // 11 //
+#define SSL_PAYLOAD_LENGTH DEFAULT_PAYLOAD_LENGTH // 15 //
+#define SSL_SPEED_LENGTH DEFAULT_PAYLOAD_LENGTH   // 12 //
+#define POSITION_LENGTH DEFAULT_PAYLOAD_LENGTH    // 9 //
+#define TELEMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH   // 13 //
+#define ODOMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH    // 11 //
+
+#define DEFAULT_PAYLOAD_LENGTH 20
 
 #pragma pack(push, 1)
 
@@ -159,21 +162,27 @@ typedef union packetSpeedSSL {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;         // -32.767 - 32.767 m
-  int16_t y : 16;         // -32.767 - 32.767 m
-  int16_t w : 16;         // 0 - 6.5535 rad
-  uint16_t maxSpeed : 13; // 0 - 81.91 m/s
-  uint16_t minSpeed : 13; // 0 - 8.191 m/s
+  int16_t x : 16; // -32.767 - 32.767 m
+  int16_t y : 16; // -32.767 - 32.767 m
+  int16_t w : 16; // 0 - 6.5535 rad
+  // motion parameters
+  uint16_t maxSpeed : 12; // 0 - 4.095 m/s
+  uint16_t minSpeed : 12; // 0 - 4.095 m/s
+  uint16_t rotateKp : 10; // 0 - 10.23
+  uint8_t usingPropSpeed : 1;
+  uint16_t minDistanceToPropSpeed : 12; // 0 - 4.095 m
+  uint8_t clockwise : 1;     // In goToPoint it is High Acceleration flag
+  uint16_t orbitRadius : 12; // 0 - 4.095 m // Custom Acceleration in goToPoint
+  uint16_t approachKp : 10;  // 0 - 10.23
   uint8_t positionType : 3;
   // Kick Options
   uint8_t front : 1;
   uint8_t chip : 1;
   uint8_t charge : 1;
-  uint8_t kickStrength : 8;
+  uint8_t strength : 8;
   uint8_t dribbler : 1;
-  uint8_t dribSpeed : 8;
+  int16_t dribblerSpeed : 11;
   uint8_t command : 8;
-  uint64_t free_1 : 60;
 } packetTypePosition;
 
 typedef union packetPosition {
@@ -184,15 +193,18 @@ typedef union packetPosition {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t m1 : 16;       // -327.67 - 327.67 m/s
-  int16_t m2 : 16;       // -327.67 - 327.67 m/s
-  int16_t m3 : 16;       // -327.67 - 327.67 m/s
-  int16_t m4 : 16;       // -327.67 - 327.67 m/s
+  int16_t x : 16;        // -32.767 - 32.767 m/s
+  int16_t y : 16;        // -32.767 - 32.767 m/s
+  int16_t w : 16;        // 0 - 6.5535 rad/s
   int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
   uint8_t kickLoad : 8;  // 0 - 2.55
   bool ball : 1;
   uint8_t battery : 8; // 0 - 25.5 V
-  uint64_t free_1 : 56;
+  int16_t m1 : 16;     // -327.67 - 327.67 m/s
+  int16_t m2 : 16;     // -327.67 - 327.67 m/s
+  int16_t m3 : 16;     // -327.67 - 327.67 m/s
+  int16_t m4 : 16;     // -327.67 - 327.67 m/s
+  uint8_t pcktCount : 8;
 
 } packetTypeTelemetry;
 

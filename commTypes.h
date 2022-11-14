@@ -129,10 +129,31 @@ typedef struct KickFlags {
 
 typedef struct RobotPosition {
   Vector v;
-  PositionType type;
-  double minSpeed;
-  double maxSpeed;
   bool resetOdometry;
+  PositionType type = PositionType::unknown;
+  double maxSpeed{};
+  double minSpeed{};
+  double rotateKp{};
+  bool usingPropSpeed{};
+  double minDistanceToPropSpeed{};
+  bool rotateInClockWise{};
+  double orbitRadius{};
+  double approachKp{};
+
+  RobotPosition& operator=(const RobotPosition& a)
+  {
+    v = a.v;
+    type = a.type;
+    maxSpeed = a.maxSpeed;
+    minSpeed = a.minSpeed;
+    rotateKp = a.rotateKp;
+    usingPropSpeed = a.usingPropSpeed;
+    minDistanceToPropSpeed = a.minDistanceToPropSpeed;
+    rotateInClockWise = a.rotateInClockWise;
+    orbitRadius = a.orbitRadius;
+    approachKp = a.approachKp;
+    return *this;
+  }
 } RobotPosition;
 
 typedef struct {
