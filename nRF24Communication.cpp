@@ -211,7 +211,6 @@ bool nRF24Communication::updatePacket()
           this->_pos.v.x = static_cast<double>((this->_mPostion.decoded.x) / 1000.0);
           this->_pos.v.y = static_cast<double>((this->_mPostion.decoded.y) / 1000.0);
           this->_pos.v.w = static_cast<double>((this->_mPostion.decoded.w) / 10000.0);
-
           this->_pos.maxSpeed = static_cast<double>((this->_mPostion.decoded.maxSpeed) / 1000.0);
           this->_pos.minSpeed = static_cast<double>((this->_mPostion.decoded.minSpeed) / 1000.0);
           this->_pos.rotateKp = static_cast<double>((this->_mPostion.decoded.rotateKp) / 100.0);
@@ -220,14 +219,6 @@ bool nRF24Communication::updatePacket()
           this->_pos.rotateInClockWise = static_cast<bool>(this->_mPostion.decoded.clockwise);
           this->_pos.orbitRadius = static_cast<double>((this->_mPostion.decoded.orbitRadius) / 1000.0);
           this->_pos.approachKp = static_cast<double>((this->_mPostion.decoded.approachKp) / 100.0);
-          if(_pos.type != PositionType::source)
-          {
-            _lastTargetPos = _pos;
-          }
-          else
-          {
-            _lastSourcePos = _pos;
-          }
           this->_kick.front = static_cast<bool>(this->_mPostion.decoded.front);
           this->_kick.chip = static_cast<bool>(this->_mPostion.decoded.chip);
           this->_kick.charge = static_cast<bool>(this->_mPostion.decoded.charge);
@@ -316,9 +307,9 @@ void nRF24Communication::clearVSSData()
   this->_motorSpeed.m2 = 0;
 }
 
-void nRF24Communication::getVectorSpeed(Vector &mSpeed)
+Vector nRF24Communication::getVectorSpeed()
 {
-  mSpeed = this->_v;
+  return this->_v;
 }
 
 void nRF24Communication::clearSSLDataSpeed()
@@ -358,16 +349,6 @@ void nRF24Communication::clearSSLDataKick()
 RobotPosition nRF24Communication::getLastPosition()
 {
   return _pos;
-}
-
-RobotPosition nRF24Communication::getLastTargetPosition()
-{
-  return _lastTargetPos;
-}
-
-RobotPosition nRF24Communication::getLastSourcePosition()
-{
-  return _lastSourcePos;
 }
 
 void nRF24Communication::getKick(KickFlags &isKick)

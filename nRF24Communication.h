@@ -36,7 +36,7 @@ public:
   void clearVSSData();
 
   // SSL Info
-  void getVectorSpeed(Vector &mSpeed);
+  Vector getVectorSpeed();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
   void clearSSLDataSpeed();
@@ -44,8 +44,6 @@ public:
   void clearSSLDataKick();
   void getKick(KickFlags &isKick);
   RobotPosition getLastPosition();
-  RobotPosition getLastTargetPosition();
-  RobotPosition getLastSourcePosition();
 
   // Aux Info
   float getKP();
@@ -78,8 +76,6 @@ private:
   Vector _v;
   KickFlags _kick;
   RobotPosition _pos;
-  RobotPosition _lastTargetPos;
-  RobotPosition _lastSourcePos;
   float _kp, _kd, _ki, _alpha;
 };
 
