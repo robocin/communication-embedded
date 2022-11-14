@@ -6,7 +6,6 @@
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
 #include <commConfig.h>
 #include <commTypes.h>
-#include <EthernetInterface.h>
 #include <iostream>
 
 #include <CommTypes.pb.h>
@@ -30,8 +29,6 @@ public:
   void printDetails();
 
   msgType updatePacket();
-  msgType updatePacket(protoPositionSSL protoMessage);
-  int getTypeOfMessage();
   void showBitsReceived(int payload);
   void enable();
   void disable();

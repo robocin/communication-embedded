@@ -205,28 +205,6 @@ msgType nRF24Communication::updatePacket() {
   return msgType::NONE;
 }
 
-msgType nRF24Communication::updatePacket(protoPositionSSL protomessage) {
-  // Return message type
-  this->clearSSLData();
-
-  this->_typeMsg = msgType::POSITION;
-  this->_pos.v.x = protomessage.x;
-  this->_pos.v.y = protomessage.y;
-  this->_pos.v.w = protomessage.w;
-  this->_pos.resetOdometry = protomessage.resetOdometry;
-  this->_pos.maxSpeed = protomessage.max_speed;
-  this->_pos.minSpeed = protomessage.min_speed;
-  this->_pos.type = static_cast<PositionType>(protomessage.posType);
-  this->_kick.front = static_cast<bool>(protomessage.front);
-  this->_kick.chip = static_cast<bool>(protomessage.chip);
-  this->_kick.charge = static_cast<bool>(protomessage.charge);
-  this->_kick.kickStrength = protomessage.kickStrength / 10;
-  this->_kick.dribbler = static_cast<bool>(protomessage.dribbler);
-  this->_kick.dribblerSpeed = protomessage.dribSpeed / 10;
-
-  return this->_typeMsg;
-}
-
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
@@ -292,6 +270,7 @@ Command nRF24Communication::getGameState() {
 }
 
 void nRF24Communication::getVectorSpeed(Vector &mSpeed) { mSpeed = this->_v; }
+
 void nRF24Communication::clearSSLData() {
   this->_v.x = 0;
   this->_v.y = 0;
