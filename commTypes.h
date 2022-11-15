@@ -129,7 +129,7 @@ typedef struct KickFlags {
 
 typedef struct RobotPosition {
   Vector v;
-  bool resetOdometry;
+  bool resetOdometry{};
   PositionType type = PositionType::unknown;
   double maxSpeed{};
   double minSpeed{};
@@ -142,6 +142,7 @@ typedef struct RobotPosition {
 
   RobotPosition& operator=(const RobotPosition& a)
   {
+    resetOdometry = a.resetOdometry;
     v = a.v;
     type = a.type;
     maxSpeed = a.maxSpeed;

@@ -280,6 +280,7 @@ void nRF24Communication::clearVSSData() {
 }
 
 Command nRF24Communication::getGameState() { return Command::forceStart; }
+
 Vector nRF24Communication::getVectorSpeed()
 {
   return this->_v;
