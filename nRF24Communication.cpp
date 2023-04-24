@@ -52,8 +52,8 @@ void nRF24Communication::_network(NetworkType network) {
     this->_config.addr[1] = SSL_ADDR_2;
   } else if (network == NetworkType::vss) {
     this->_config.payload = VSS_PAYLOAD_LENGTH;
-    this->_config.receiveChannel = VSS_CHANNEL;
-    this->_config.sendChannel = VSS_CHANNEL; // Future Telemetry
+    this->_config.receiveChannel = VSS_ROBOT_RECV_CHANNEL;
+    this->_config.sendChannel = VSS_ROBOT_SEND_CHANNEL;
 
     this->_config.addr[0] = VSS_ADDR_1;
     this->_config.addr[1] = VSS_ADDR_2;
@@ -145,12 +145,16 @@ bool nRF24Communication::updatePacket()
         {
           // VSS
           this->clearVSSData();
-          std::memcpy(
-              this->_mVSS.encoded, this->_rx.encoded,
-              VSS_SPEED_LENGTH); // require std::, eventual error in copy
-          this->_flags = static_cast<uint8_t>(this->_mVSS.decoded.flags);
-          this->_motorSpeed.m1 = static_cast<int8_t>(this->_mVSS.decoded.leftSpeed);
-          this->_motorSpeed.m2 = static_cast<int8_t>(this->_mVSS.decoded.rightSpeed);
+          std::memcpy(this->_mVSS.encoded, this->_rx.encoded, VSS_SPEED_LENGTH); //require std::, eventual error in copy
+          this->_isPWM = static_cast<bool>(this->_mVSS.decoded.isPWM);
+          if(_isPWM)
+          {
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 100000.0);
+          }else{
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 1000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 1000.0);
+          }
         }
         else if (this->_lastPacketType == msgType::SSL_SPEED)
         {
@@ -237,7 +241,22 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
   return answer;
 }
 
-bool nRF24Communication::sendOdometryPacket(RobotInfo odometry) {
+bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry)
+{
+
+  this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::VSS_TELEMETRY);
+  this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mTelemetryVSS.decoded.m1 = static_cast<int32_t>(telemetry.m1 * 1000);
+  this->_mTelemetryVSS.decoded.m2 = static_cast<int32_t>(telemetry.m2 * 1000);
+  this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
+  this->enable();
+  bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
+  this->disable();
+  return answer;
+}
+
+bool nRF24Communication::sendOdometryPacket(RobotInfo odometry)
+{
   this->_mOdometry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
   this->_mOdometry.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mOdometry.decoded.x = static_cast<int16_t>(odometry.v.x * 1000);
@@ -266,8 +285,9 @@ void nRF24Communication::getDifferentialSpeed(Motors &mSpeed) {
   mSpeed.m2 = this->_motorSpeed.m2;
 }
 
-void nRF24Communication::clearVSSData() {
-  this->_flags = 0;
+void nRF24Communication::clearVSSData()
+{
+  this->_isPWM = 0;
   this->_motorSpeed.m1 = 0;
   this->_motorSpeed.m2 = 0;
 }

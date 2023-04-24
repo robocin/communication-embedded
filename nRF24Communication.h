@@ -39,6 +39,7 @@ public:
   Vector getVectorSpeed();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
+  bool sendVSSTelemetryPacket(VSSRobotInfo telemetryVSS);
   void clearSSLDataSpeed();
   void clearSSLDataPosition();
   void clearSSLDataKick();
@@ -69,6 +70,7 @@ private:
   packetSpeedVSS _mVSS;
   packetSpeedSSL _mSSL;
   packetTelemetry _mTelemetry;
+  packetVSSTelemetry _mTelemetryVSS;
   packetOdometry _mOdometry;
   packetPosition _mPostion;
   packetGeneric _rx;
@@ -79,7 +81,7 @@ private:
   refereeCommand _gameState;
   msgType _lastPacketType;
   Motors _motorSpeed;
-  int _flags;
+  bool _isPWM;
   Vector _v;
   KickFlags _kick;
   RobotPosition _pos;

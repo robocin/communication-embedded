@@ -16,13 +16,14 @@
 #define SSL_ADDR_1 0xABAAADA99ALL
 #define SSL_ADDR_2 0xADAADC9A4BLL
 
-#define VSS_CHANNEL 108
+#define VSS_BASE_RECV_CHANNEL 110
+#define VSS_BASE_SEND_CHANNEL 108
+
+#define VSS_ROBOT_RECV_CHANNEL 108
+#define VSS_ROBOT_SEND_CHANNEL 110
+
 #define VSS_ADDR_1 0x752FAF0A9ALL
 #define VSS_ADDR_2 0x5D4BFBC2BBLL
-
-#define DEEP_CHANNEL 105
-#define DEEP_ADDR_1 0x752FAB239ALL
-#define DEEP_ADDR_2 0x5D4ADC454BLL
 
 #define ACK_RADIO 0
 #define NRF_MAX_PAYLOAD 32
@@ -30,8 +31,9 @@
 // PAYLOAD DEFINITIONS
 #define BST_CONFIG_LENGTH 21
 
-#define VSS_PAYLOAD_LENGTH 10
-#define VSS_SPEED_LENGTH 4
+#define VSS_PAYLOAD_LENGTH 7
+#define VSS_SPEED_LENGTH VSS_PAYLOAD_LENGTH
+#define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
 
 #define SSL_PAYLOAD_LENGTH DEFAULT_PAYLOAD_LENGTH // 15 //
 #define SSL_SPEED_LENGTH DEFAULT_PAYLOAD_LENGTH   // 12 //
@@ -49,6 +51,7 @@ enum class msgType {
   VSS_SPEED,
   SSL_SPEED,
   TELEMETRY,
+  VSS_TELEMETRY,
   ODOMETRY,
   POSITION
 };
@@ -104,14 +107,18 @@ typedef union {
  *  - Message type
  *  - Robot Id
  *  - The left and right motor speeds
+ *  - 
  *  - One byte of free for optional flags.
  */
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int8_t leftSpeed : 8;
-  int8_t rightSpeed : 8;
-  uint8_t flags : 8;
+  int32_t m1 : 18;   // (-131.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm) (clamp(-1.00000, 1.00000) // left motor speed
+  int32_t m2 : 18;   // (-132.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm) (clamp(-1.00000, 1.00000) // right motor speed
+  bool isPWM : 1;    // Bit indication for speed type (00 -> rad/s, 01 -> pwm)
+  uint16_t free : 11;
+  
+
 } packetTypeSpeedVSS;
 
 typedef union packetSpeedVSS {
@@ -212,6 +219,30 @@ typedef union packetTelemetry {
   unsigned char encoded[TELEMETRY_LENGTH];
   packetTypeTelemetry decoded;
 } packetTelemetry;
+
+/**
+ * Structure for sending speeds to bi-directional robot,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - The left and right motor speeds
+ *  - One byte of free for optional flags.
+ */
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  int32_t  m1 : 18;
+  int32_t  m2 : 18;  
+  uint8_t battery : 8;  // 0 - 12.8 V
+  uint8_t free : 4;
+
+} packetTypeVSSTelemetry;
+
+typedef union packetVSSTelemetry {
+  unsigned char encoded[VSS_TELEMETRY_LENGTH];
+  packetTypeVSSTelemetry decoded;
+} packetVSSTelemetry;
 
 /*
  * Structure for send robot basic status and position,
