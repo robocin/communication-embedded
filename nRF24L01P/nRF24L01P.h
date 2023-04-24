@@ -654,15 +654,14 @@ public:
    */
   void printDetails(void);
 
+  bool compareChannel(uint8_t channel);
+
   /**
    * Enter low-power mode
    *
    * To return to normal power mode, either write() some data or
    * startListening, or powerUp().
    */
-
-  bool compareChannel(uint8_t channel);
-
   void powerDown(void);
 
   /**

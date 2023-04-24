@@ -2,44 +2,33 @@
 #define COMM_TYPES_H
 
 /************* AUXILIAR TYPES ************/
-#include <stdint.h>
 #include "commConfig.h"
+#include <stdint.h>
 
-enum class RadioFunction
-{
-  receiver,
-  sender
-};
+enum class RadioFunction { receiver, sender };
 
 /*
  * Network type / catergory configuration
  *  Attencion: Limited in 15
  */
-enum class NetworkType
-{
-  unknown = 0,
-  generic,
-  ssl,
-  vss,
-  rl
-};
+enum class NetworkType { unknown = 0, generic, ssl, vss, rl };
 
 /*
  * Type of the packet position.
  *  Attencion: Limited in 8
  */
-enum class PositionType
-{
+enum class PositionType {
   unknown = 0,
   source,
-  target,
+  stop,
   motionControl,
-  rotateControl,
-  rotateInPoint
+  rotateInPoint,
+  rotateControl
 };
 
-typedef struct
-{
+enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
+
+typedef struct {
   uint8_t payload;
   uint64_t addr[2];
   bool ack;
@@ -50,23 +39,20 @@ typedef struct
   RadioFunction function;
 } NetworkConfig;
 
-typedef struct Motors
-{
+typedef struct Motors {
   double m1 = 0;
   double m2 = 0;
   double m3 = 0;
   double m4 = 0;
 
-  Motors()
-  {
+  Motors() {
     m1 = 0;
     m2 = 0;
     m3 = 0;
     m4 = 0;
   }
 
-  inline Motors operator+(Motors a)
-  {
+  inline Motors operator+(Motors a) {
     Motors b;
     b.m1 = m1 + a.m1;
     b.m2 = m2 + a.m2;
@@ -76,27 +62,24 @@ typedef struct Motors
   }
 } Motors;
 
-typedef struct Vector
-{
+typedef struct Vector {
   double x = 0;
   double y = 0;
   double w = 0;
 
-  Vector()
-  {
+  Vector() {
     x = 0;
     y = 0;
     w = 0;
   }
 
-  Vector(double _x, double _y, double _w){
+  Vector(double _x, double _y, double _w) {
     x = _x;
     y = _y;
     w = _w;
   }
 
-  inline Vector operator+(Vector a)
-  {
+  inline Vector operator+(Vector a) {
     Vector b;
     b.x = x + a.x;
     b.y = y + a.y;
@@ -104,8 +87,7 @@ typedef struct Vector
     return b;
   }
 
-  inline Vector operator-(Vector a)
-  {
+  inline Vector operator-(Vector a) {
     Vector b;
     b.x = x - a.x;
     b.y = y - a.y;
@@ -113,8 +95,7 @@ typedef struct Vector
     return b;
   }
 
-  inline Vector operator*(double a)
-  {
+  inline Vector operator*(double a) {
     Vector b;
     b.x = x * a;
     b.y = y * a;
@@ -123,8 +104,7 @@ typedef struct Vector
   }
 } Vector;
 
-typedef struct KickFlags
-{
+typedef struct KickFlags {
   bool front = false;
   bool chip = false;
   bool charge = false;
@@ -134,8 +114,7 @@ typedef struct KickFlags
   bool bypassIR = false;
   float dribblerSpeed = 0;
 
-  KickFlags &operator=(const KickFlags &a)
-  {
+  KickFlags &operator=(const KickFlags &a) {
     front = a.front;
     chip = a.chip;
     charge = a.charge;
@@ -148,9 +127,9 @@ typedef struct KickFlags
   }
 } KickFlags;
 
-typedef struct RobotPosition
-{
+typedef struct RobotPosition {
   Vector v;
+  bool resetOdometry{};
   PositionType type = PositionType::unknown;
   double maxSpeed{};
   double minSpeed{};
@@ -160,10 +139,25 @@ typedef struct RobotPosition
   bool rotateInClockWise{};
   double orbitRadius{};
   double approachKp{};
+
+  RobotPosition& operator=(const RobotPosition& a)
+  {
+    resetOdometry = a.resetOdometry;
+    v = a.v;
+    type = a.type;
+    maxSpeed = a.maxSpeed;
+    minSpeed = a.minSpeed;
+    rotateKp = a.rotateKp;
+    usingPropSpeed = a.usingPropSpeed;
+    minDistanceToPropSpeed = a.minDistanceToPropSpeed;
+    rotateInClockWise = a.rotateInClockWise;
+    orbitRadius = a.orbitRadius;
+    approachKp = a.approachKp;
+    return *this;
+  }
 } RobotPosition;
 
-typedef struct
-{
+typedef struct {
   int id = -1;
   msgType type;
   Motors m;

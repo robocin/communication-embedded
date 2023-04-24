@@ -6,6 +6,7 @@
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
 #include <commConfig.h>
 #include <commTypes.h>
+#include "utils.h"
 
 class nRF24Communication
 {
@@ -22,10 +23,11 @@ public:
   int updateRobotId(int robotSwIR2_D);
   int getRobotId();
   void printDetails();
+  bool radioStillConfigured();
 
-  msgType updatePacket();
-  int getTypeOfMessage();
-  void showBitsReceived(int payload);
+  bool updatePacket();
+  msgType getPacketType();
+  void showBitsReceived(int payload, unsigned char* data);
   void enable();
   void disable();
 
@@ -34,17 +36,24 @@ public:
   void clearVSSData();
 
   // SSL Info
-  void getVectorSpeed(Vector &mSpeed);
+  Vector getVectorSpeed();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
-  void clearSSLData();
+  void clearSSLDataSpeed();
+  void clearSSLDataPosition();
+  void clearSSLDataKick();
   void getKick(KickFlags &isKick);
   void getPosition(RobotPosition &pos);
+  refereeCommand getGameState();
+  RobotPosition getLastPosition();
 
   // Aux Info
   float getKP();
   float getKD();
   float getAlpha();
+
+  /******** CREATED PUBLIC RX FOR ETHERNET CONFIG ***********/
+  packetGeneric _public_rx;
 
 private:
   RF24 _radio;
@@ -67,6 +76,8 @@ private:
   NetworkConfig _config;
   char _robotId;
   msgType _typeMsg;
+  refereeCommand _gameState;
+  msgType _lastPacketType;
   Motors _motorSpeed;
   int _flags;
   Vector _v;
