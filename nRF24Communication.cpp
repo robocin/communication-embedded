@@ -57,13 +57,6 @@ void nRF24Communication::_network(NetworkType network) {
 
     this->_config.addr[0] = VSS_ADDR_1;
     this->_config.addr[1] = VSS_ADDR_2;
-  } else if (network == NetworkType::rl) {
-    this->_config.payload = VSS_PAYLOAD_LENGTH;
-    this->_config.receiveChannel = DEEP_CHANNEL;
-    this->_config.sendChannel = DEEP_CHANNEL; // Future Telemetry
-
-    this->_config.addr[0] = DEEP_ADDR_1;
-    this->_config.addr[1] = DEEP_ADDR_2;
   }
 }
 
