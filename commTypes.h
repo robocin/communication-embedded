@@ -20,10 +20,10 @@ enum class NetworkType { unknown = 0, generic, ssl, vss, rl };
 enum class PositionType {
   unknown = 0,
   source,
-  driveToTarget,
+  stop,
+  motionControl,
   rotateInPoint,
-  rotateOnSelf,
-  stop
+  rotateControl
 };
 
 enum class Command { halt = 0, stop = 4, forceStart = 11 };
