@@ -329,10 +329,6 @@ void nRF24Communication::getKick(KickFlags &isKick)
   isKick.bypassIR = (_kick.front | _kick.chip) & _kick.charge;
   isKick.dribbler = _kick.dribbler;
   isKick.dribblerSpeed = _kick.dribblerSpeed;
-  // printf("charge %d, chip %d, front %d, force %f, dribbler %d, dribblerSpeed
-  // %f \n",isKick.charge,
-  // isKick.chip,isKick.front,isKick.kickStrength,isKick.dribbler,isKick.dribblerSpeed
-  // );
 }
 
 void nRF24Communication::showBitsReceived(int payload, unsigned char* data){
