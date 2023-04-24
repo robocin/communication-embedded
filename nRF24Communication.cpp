@@ -272,7 +272,7 @@ void nRF24Communication::clearVSSData() {
   this->_motorSpeed.m2 = 0;
 }
 
-Command nRF24Communication::getGameState() { return Command::forceStart; }
+Command nRF24Communication::getGameState() { return this->_gameState; }
 
 Vector nRF24Communication::getVectorSpeed()
 {
