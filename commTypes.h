@@ -26,7 +26,7 @@ enum class PositionType {
   rotateControl
 };
 
-enum class Command { halt = 0, stop = 4, forceStart = 11 };
+enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
 
 typedef struct {
   uint8_t payload;
