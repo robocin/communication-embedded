@@ -15,15 +15,15 @@ enum class NetworkType { unknown = 0, generic, ssl, vss };
 
 /*
  * Type of the packet position.
- *  Attencion: Limited in 8
+ *  Attention: Limited in 8
  */
 enum class PositionType {
   unknown = 0,
   source,
   stop,
   motionControl,
-  rotateInPoint,
-  rotateControl
+  rotateControl,
+  rotateInPoint
 };
 
 enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
