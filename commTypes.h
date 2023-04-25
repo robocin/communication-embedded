@@ -11,19 +11,19 @@ enum class RadioFunction { receiver, sender };
  * Network type / catergory configuration
  *  Attencion: Limited in 15
  */
-enum class NetworkType { unknown = 0, generic, ssl, vss, rl };
+enum class NetworkType { unknown = 0, generic, ssl, vss };
 
 /*
  * Type of the packet position.
- *  Attencion: Limited in 8
+ *  Attention: Limited in 8
  */
 enum class PositionType {
   unknown = 0,
   source,
   stop,
   motionControl,
-  rotateInPoint,
-  rotateControl
+  rotateControl,
+  rotateInPoint
 };
 
 enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
@@ -168,5 +168,14 @@ typedef struct {
   double battery = 0;
   uint8_t count = 0;
 } RobotInfo;
+
+typedef struct
+{
+    int id = -1;
+    msgType type;
+    double m1;
+    double m2;
+    double battery = 0;
+} VSSRobotInfo;
 
 #endif // COMM_TYPES_H
