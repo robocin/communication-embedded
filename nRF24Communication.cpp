@@ -162,7 +162,6 @@ bool nRF24Communication::updatePacket()
           this->clearSSLDataSpeed();
           this->clearSSLDataKick();
           std::memcpy(this->_mSSL.encoded, this->_rx.encoded, SSL_SPEED_LENGTH); //require std::, eventual error in copy
-          this->_gameState = static_cast<refereeCommand>(this->_mSSL.decoded.command);  
           this->_v.x = static_cast<double>((this->_mSSL.decoded.vx) / 10000.0);
           this->_v.y = static_cast<double>((this->_mSSL.decoded.vy) / 10000.0);
           this->_v.w = static_cast<double>((this->_mSSL.decoded.vw) / 10000.0);
@@ -172,6 +171,7 @@ bool nRF24Communication::updatePacket()
           this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed = static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
+          this->_command = static_cast<CommandType>(this->_mSSL.decoded.command);  
         }
         else if (this->_lastPacketType == msgType::POSITION)
         {
@@ -292,7 +292,7 @@ void nRF24Communication::clearVSSData()
   this->_motorSpeed.m2 = 0;
 }
 
-refereeCommand nRF24Communication::getGameState() { return this->_gameState; }
+CommandType nRF24Communication::getCommand() { return this->_command; }
 
 Vector nRF24Communication::getVectorSpeed()
 {

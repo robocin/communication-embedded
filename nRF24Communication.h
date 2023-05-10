@@ -45,7 +45,7 @@ public:
   void clearSSLDataKick();
   void getKick(KickFlags &isKick);
   void getPosition(RobotPosition &pos);
-  refereeCommand getGameState();
+  CommandType getCommand();
   RobotPosition getLastPosition();
 
   // Aux Info
@@ -78,7 +78,7 @@ private:
   NetworkConfig _config;
   char _robotId;
   msgType _typeMsg;
-  refereeCommand _gameState;
+  CommandType _command;
   msgType _lastPacketType;
   Motors _motorSpeed;
   bool _isPWM;
