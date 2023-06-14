@@ -8,11 +8,17 @@
 #include <commTypes.h>
 #include "utils.h"
 
-class nRF24Communication
-{
-public:
+class nRF24Communication {
+ public:
   // Class constructor
-  nRF24Communication(PinName pinMOSI, PinName pinMISO, PinName pinSCK, PinName pinCE, PinName pinCSN, PinName pinVCC, NetworkType network, RadioFunction function);
+  nRF24Communication(PinName pinMOSI,
+                     PinName pinMISO,
+                     PinName pinSCK,
+                     PinName pinCE,
+                     PinName pinCSN,
+                     PinName pinVCC,
+                     NetworkType network,
+                     RadioFunction function);
 
   // Class destructor
   // ~nRF24Communication();
@@ -32,7 +38,7 @@ public:
   void disable();
 
   // VSS Info
-  void getDifferentialSpeed(Motors &mSpeed);
+  void getDifferentialSpeed(Motors& mSpeed);
   void clearVSSData();
 
   // SSL Info
@@ -43,8 +49,8 @@ public:
   void clearSSLDataSpeed();
   void clearSSLDataPosition();
   void clearSSLDataKick();
-  void getKick(KickFlags &isKick);
-  void getPosition(RobotPosition &pos);
+  void getKick(KickFlags& isKick);
+  void getPosition(RobotPosition& pos);
   refereeCommand getGameState();
   RobotPosition getLastPosition();
 
@@ -56,11 +62,11 @@ public:
   /******** CREATED PUBLIC RX FOR ETHERNET CONFIG ***********/
   packetGeneric _public_rx;
 
-private:
+ private:
   RF24 _radio;
   DigitalOut _vcc;
 
-private:
+ private:
   void _network(NetworkType network);
   void _configure();
   void _resetRadio();

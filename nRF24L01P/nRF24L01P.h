@@ -1,24 +1,24 @@
 /*
     Copyright (c) 2007 Stefan Engelke <mbox@stefanengelke.de>
 
-    Permission is hereby granted, free of charge, to any person 
-    obtaining a copy of this software and associated documentation 
-    files (the "Software"), to deal in the Software without 
-    restriction, including without limitation the rights to use, copy, 
-    modify, merge, publish, distribute, sublicense, and/or sell copies 
-    of the Software, and to permit persons to whom the Software is 
+    Permission is hereby granted, free of charge, to any person
+    obtaining a copy of this software and associated documentation
+    files (the "Software"), to deal in the Software without
+    restriction, including without limitation the rights to use, copy,
+    modify, merge, publish, distribute, sublicense, and/or sell copies
+    of the Software, and to permit persons to whom the Software is
     furnished to do so, subject to the following conditions:
 
-    The above copyright notice and this permission notice shall be 
+    The above copyright notice and this permission notice shall be
     included in all copies or substantial portions of the Software.
 
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, 
-    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF 
-    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT 
-    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, 
-    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER 
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
+    HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
+    WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
     DEALINGS IN THE SOFTWARE.
 */
 
@@ -113,10 +113,10 @@
 #define NOP           0xFF
 
 /* Non-P omissions */
-#define LNA_HCURR   0
+#define LNA_HCURR 0
 
 /* P model memory Map */
-#define RPD         0x09
+#define RPD 0x09
 
 /* P model bit Mnemonics */
 #define RF_DR_LOW   5
@@ -124,8 +124,8 @@
 #define RF_PWR_LOW  1
 #define RF_PWR_HIGH 2
 
-#define HIGH        1
-#define LOW         0
+#define HIGH   1
+#define LOW    0
 #define _BV(n) (1 << n)
 
 /*
@@ -143,16 +143,22 @@
  */
 
 #ifndef __RF24_H__
-#define __RF24_H__
+  #define __RF24_H__
 
-#include <mbed.h>
+  #include <mbed.h>
 
 /**
  * Power Amplifier level.
  *
  * For use with setPALevel()
  */
-typedef enum { RF24_PA_MIN = 0,RF24_PA_LOW, RF24_PA_HIGH, RF24_PA_MAX, RF24_PA_ERROR } rf24_pa_dbm_e ;
+typedef enum {
+  RF24_PA_MIN = 0,
+  RF24_PA_LOW,
+  RF24_PA_HIGH,
+  RF24_PA_MAX,
+  RF24_PA_ERROR
+} rf24_pa_dbm_e;
 
 /**
  * Data rate.  How fast data moves through the air.
@@ -172,29 +178,28 @@ typedef enum { RF24_CRC_DISABLED = 0, RF24_CRC_8, RF24_CRC_16 } rf24_crclength_e
  * Driver for nRF24L01(+) 2.4GHz Wireless Transceiver
  */
 
-class RF24
-{
-private:
-  DigitalOut ce_pin; /**< "Chip Enable" pin, activates the RX or TX role */
-  DigitalOut csn_pin; /**< SPI Chip select */
-  bool wide_band; /* 2Mbs data rate in use? */
-  bool p_variant; /* False for RF24L01 and true for RF24L01P */
-  uint8_t payload_size; /**< Fixed size of payloads */
-  bool ack_payload_available; /**< Whether there is an ack payload waiting */
-  bool dynamic_payloads_enabled; /**< Whether dynamic payloads are enabled. */ 
-  uint8_t ack_payload_length; /**< Dynamic size of pending ack payload. */
+class RF24 {
+ private:
+  DigitalOut ce_pin;              /**< "Chip Enable" pin, activates the RX or TX role */
+  DigitalOut csn_pin;             /**< SPI Chip select */
+  bool wide_band;                 /* 2Mbs data rate in use? */
+  bool p_variant;                 /* False for RF24L01 and true for RF24L01P */
+  uint8_t payload_size;           /**< Fixed size of payloads */
+  bool ack_payload_available;     /**< Whether there is an ack payload waiting */
+  bool dynamic_payloads_enabled;  /**< Whether dynamic payloads are enabled. */
+  uint8_t ack_payload_length;     /**< Dynamic size of pending ack payload. */
   uint64_t pipe0_reading_address; /**< Last address set on pipe 0 for reading. */
   SPI spi;
   Timer mainTimer;
 
-protected:
+ protected:
   /**
    * Set chip enable
    *
-   * @param level HIGH to actively begin transmission or LOW to put in standby.  Please see data sheet
-   * for a much more detailed description of this pin.
+   * @param level HIGH to actively begin transmission or LOW to put in standby.  Please see data
+   * sheet for a much more detailed description of this pin.
    */
-  void ce(int level); 
+  void ce(int level);
   /**
    * Read a chunk of data in from a register
    *
@@ -254,7 +259,6 @@ protected:
    */
   uint8_t read_payload(void* buf, uint8_t len);
 
-
   /**
    * Decode and print the given status to stdout
    *
@@ -308,7 +312,7 @@ protected:
   void toggle_features(void);
   /**@}*/
 
-public: 
+ public:
   /**
    * @name Primary public interface
    *
@@ -333,7 +337,7 @@ public:
    * Call this in setup(), before calling any other methods.
    */
   void begin(void);
-  
+
   /**
    * Set chip select pin
    *
@@ -346,13 +350,13 @@ public:
    */
   void csn(int mode);
 
-    /**
+  /**
    * Retrieve the current status of the chip
    *
    * @return Current value of status register
    */
   uint8_t get_status(void);
-    
+
   /**
    * Empty the receive buffer
    *
@@ -401,7 +405,7 @@ public:
    * @param len Number of bytes to be sent
    * @return True if the payload was delivered successfully false if not
    */
-  bool write( const void* buf, uint8_t len );
+  bool write(const void* buf, uint8_t len);
 
   /**
    * Test whether there are bytes available to be read
@@ -424,7 +428,7 @@ public:
    * @param len Maximum number of bytes to read into the buffer
    * @return True if the payload was delivered successfully false if not
    */
-  bool read( void* buf, uint8_t len );
+  bool read(void* buf, uint8_t len);
 
   /**
    * Open a pipe for writing
@@ -474,7 +478,7 @@ public:
 
   /**@}*/
   /**
-   * @name Optional Configurators 
+   * @name Optional Configurators
    *
    *  Methods you can use to get or set the configuration of the chip.
    *  None are required.  Calling begin() sets up a reasonable set of
@@ -529,7 +533,7 @@ public:
    * @return Payload length of last-received dynamic payload
    */
   uint8_t getDynamicPayloadSize(void);
-  
+
   /**
    * Enable custom payloads on the acknowledge packets
    *
@@ -556,7 +560,7 @@ public:
    * @return true if the hardware is nRF24L01+ (or compatible) and false
    * if its not.
    */
-  bool isPVariant(void) ;
+  bool isPVariant(void);
 
   /**
    * Enable or disable auto-acknowlede packets
@@ -577,7 +581,7 @@ public:
    * @param pipe Which pipeline to modify
    * @param enable Whether to enable (true) or disable (false) auto-acks
    */
-  void setAutoAck( uint8_t pipe, bool enable ) ;
+  void setAutoAck(uint8_t pipe, bool enable);
 
   /**
    * Set Power Amplifier (PA) level to one of four levels.
@@ -588,7 +592,7 @@ public:
    *
    * @param level Desired PA level.
    */
-  void setPALevel( rf24_pa_dbm_e level ) ;
+  void setPALevel(rf24_pa_dbm_e level);
 
   /**
    * Fetches the current PA level.
@@ -598,7 +602,7 @@ public:
    * by the enum mnemonics are negative dBm. See setPALevel for
    * return value descriptions.
    */
-  rf24_pa_dbm_e getPALevel( void ) ;
+  rf24_pa_dbm_e getPALevel(void);
 
   /**
    * Set the transmission data rate
@@ -609,7 +613,7 @@ public:
    * @return true if the change was successful
    */
   bool setDataRate(rf24_datarate_e speed);
-  
+
   /**
    * Fetches the transmission data rate
    *
@@ -617,7 +621,7 @@ public:
    * is one of 250kbs, RF24_1MBPS for 1Mbps, or RF24_2MBPS, as defined in the
    * rf24_datarate_e enum.
    */
-  rf24_datarate_e getDataRate( void ) ;
+  rf24_datarate_e getDataRate(void);
 
   /**
    * Set the CRC length
@@ -637,13 +641,13 @@ public:
    * Disable CRC validation
    *
    */
-  void disableCRC( void ) ;
+  void disableCRC(void);
 
   /**@}*/
   /**
-   * @name Advanced Operation 
+   * @name Advanced Operation
    *
-   *  Methods you can use to drive the chip in more advanced ways 
+   *  Methods you can use to drive the chip in more advanced ways
    */
   /**@{*/
 
@@ -669,7 +673,7 @@ public:
    *
    * To return to low power mode, call powerDown().
    */
-  void powerUp(void) ;
+  void powerUp(void);
 
   /**
    * Test whether there are bytes available to be read
@@ -695,7 +699,7 @@ public:
    * @param len Number of bytes to be sent
    * @return True if the payload was delivered successfully false if not
    */
-  void startWrite( const void* buf, uint8_t len );
+  void startWrite(const void* buf, uint8_t len);
 
   /**
    * Write an ack payload for the specified pipe
@@ -738,11 +742,11 @@ public:
    * @param[out] tx_fail The send failed, too many retries (MAX_RT)
    * @param[out] rx_ready There is a message waiting to be read (RX_DS)
    */
-  void whatHappened(bool& tx_ok,bool& tx_fail,bool& rx_ready);
+  void whatHappened(bool& tx_ok, bool& tx_fail, bool& rx_ready);
 
   bool isChipConnected(void);
 
-  /** 
+  /**
    * Test whether there was a carrier on the line for the
    * previous listening period.
    *
@@ -762,11 +766,10 @@ public:
    *
    * @return true if signal => -64dBm, false if not
    */
-  bool testRPD(void) ;
-  
+  bool testRPD(void);
+
   uint8_t min(uint8_t, uint8_t);
 };
-
 
 #endif // __RF24_H__
 // vim:ai:cin:sts=2 sw=2 ft=cpp
