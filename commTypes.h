@@ -17,14 +17,7 @@ enum class NetworkType { unknown = 0, generic, ssl, vss };
  * Type of the packet position.
  *  Attention: Limited in 8
  */
-enum class PositionType {
-  unknown = 0,
-  source,
-  stop,
-  motionControl,
-  rotateControl,
-  rotateInPoint
-};
+enum class PositionType { unknown = 0, source, stop, motionControl, rotateControl, rotateInPoint };
 
 enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
 
@@ -114,7 +107,7 @@ typedef struct KickFlags {
   bool bypassIR = false;
   float dribblerSpeed = 0;
 
-  KickFlags &operator=(const KickFlags &a) {
+  KickFlags& operator=(const KickFlags& a) {
     front = a.front;
     chip = a.chip;
     charge = a.charge;
@@ -140,8 +133,7 @@ typedef struct RobotPosition {
   double orbitRadius{};
   double approachKp{};
 
-  RobotPosition& operator=(const RobotPosition& a)
-  {
+  RobotPosition& operator=(const RobotPosition& a) {
     resetOdometry = a.resetOdometry;
     v = a.v;
     type = a.type;
@@ -169,13 +161,12 @@ typedef struct {
   uint8_t count = 0;
 } RobotInfo;
 
-typedef struct
-{
-    int id = -1;
-    msgType type;
-    double m1;
-    double m2;
-    double battery = 0;
+typedef struct {
+  int id = -1;
+  msgType type;
+  double m1;
+  double m2;
+  double battery = 0;
 } VSSRobotInfo;
 
 #endif // COMM_TYPES_H

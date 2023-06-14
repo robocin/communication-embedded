@@ -25,21 +25,21 @@
 #define VSS_ADDR_1 0x752FAF0A9ALL
 #define VSS_ADDR_2 0x5D4BFBC2BBLL
 
-#define ACK_RADIO 0
+#define ACK_RADIO       0
 #define NRF_MAX_PAYLOAD 32
 
 // PAYLOAD DEFINITIONS
 #define BST_CONFIG_LENGTH 21
 
-#define VSS_PAYLOAD_LENGTH 7
-#define VSS_SPEED_LENGTH VSS_PAYLOAD_LENGTH
+#define VSS_PAYLOAD_LENGTH   7
+#define VSS_SPEED_LENGTH     VSS_PAYLOAD_LENGTH
 #define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
 
 #define SSL_PAYLOAD_LENGTH DEFAULT_PAYLOAD_LENGTH // 15 //
-#define SSL_SPEED_LENGTH DEFAULT_PAYLOAD_LENGTH   // 12 //
-#define POSITION_LENGTH DEFAULT_PAYLOAD_LENGTH    // 9 //
-#define TELEMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH   // 13 //
-#define ODOMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH    // 11 //
+#define SSL_SPEED_LENGTH   DEFAULT_PAYLOAD_LENGTH // 12 //
+#define POSITION_LENGTH    DEFAULT_PAYLOAD_LENGTH // 9 //
+#define TELEMETRY_LENGTH   DEFAULT_PAYLOAD_LENGTH // 13 //
+#define ODOMETRY_LENGTH    DEFAULT_PAYLOAD_LENGTH // 11 //
 
 #define DEFAULT_PAYLOAD_LENGTH 20
 
@@ -107,17 +107,18 @@ typedef union {
  *  - Message type
  *  - Robot Id
  *  - The left and right motor speeds
- *  - 
+ *  -
  *  - One byte of free for optional flags.
  */
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int32_t m1 : 18;   // (-131.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm) (clamp(-1.00000, 1.00000) // left motor speed
-  int32_t m2 : 18;   // (-132.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm) (clamp(-1.00000, 1.00000) // right motor speed
-  bool isPWM : 1;    // Bit indication for speed type (00 -> rad/s, 01 -> pwm)
+  int32_t m1 : 18; // (-131.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
+                   // (clamp(-1.00000, 1.00000) // left motor speed
+  int32_t m2 : 18; // (-132.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
+                   // (clamp(-1.00000, 1.00000) // right motor speed
+  bool isPWM : 1;  // Bit indication for speed type (00 -> rad/s, 01 -> pwm)
   uint16_t free : 11;
-  
 
 } packetTypeSpeedVSS;
 
@@ -178,9 +179,9 @@ typedef struct {
   uint16_t rotateKp : 10; // 0 - 10.23
   uint8_t usingPropSpeed : 1;
   uint16_t minDistanceToPropSpeed : 12; // 0 - 4.095 m
-  uint8_t clockwise : 1;     // In goToPoint it is High Acceleration flag
-  uint16_t orbitRadius : 12; // 0 - 4.095 m // Custom Acceleration in goToPoint
-  uint16_t approachKp : 10;  // 0 - 10.23
+  uint8_t clockwise : 1;                // In goToPoint it is High Acceleration flag
+  uint16_t orbitRadius : 12;            // 0 - 4.095 m // Custom Acceleration in goToPoint
+  uint16_t approachKp : 10;             // 0 - 10.23
   uint8_t positionType : 3;
   // Kick Options
   uint8_t front : 1;
@@ -228,13 +229,12 @@ typedef union packetTelemetry {
  *  - The left and right motor speeds
  *  - One byte of free for optional flags.
  */
-typedef struct
-{
+typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int32_t  m1 : 18;
-  int32_t  m2 : 18;  
-  uint8_t battery : 8;  // 0 - 12.8 V
+  int32_t m1 : 18;
+  int32_t m2 : 18;
+  uint8_t battery : 8; // 0 - 12.8 V
   uint8_t free : 4;
 
 } packetTypeVSSTelemetry;
