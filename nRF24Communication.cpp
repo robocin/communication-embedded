@@ -179,6 +179,8 @@ bool nRF24Communication::updatePacket() {
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed =
               static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
+          this->_moveIsLocked = static_cast<bool>(this->_mSSL.decoded.robotLockedToMove);
+          this->_criticalMoveTurbo = static_cast<bool>(this->_mSSL.decoded.criticalMoveTurbo);
         } else if (this->_lastPacketType == msgType::POSITION) {
           this->clearSSLDataPosition();
           this->clearSSLDataKick();
@@ -302,6 +304,8 @@ void nRF24Communication::clearSSLDataSpeed() {
   this->_v.x = 0;
   this->_v.y = 0;
   this->_v.w = 0;
+  this->_moveIsLocked = false;
+  this->_criticalMoveTurbo = false;
 }
 
 void nRF24Communication::clearSSLDataPosition() {
@@ -374,4 +378,12 @@ float nRF24Communication::getKD() {
 }
 float nRF24Communication::getAlpha() {
   return _alpha;
+}
+
+bool nRF24Communication::robotMoveIsLocked() {
+  return _moveIsLocked;
+}
+
+bool nRF24Communication::robotMoveCriticalTurbo() {
+  return _criticalMoveTurbo;
 }

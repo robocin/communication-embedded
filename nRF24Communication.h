@@ -53,6 +53,8 @@ class nRF24Communication {
   void getPosition(RobotPosition& pos);
   refereeCommand getGameState();
   RobotPosition getLastPosition();
+  bool robotMoveIsLocked();
+  bool robotMoveCriticalTurbo();
 
   // Aux Info
   float getKP();
@@ -89,6 +91,8 @@ class nRF24Communication {
   Motors _motorSpeed;
   bool _isPWM;
   Vector _v;
+  bool _moveIsLocked;
+  bool _criticalMoveTurbo;
   KickFlags _kick;
   RobotPosition _pos;
   float _kp, _kd, _ki, _alpha;
