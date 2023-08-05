@@ -1,7 +1,6 @@
 #include "nRF24Communication.h"
 #include "commConfig.h"
 #include "commTypes.h"
-#include <cstdint>
 
 nRF24Communication::nRF24Communication(PinName pinMOSI,
                                        PinName pinMISO,
