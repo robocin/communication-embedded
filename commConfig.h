@@ -316,7 +316,7 @@ typedef struct {
 } packetTypeDebug;
 
 typedef union packetDebug {
-  unsigned char encoded[ODOMETRY_LENGTH];
+  unsigned char encoded[DEBUG_LENGTH];
   packetTypeDebug decoded;
 } packetDebug;
 
