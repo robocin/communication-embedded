@@ -53,7 +53,8 @@ enum class msgType {
   TELEMETRY,
   VSS_TELEMETRY,
   ODOMETRY,
-  POSITION
+  POSITION,
+  DEBUG
 };
 
 typedef struct {
@@ -277,6 +278,47 @@ typedef union packetOdometry {
   unsigned char encoded[ODOMETRY_LENGTH];
   packetTypeOdometry decoded;
 } packetOdometry;
+
+/*
+ * Structure for send debug to robot,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - Dribbler speed.
+ *  - Kick strenght.
+ *  - Should use chip kick.
+ *  - Same speed to all motors.
+ *  - Motor 1 speed.
+ *  - Motor 2 speed.
+ *  - Motor 3 speed.
+ *  - Motor 4 speed.
+ *  - Buzz for infrared.
+ *  - Buzz for infrared by threshold distance.
+ *  - Buzz for IMU rotations.
+ */
+typedef struct {
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  int16_t dribblerSpeed : 15;
+  uint8_t kickStrength : 8;
+  bool isChipKick : 1;
+  int16_t motorSpeed : 16;
+  int16_t m4 : 16;     
+  int16_t m1 : 16;
+  int16_t m2 : 16;
+  int16_t m3 : 16;
+  bool infrared : 1;   
+  uint8_t infraredDistance : 8;
+  bool imu : 1;
+  uint8_t pcktCount : 8; // @duvida: o que é esse parâmetro?
+
+} packetTypeDebug;
+
+typedef union packetDebug {
+  unsigned char encoded[ODOMETRY_LENGTH];
+  packetTypeDebug decoded;
+} packetDebug;
+
 
 // restoring the standard alignment
 #pragma pack(pop)
