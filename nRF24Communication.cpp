@@ -1,5 +1,7 @@
 #include "nRF24Communication.h"
+#include "commConfig.h"
 #include "commTypes.h"
+#include <cstdint>
 
 nRF24Communication::nRF24Communication(PinName pinMOSI,
                                        PinName pinMISO,
@@ -276,6 +278,27 @@ bool nRF24Communication::sendOdometryPacket(RobotInfo odometry) {
   this->enable();
   bool answer = this->_radio.write(this->_mOdometry.encoded, ODOMETRY_LENGTH);
   this->disable();
+  return answer;
+}
+
+bool nRF24Communication::sendDebugPacket(DebugInfo debug) {
+  this->_mDebug.decoded.typeMsg = static_cast<uint8_t>(msgType::DEBUG);
+  this->_mDebug.decoded.id = static_cast<uint8_t>(debug.id);
+  this->_mDebug.decoded.dribblerSpeed = static_cast<int16_t>(debug.dribblerSpeed * 10);
+  this->_mDebug.decoded.kickStrength = static_cast<int16_t>(debug.kickStrength / 10);
+  this->_mDebug.decoded.isChipKick = static_cast<bool>(debug.isChipKick);
+  this->_mDebug.decoded.motorSpeed = static_cast<uint16_t>(debug.motorSpeed);
+  this->_mDebug.decoded.m1 = static_cast<int16_t>(debug.m.m1);
+  this->_mDebug.decoded.m2 = static_cast<int16_t>(debug.m.m2);
+  this->_mDebug.decoded.m3 = static_cast<int16_t>(debug.m.m3);
+  this->_mDebug.decoded.m4 = static_cast<int16_t>(debug.m.m4);
+  this->_mDebug.decoded.infrared = static_cast<bool>(debug.infrared);
+  this->_mDebug.decoded.infraredDistance = static_cast<uint8_t>(debug.infraredDistance);
+  this->_mDebug.decoded.pcktCount = static_cast<uint8_t>(debug.count);
+  this->enable();
+  bool answer = this->_radio.write(this->_mDebug.encoded, DEBUG_LENGTH);
+  this->disable();
+  
   return answer;
 }
 

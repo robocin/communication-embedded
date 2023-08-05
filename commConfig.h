@@ -301,17 +301,17 @@ typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int16_t dribblerSpeed : 15;
-  uint8_t kickStrength : 8;
+  int16_t kickStrength : 8;
   bool isChipKick : 1;
   int16_t motorSpeed : 16;
-  int16_t m4 : 16;     
-  int16_t m1 : 16;
+  int16_t m1: 16;     
   int16_t m2 : 16;
   int16_t m3 : 16;
+  int16_t m4 : 16;
   bool infrared : 1;   
   uint8_t infraredDistance : 8;
   bool imu : 1;
-  uint8_t pcktCount : 8; // @duvida: o que é esse parâmetro?
+  uint8_t pcktCount : 8;
 
 } packetTypeDebug;
 
