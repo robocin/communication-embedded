@@ -162,6 +162,20 @@ typedef struct {
 } RobotInfo;
 
 typedef struct {
+  msgType type;
+  int id;
+  double dribblerSpeed = 0;
+  int kickStrength = 0;
+  bool isChipKick = false;
+  double motorSpeed = 0;
+  Motors m;
+  bool infrared = false;
+  int infraredDistance = -1;
+  bool imu = false;
+  uint8_t count = 0;
+} DebugInfo;
+
+typedef struct {
   int id = -1;
   msgType type;
   double m1;

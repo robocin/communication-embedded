@@ -45,6 +45,7 @@ class nRF24Communication {
   Vector getVectorSpeed();
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
+  bool sendDebugPacket(DebugInfo debug);
   bool sendVSSTelemetryPacket(VSSRobotInfo telemetryVSS);
   void clearSSLDataSpeed();
   void clearSSLDataPosition();
@@ -80,6 +81,7 @@ class nRF24Communication {
   packetOdometry _mOdometry;
   packetPosition _mPostion;
   packetGeneric _rx;
+  packetDebug _mDebug;
 
   NetworkConfig _config;
   char _robotId;
