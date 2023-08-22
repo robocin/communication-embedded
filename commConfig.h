@@ -53,7 +53,8 @@ enum class msgType {
   TELEMETRY,
   VSS_TELEMETRY,
   ODOMETRY,
-  POSITION
+  POSITION,
+  SSL_MOTORS_PWM
 };
 
 typedef struct {
