@@ -6,7 +6,6 @@
 #include <nRF24L01P/nRF24L01P.h> // nRF2401 libarary found at https://github.com/tmrh20/RF24/
 #include <commConfig.h>
 #include <commTypes.h>
-#include "utils.h"
 
 class nRF24Communication {
  public:

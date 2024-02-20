@@ -61,7 +61,7 @@ void nRF24Communication::_network(NetworkType network) {
   }
 }
 
-void nRF24Communication::_configure(RadioFunction function) {
+void nRF24Communication::_configure() {
   this->_radio.begin(); // Start the nRF24 module
   this->_radio.setPALevel(RF24_PA_MAX);
   this->_radio.setDataRate(RF24_2MBPS);
@@ -216,7 +216,6 @@ bool nRF24Communication::updatePacket() {
   } else {
     this->_resetRadio();
     this->_configure();
-    utils::beep(100); // warning reset signal
   }
   this->disable();
   return false;
