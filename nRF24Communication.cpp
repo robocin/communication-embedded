@@ -6,23 +6,20 @@ nRF24Communication::nRF24Communication(PinName pinMOSI,
                                        PinName pinSCK,
                                        PinName pinCE,
                                        PinName pinCSN,
-                                       PinName pinVCC,
-                                       NetworkType network,
-                                       RadioFunction function) :
+                                       PinName pinVCC) :
     _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE),
     _vcc(pinVCC) {
   this->_vcc = 1;
-
-  this->_config.function = function;
-  this->_network(network);
   this->disable();
 }
 
-int nRF24Communication::setup(int robotSwitches) {
+int nRF24Communication::setup(int robotSwitches, NetworkType network, RadioFunction function) {
+  this->_config.function = function;
   if (this->updateRobotId(robotSwitches) < 0) {
     return -1;
   }
   this->enable();
+  this->_network(network);
   this->_configure();
   this->disable();
   return 0;
@@ -64,7 +61,7 @@ void nRF24Communication::_network(NetworkType network) {
   }
 }
 
-void nRF24Communication::_configure() {
+void nRF24Communication::_configure(RadioFunction function) {
   this->_radio.begin(); // Start the nRF24 module
   this->_radio.setPALevel(RF24_PA_MAX);
   this->_radio.setDataRate(RF24_2MBPS);

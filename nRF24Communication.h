@@ -16,14 +16,12 @@ class nRF24Communication {
                      PinName pinSCK,
                      PinName pinCE,
                      PinName pinCSN,
-                     PinName pinVCC,
-                     NetworkType network,
-                     RadioFunction function);
+                     PinName pinVCC = NC);
 
   // Class destructor
   // ~nRF24Communication();
 
-  int setup(int robotSwitches);
+  int setup(int robotSwitches, NetworkType network, RadioFunction function);
   bool resetRadio();
   bool compareChannel(uint8_t channel);
   int updateRobotId(int robotSwIR2_D);
