@@ -221,6 +221,10 @@ bool nRF24Communication::updatePacket() {
   return false;
 }
 
+bool nRF24Communication::sendPacket(unsigned char* data, uint16_t size) {
+  return this->_radio.write(data, size);
+}
+
 bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);

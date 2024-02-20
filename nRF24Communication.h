@@ -40,6 +40,7 @@ class nRF24Communication {
 
   // SSL Info
   Vector getVectorSpeed();
+  bool sendPacket(unsigned char* data, uint16_t size);
   bool sendTelemetryPacket(RobotInfo telemetry);
   bool sendOdometryPacket(RobotInfo odometry);
   bool sendVSSTelemetryPacket(VSSRobotInfo telemetryVSS);
