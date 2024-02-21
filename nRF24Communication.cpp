@@ -7,9 +7,9 @@ nRF24Communication::nRF24Communication(PinName pinMOSI,
                                        PinName pinCE,
                                        PinName pinCSN,
                                        PinName pinVCC) :
-    _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE),
-    _vcc(pinVCC) {
-  this->_vcc = 1;
+    _radio(pinMOSI, pinMISO, pinSCK, pinCSN, pinCE), _vcc(pinVCC) {
+  if(pinVCC != NC)
+    this->_vcc = 1;
   this->disable();
 }
 
