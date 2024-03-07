@@ -36,10 +36,10 @@
 #define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
 
 #define SSL_PAYLOAD_LENGTH DEFAULT_PAYLOAD_LENGTH // 15 //
-#define SSL_SPEED_LENGTH   DEFAULT_PAYLOAD_LENGTH // 12 //
-#define POSITION_LENGTH    DEFAULT_PAYLOAD_LENGTH // 9 //
-#define TELEMETRY_LENGTH   DEFAULT_PAYLOAD_LENGTH // 13 //
-#define ODOMETRY_LENGTH    DEFAULT_PAYLOAD_LENGTH // 11 //
+#define SSL_SPEED_LENGTH DEFAULT_PAYLOAD_LENGTH   // 12 //
+#define POSITION_LENGTH DEFAULT_PAYLOAD_LENGTH    // 9 //
+#define TELEMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH   // 13 //
+#define ODOMETRY_LENGTH DEFAULT_PAYLOAD_LENGTH    // 11 //
 
 #define DEFAULT_PAYLOAD_LENGTH 20
 
@@ -54,7 +54,8 @@ enum class msgType {
   VSS_TELEMETRY,
   ODOMETRY,
   POSITION,
-  SSL_MOTORS_PWM
+  SSL_MOTORS_PWM,
+  BST_REQ_CONFIG
 };
 
 typedef struct {
@@ -150,9 +151,7 @@ typedef struct {
   uint8_t dribbler : 1;
   int16_t dribblerSpeed : 11;
   uint8_t command : 8;
-  uint8_t robotLockedToMove : 1;
-  uint8_t criticalMoveTurbo : 1;
-  uint64_t free_1 : 59;
+  uint64_t free_1 : 29;
 
 } packetTypeSpeedSSL;
 
