@@ -281,6 +281,45 @@ typedef union packetOdometry {
   packetTypeOdometry decoded;
 } packetOdometry;
 
+/*
+ * Structure for send robot basic status and current,
+ * This type sends:
+ *  - Message type
+ *  - Robot Id
+ *  - Motors current
+ *  - Dribbler speed and its speed.
+ *  - Kick capacitor load.
+ *  - Ball on robot?
+ *  - Battery load.
+ *  - Notors speed
+ */
+typedef struct {
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  uint16_t current_m1 : 12;        // 0 - 50.00 A
+  uint16_t current_m2 : 12;        // 0 - 50.00 A
+  uint16_t current_m3 : 12;        // 0 - 50.00 A
+  uint16_t current_m4 : 12;
+  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8;  // 0 - 2.55
+  bool ball : 1;
+  uint8_t battery : 8;   // 0 - 25.5 V
+  int16_t m1 : 16;       // -327.67 - 327.67 m/s
+  int16_t m2 : 16;       // -327.67 - 327.67 m/s
+  int16_t m3 : 16;       // -327.67 - 327.67 m/s
+  int16_t m4 : 16;       // -327.67 - 327.67 m/s
+  uint8_t pcktCount : 8;
+
+} packetTypeNewTelemetry;
+
+typedef union packetNewTelemetry {
+  unsigned char encoded[TELEMETRY_LENGTH];
+  packetTypeNewTelemetry decoded;
+} packetNewTelemetry;
+
+
+
+
 // restoring the standard alignment
 #pragma pack(pop)
 

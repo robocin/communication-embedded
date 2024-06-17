@@ -281,6 +281,28 @@ bool nRF24Communication::sendOdometryPacket(RobotInfo odometry) {
   return answer;
 }
 
+bool nRF24Communication::sendNewPacket(RobotInfo odometry) {
+  this->_mNewTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::ODOMETRY);
+  this->_mNewTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mNewTelemetry.decoded.current_m1 = static_cast<uint16_t>(odometry.current.m1 * 100);
+  this->_mNewTelemetry.decoded.current_m2 = static_cast<uint16_t>(odometry.current.m2 * 100);
+  this->_mNewTelemetry.decoded.current_m3 = static_cast<uint16_t>(odometry.current.m3 * 100);
+  this->_mNewTelemetry.decoded.current_m4 = static_cast<uint16_t>(odometry.current.m4 * 100);
+  this->_mNewTelemetry.decoded.dribbler = static_cast<uint16_t>(odometry.dribbler * 10);
+  this->_mNewTelemetry.decoded.kickLoad = static_cast<uint8_t>(odometry.kickLoad * 100);
+  this->_mNewTelemetry.decoded.ball = static_cast<bool>(odometry.ball);
+  this->_mNewTelemetry.decoded.battery = static_cast<uint8_t>(odometry.battery * 10);
+  this->_mNewTelemetry.decoded.m1 = static_cast<int16_t>(odometry.m.m1 * 100);
+  this->_mNewTelemetry.decoded.m2 = static_cast<int16_t>(odometry.m.m2 * 100);
+  this->_mNewTelemetry.decoded.m3 = static_cast<int16_t>(odometry.m.m3 * 100);
+  this->_mNewTelemetry.decoded.m4 = static_cast<int16_t>(odometry.m.m4 * 100);
+  this->_mNewTelemetry.decoded.pcktCount = static_cast<uint8_t>(odometry.count);
+  this->enable();
+  bool answer = this->_radio.write(this->_mNewTelemetry.encoded, ODOMETRY_LENGTH);
+  this->disable();
+  return answer;
+}
+
 void nRF24Communication::getDifferentialSpeed(Motors& mSpeed) {
   mSpeed.m1 = this->_motorSpeed.m1;
   mSpeed.m2 = this->_motorSpeed.m2;
