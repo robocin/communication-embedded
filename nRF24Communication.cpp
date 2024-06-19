@@ -229,10 +229,10 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mNewTelemetry.decoded.current_m1 = static_cast<uint16_t>(telemetry.current.m1 * 100);
-  this->_mNewTelemetry.decoded.current_m2 = static_cast<uint16_t>(telemetry.current.m2 * 100);
-  this->_mNewTelemetry.decoded.current_m3 = static_cast<uint16_t>(telemetry.current.m3 * 100);
-  this->_mNewTelemetry.decoded.current_m4 = static_cast<uint16_t>(telemetry.current.m4 * 100);
+  this->_mTelemetry.decoded.current_m1 = static_cast<uint16_t>(telemetry.current.m1 * 100);
+  this->_mTelemetry.decoded.current_m2 = static_cast<uint16_t>(telemetry.current.m2 * 100);
+  this->_mTelemetry.decoded.current_m3 = static_cast<uint16_t>(telemetry.current.m3 * 100);
+  this->_mTelemetry.decoded.current_m4 = static_cast<uint16_t>(telemetry.current.m4 * 100);
   this->_mTelemetry.decoded.dribbler = static_cast<int16_t>(telemetry.dribbler * 10);
   this->_mTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
   this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
