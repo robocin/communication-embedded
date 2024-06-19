@@ -153,6 +153,7 @@ typedef struct {
   int id = -1;
   msgType type;
   Motors m;
+  Motors current;
   Vector v;
   double dribbler = 0;
   double kickLoad = 0;
