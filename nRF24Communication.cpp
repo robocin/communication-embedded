@@ -220,6 +220,7 @@ bool nRF24Communication::updatePacket() {
     this->_resetRadio();
     this->_configure();
     utils::beep(100); // warning reset signal
+    printf("reseting receive radio...\n");
   }
   this->disable();
   return false;
