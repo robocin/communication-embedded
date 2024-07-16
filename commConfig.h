@@ -6,12 +6,20 @@
 #include <cstdint>
 #include <stdint.h>
 
+/*
+Base frequency 2400
+Highest frequency 2525
+Channels 126
+
+Channel to frequency = 2400 + CHANNEL_NUM
+*/
+
 // NRF Config Defitions
 #define SSL_1_BASE_SEND_CH 103
-#define SSL_2_BASE_RECV_CH 115
+#define SSL_2_BASE_RECV_CH 114
 
 #define SSL_1_ROBOT_RECV_CH 103
-#define SSL_2_ROBOT_SEND_CH 115
+#define SSL_2_ROBOT_SEND_CH 114
 
 #define SSL_ADDR_1 0xABAAADA99ALL
 #define SSL_ADDR_2 0xADAADC9A4BLL
