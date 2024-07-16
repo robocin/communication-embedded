@@ -19,7 +19,13 @@ enum class NetworkType { unknown = 0, generic, ssl, vss };
  */
 enum class PositionType { unknown = 0, source, stop, motionControl, rotateControl, rotateInPoint };
 
-enum class refereeCommand { halt = 0, stop = 4, forceStart = 11 };
+enum class refereeCommand {
+  halt = 0,
+  stop = 4,
+  forceStart = 11,
+  ballPlacementYellow = 16,
+  ballPlacementBlue = 17
+};
 
 typedef struct {
   uint8_t payload;
