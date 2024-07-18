@@ -178,7 +178,7 @@ bool nRF24Communication::updatePacket() {
           this->_kick.kickStrength = static_cast<float>((this->_mSSL.decoded.kickStrength) / 10.0);
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed =
-              static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
+              static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 1000.0); //TODO: remove this change -> this is a workaround to use the dribbler speed message to adjust IR_THRESHOLD remotly
           this->_moveIsLocked = static_cast<bool>(this->_mSSL.decoded.robotLockedToMove);
           this->_criticalMoveTurbo = static_cast<bool>(this->_mSSL.decoded.criticalMoveTurbo);
         } else if (this->_lastPacketType == msgType::POSITION) {
