@@ -17,7 +17,15 @@ enum class NetworkType { unknown = 0, generic, ssl, vss };
  * Type of the packet position.
  *  Attention: Limited in 8
  */
-enum class PositionType { unknown = 0, source, stop, motionControl, rotateControl, rotateInPoint };
+enum class PositionType {
+  unknown = 0,
+  source,
+  stop,
+  motionControl,
+  rotateControl,
+  rotateInPoint,
+  newMotionControl
+};
 
 enum class refereeCommand {
   halt = 0,
@@ -78,7 +86,7 @@ typedef struct Vector {
     w = _w;
   }
 
-  inline Vector operator+(Vector a) {
+  inline Vector operator+(const Vector& a) const {
     Vector b;
     b.x = x + a.x;
     b.y = y + a.y;
@@ -86,7 +94,7 @@ typedef struct Vector {
     return b;
   }
 
-  inline Vector operator-(Vector a) {
+  inline Vector operator-(const Vector& a) const {
     Vector b;
     b.x = x - a.x;
     b.y = y - a.y;
@@ -94,7 +102,7 @@ typedef struct Vector {
     return b;
   }
 
-  inline Vector operator*(double a) {
+  inline Vector operator*(const double a) const {
     Vector b;
     b.x = x * a;
     b.y = y * a;
