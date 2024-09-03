@@ -24,7 +24,7 @@ enum class PositionType {
   motionControl,
   rotateControl,
   rotateInPoint,
-  newMotionControl
+  globalMotionControl
 };
 
 enum class refereeCommand {
