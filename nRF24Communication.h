@@ -55,6 +55,7 @@ class nRF24Communication {
   RobotPosition getLastPosition();
   bool robotMoveIsLocked();
   bool robotMoveCriticalTurbo();
+  bool getGlobalVelocityFlag();
 
   // Aux Info
   float getKP();
@@ -96,6 +97,9 @@ class nRF24Communication {
   KickFlags _kick;
   RobotPosition _pos;
   float _kp, _kd, _ki, _alpha;
+
+  Pose _pose;
+  bool _is_global_velocity;
 };
 
 #endif // NRF_COMM

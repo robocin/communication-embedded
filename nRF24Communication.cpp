@@ -181,6 +181,10 @@ bool nRF24Communication::updatePacket() {
               static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
           this->_moveIsLocked = static_cast<bool>(this->_mSSL.decoded.robotLockedToMove);
           this->_criticalMoveTurbo = static_cast<bool>(this->_mSSL.decoded.criticalMoveTurbo);
+          this->_pose.theta = static_cast<double>((this->_mSSL.decoded.angle) / 10000.0);
+          this->_pose.x = static_cast<double>((this->_mSSL.decoded.pos_x) / 10000.0);
+          this->_pose.y = static_cast<double>((this->_mSSL.decoded.pos_y) / 10000.0);
+          this->_is_global_velocity = static_cast<bool>(this->_mSSL.decoded.is_global_velocity);
         } else if (this->_lastPacketType == msgType::POSITION) {
           this->clearSSLDataPosition();
           this->clearSSLDataKick();
@@ -388,4 +392,8 @@ bool nRF24Communication::robotMoveIsLocked() {
 
 bool nRF24Communication::robotMoveCriticalTurbo() {
   return _criticalMoveTurbo;
+}
+
+bool nRF24Communication::getGlobalVelocityFlag() {
+  return this->_is_global_velocity;
 }

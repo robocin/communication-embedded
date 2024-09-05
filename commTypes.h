@@ -111,6 +111,90 @@ typedef struct Vector {
   }
 } Vector;
 
+typedef struct Pose {
+  double x = 0;
+  double y = 0;
+  double theta = 0;
+
+  Pose() {
+    x = 0;
+    y = 0;
+    theta = 0;
+  }
+
+  Pose(double _x, double _y, double _theta) {
+    x = _x;
+    y = _y;
+    theta = _theta;
+  }
+
+  inline Pose operator+(const Pose& a) const {
+    Pose b;
+    b.x = x + a.x;
+    b.y = y + a.y;
+    b.theta = theta + a.theta;
+    return b;
+  }
+
+  inline Pose operator-(const Pose& a) const {
+    Pose b;
+    b.x = x - a.x;
+    b.y = y - a.y;
+    b.theta = theta - a.theta;
+    return b;
+  }
+
+  inline Pose operator*(const double a) const {
+    Pose b;
+    b.x = x * a;
+    b.y = y * a;
+    b.theta = theta * a;
+    return b;
+  }
+} Pose;
+
+typedef struct PoseDot {
+  double vx = 0;
+  double vy = 0;
+  double omega = 0;
+
+  PoseDot() {
+    vx = 0;
+    vy = 0;
+    omega = 0;
+  }
+
+  PoseDot(double _vx, double _vy, double _omega) {
+    vx = _vx;
+    vy = _vy;
+    omega = _omega;
+  }
+
+  inline PoseDot operator+(const PoseDot& a) const {
+    PoseDot b;
+    b.vx = vx + a.vx;
+    b.vy = vy + a.vy;
+    b.omega = omega + a.omega;
+    return b;
+  }
+
+  inline PoseDot operator-(const PoseDot& a) const {
+    PoseDot b;
+    b.vx = vx - a.vx;
+    b.vy = vy - a.vy;
+    b.omega = omega - a.omega;
+    return b;
+  }
+
+  inline PoseDot operator*(const double a) const {
+    PoseDot b;
+    b.vx = vx * a;
+    b.vy = vy * a;
+    b.omega = omega * a;
+    return b;
+  }
+} PoseDot;
+
 typedef struct KickFlags {
   bool front = false;
   bool chip = false;
