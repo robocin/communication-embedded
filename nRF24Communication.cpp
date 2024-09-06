@@ -25,7 +25,14 @@ int nRF24Communication::setup(int robotSwitches) {
   this->enable();
   this->_configure();
   this->disable();
-  return 0;
+  bool connected = this->_radio.getPALevel() == RF24_PA_MAX;
+  bool channel = false;
+  if(this->_config.function == RadioFunction::receiver){
+    channel = this->compareChannel(this->_config.receiveChannel);
+  } else {
+    channel = this->compareChannel(this->_config.sendChannel);
+  }
+  return connected && channel;
 }
 
 bool nRF24Communication::resetRadio() {
