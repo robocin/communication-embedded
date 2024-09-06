@@ -74,125 +74,82 @@ typedef struct Vector {
   double y = 0;
   double w = 0;
 
-  Vector() {
-    x = 0;
-    y = 0;
-    w = 0;
+  Vector() : x(0), y(0), w(0) {
   }
 
-  Vector(double _x, double _y, double _w) {
-    x = _x;
-    y = _y;
-    w = _w;
+  Vector(double _x, double _y, double _w) : x(_x), y(_y), w(_w) {
   }
 
   inline Vector operator+(const Vector& a) const {
-    Vector b;
-    b.x = x + a.x;
-    b.y = y + a.y;
-    b.w = w + a.w;
-    return b;
+    return Vector(x + a.x, y + a.y, w + a.w);
   }
 
   inline Vector operator-(const Vector& a) const {
-    Vector b;
-    b.x = x - a.x;
-    b.y = y - a.y;
-    b.w = w - a.w;
-    return b;
+    return Vector(x - a.x, y - a.y, w - a.w);
   }
 
   inline Vector operator*(const double a) const {
-    Vector b;
-    b.x = x * a;
-    b.y = y * a;
-    b.w = w * a;
-    return b;
+    return Vector(x * a, y * a, w * a);
   }
 } Vector;
+
+typedef struct Time {
+  double t;
+  Time() : t(0) {
+  }
+  Time(double _t) : t(_t) {
+  }
+} Time;
+
+struct Pose;
+struct PoseDot;
 
 typedef struct Pose {
   double x = 0;
   double y = 0;
   double theta = 0;
 
-  Pose() {
-    x = 0;
-    y = 0;
-    theta = 0;
+  Pose() : x(0), y(0), theta(0) {
   }
 
-  Pose(double _x, double _y, double _theta) {
-    x = _x;
-    y = _y;
-    theta = _theta;
+  Pose(double _x, double _y, double _theta) : x(_x), y(_y), theta(_theta) {
   }
-
-  inline Pose operator+(const Pose& a) const {
-    Pose b;
-    b.x = x + a.x;
-    b.y = y + a.y;
-    b.theta = theta + a.theta;
-    return b;
-  }
-
-  inline Pose operator-(const Pose& a) const {
-    Pose b;
-    b.x = x - a.x;
-    b.y = y - a.y;
-    b.theta = theta - a.theta;
-    return b;
-  }
-
-  inline Pose operator*(const double a) const {
-    Pose b;
-    b.x = x * a;
-    b.y = y * a;
-    b.theta = theta * a;
-    return b;
-  }
+  Pose operator+(const Pose& a) const;
+  Pose operator-(const Pose& a) const;
+  Pose operator*(const double a) const;
+  PoseDot operator/(const Time& t) const;
 } Pose;
 
+/**
+ * Struct to represent velocity (either global or local).
+ * It contains overloaded operators to allow converting to position vector.
+ *
+ * Example:
+ *
+ * V = (X - X0) / deltaT
+ * or
+ * X = X0 + V * deltaT
+ * Pose pose_prev(0,0,0);
+ * Pose pose(3,2,1);
+ * PodeDot posedot =  (pose - pose_prev) / Time(2.0f);
+ * PoseDot will be (1.5, 1., 0.5)
+ */
 typedef struct PoseDot {
   double vx = 0;
   double vy = 0;
   double omega = 0;
 
-  PoseDot() {
-    vx = 0;
-    vy = 0;
-    omega = 0;
+  PoseDot() : vx(0), vy(0), omega(0) {
   }
 
-  PoseDot(double _vx, double _vy, double _omega) {
-    vx = _vx;
-    vy = _vy;
-    omega = _omega;
+  PoseDot(double _vx, double _vy, double _omega) : vx(_vx), vy(_vy), omega(_omega) {
   }
 
-  inline PoseDot operator+(const PoseDot& a) const {
-    PoseDot b;
-    b.vx = vx + a.vx;
-    b.vy = vy + a.vy;
-    b.omega = omega + a.omega;
-    return b;
-  }
+  PoseDot operator+(const PoseDot& a) const;
+  PoseDot operator-(const PoseDot& a) const;
+  PoseDot operator*(const double a) const;
+  Pose operator*(const Time& t) const;
 
-  inline PoseDot operator-(const PoseDot& a) const {
-    PoseDot b;
-    b.vx = vx - a.vx;
-    b.vy = vy - a.vy;
-    b.omega = omega - a.omega;
-    return b;
-  }
-
-  inline PoseDot operator*(const double a) const {
-    PoseDot b;
-    b.vx = vx * a;
-    b.vy = vy * a;
-    b.omega = omega * a;
-    return b;
-  }
 } PoseDot;
 
 typedef struct KickFlags {
