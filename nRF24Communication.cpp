@@ -346,6 +346,14 @@ RobotPosition nRF24Communication::getLastPosition() {
   return _pos;
 }
 
+void nRF24Communication::getPose(Pose& pose) {
+  pose = _pose;
+}
+
+Vector nRF24Communication::getLastPose() {
+  return _pose;
+}
+
 void nRF24Communication::getKick(KickFlags& isKick) {
   isKick.front = _kick.front;
   isKick.chip = _kick.chip;

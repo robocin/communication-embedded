@@ -51,8 +51,10 @@ class nRF24Communication {
   void clearSSLDataKick();
   void getKick(KickFlags& isKick);
   void getPosition(RobotPosition& pos);
+  void getPose(Pose& pose);
   refereeCommand getGameState();
   RobotPosition getLastPosition();
+  Vector getLastPose();
   bool robotMoveIsLocked();
   bool robotMoveCriticalTurbo();
   bool getGlobalVelocityFlag();
@@ -98,7 +100,7 @@ class nRF24Communication {
   RobotPosition _pos;
   float _kp, _kd, _ki, _alpha;
 
-  Pose _pose;
+  Vector _pose;
   bool _is_global_velocity;
 };
 
