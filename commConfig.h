@@ -42,6 +42,7 @@ Channel to frequency = 2400 + CHANNEL_NUM
 #define VSS_PAYLOAD_LENGTH   7
 #define VSS_SPEED_LENGTH     VSS_PAYLOAD_LENGTH
 #define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
+#define VSS_SPEED_SAMPLE_LENGTH 11
 
 #define SSL_PAYLOAD_LENGTH DEFAULT_PAYLOAD_LENGTH // 15 //
 #define SSL_SPEED_LENGTH   DEFAULT_PAYLOAD_LENGTH // 12 //
@@ -156,12 +157,11 @@ typedef struct
   uint32_t timestamp : 32;
   int16_t speedM1 : 16;
   int16_t speedM2 : 16;
-  uint8_t free : 8;
 } packetTypeVSSSpeedSample;
 
 typedef union packetVSSSpeedSample
 {
-  unsigned char encoded[VSS_SPEED_LENGTH];
+  unsigned char encoded[VSS_SPEED_SAMPLE_LENGTH];
   packetTypeVSSSpeedSample decoded;
 } packetVSSSpeedSample;
 
