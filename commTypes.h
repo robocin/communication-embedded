@@ -176,4 +176,13 @@ typedef struct {
   double battery = 0;
 } VSSRobotInfo;
 
+typedef struct
+{
+  int id = -1;
+  msgType type;
+  double timestamp;
+  double speedM1;
+  double speedM2;
+} VSSSpeedPacket;
+
 #endif // COMM_TYPES_H

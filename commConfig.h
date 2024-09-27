@@ -53,7 +53,8 @@ Channel to frequency = 2400 + CHANNEL_NUM
 
 #pragma pack(push, 1)
 
-enum class msgType {
+enum class msgType
+{
   NONE = -1,
   BST_CONFIG,
   VSS_SPEED,
@@ -63,7 +64,8 @@ enum class msgType {
   ODOMETRY,
   POSITION,
   SSL_MOTORS_PWM,
-  BST_REQ_CONFIG
+  BST_REQ_CONFIG,
+  VSS_SPEED_SAMPLE
 };
 
 typedef struct {
@@ -136,6 +138,32 @@ typedef union packetSpeedVSS {
   unsigned char encoded[VSS_SPEED_LENGTH];
   packetTypeSpeedVSS decoded;
 } packetSpeedVSS;
+
+/*
+ * Structure for sending sample speed data from bi-directional robot,
+ * This type sends:
+ *  - Message type
+ *  - Timestamp of the data
+ *  - The left and right motor speeds
+ *  - One byte of free for optional flags.
+ */
+
+typedef struct
+{
+  uint8_t typeMsg : 4;
+  uint8_t id : 4;
+  uint16_t packetId : 16;
+  uint32_t timestamp : 32;
+  int16_t speedM1 : 16;
+  int16_t speedM2 : 16;
+  uint8_t free : 8;
+} packetTypeVSSSpeedSample;
+
+typedef union packetVSSSpeedSample
+{
+  unsigned char encoded[VSS_SPEED_LENGTH];
+  packetTypeVSSSpeedSample decoded;
+} packetVSSSpeedSample;
 
 /*
  * Structure for sending speeds omni-directional robot,
