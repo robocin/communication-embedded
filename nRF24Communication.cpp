@@ -269,7 +269,7 @@ bool nRF24Communication::sendSpeedSamplePacket(VSSSpeedPacket mSpeedSample)
   this->_mVSSSpeedSample.decoded.m1 = static_cast<int32_t>(mSpeedSample.speedM1 * 1000);
   this->_mVSSSpeedSample.decoded.m2 = static_cast<int32_t>(mSpeedSample.speedM2 * 1000);
   this->enable();
-  bool answer = this->_radio.write(this->_mVSSSpeedSample.encoded, VSS_SPEED_SAMPLE_LENGTH);
+  bool answer = this->_radio.write(this->_mVSSSpeedSample.encoded, VSS_TELEMETRY_LENGTH);
   this->disable();
   return answer;
 }

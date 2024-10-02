@@ -153,14 +153,13 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int32_t m1 : 18;
-  int32_t m2 : 18;
-  uint16_t free : 12;
+  int32_t m1 : 24;
+  int32_t m2 : 24;
 } packetTypeVSSSpeedSample;
 
 typedef union packetVSSSpeedSample
 {
-  unsigned char encoded[VSS_SPEED_SAMPLE_LENGTH];
+  unsigned char encoded[VSS_SPEED_LENGTH];
   packetTypeVSSSpeedSample decoded;
 } packetVSSSpeedSample;
 
