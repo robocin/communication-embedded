@@ -180,6 +180,7 @@ typedef struct
 {
   int id = -1;
   msgType type;
+  int time;
   double speedM1;
   double speedM2;
 } VSSSpeedPacket;

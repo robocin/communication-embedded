@@ -153,8 +153,9 @@ typedef struct
 {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int32_t m1 : 24;
-  int32_t m2 : 24;
+  uint16_t time : 10;
+  int32_t m1 : 19;
+  int32_t m2 : 19;
 } packetTypeVSSSpeedSample;
 
 typedef union packetVSSSpeedSample

@@ -266,6 +266,7 @@ bool nRF24Communication::sendSpeedSamplePacket(VSSSpeedPacket mSpeedSample)
 {
   this->_mVSSSpeedSample.decoded.typeMsg = static_cast<uint8_t>(msgType::VSS_SPEED_SAMPLE);
   this->_mVSSSpeedSample.decoded.id = static_cast<uint8_t>(this->getRobotId());
+  this->_mVSSSpeedSample.decoded.time = static_cast<uint16_t>(mSpeedSample.time);
   this->_mVSSSpeedSample.decoded.m1 = static_cast<int32_t>(mSpeedSample.speedM1 * 1000);
   this->_mVSSSpeedSample.decoded.m2 = static_cast<int32_t>(mSpeedSample.speedM2 * 1000);
   this->enable();
