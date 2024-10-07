@@ -181,7 +181,7 @@ typedef struct
   int id = -1;
   msgType type;
   int time;
-  int packetID;
+  double pwmSent;
   double speed;
 } VSSSpeedPacket;
 

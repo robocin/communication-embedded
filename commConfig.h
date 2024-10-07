@@ -155,7 +155,7 @@ typedef struct
   uint8_t id : 4;
   uint16_t time : 12;
   int32_t m1 : 24;
-  uint32_t packetId : 12;
+  int32_t pwmSent : 12;
 } packetTypeVSSSpeedSample;
 
 typedef union packetVSSSpeedSample
