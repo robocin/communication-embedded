@@ -155,11 +155,11 @@ bool nRF24Communication::updatePacket() {
                       VSS_SPEED_LENGTH); // require std::, eventual error in copy
           this->_isPWM = static_cast<bool>(this->_mVSS.decoded.isPWM);
           if (_isPWM) {
-            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.vx) / 100000.0);
-            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.vy) / 100000.0);
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 100000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 100000.0);
           } else {
-            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.vx) / 1000.0);
-            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.vy) / 1000.0);
+            this->_motorSpeed.m1 = static_cast<double>((this->_mVSS.decoded.m1) / 1000.0);
+            this->_motorSpeed.m2 = static_cast<double>((this->_mVSS.decoded.m2) / 1000.0);
           }
         } else if (this->_lastPacketType == msgType::SSL_SPEED) {
           // SSL
