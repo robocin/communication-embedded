@@ -126,13 +126,11 @@ typedef union {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int32_t m1 : 18; // (-131.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
+  int32_t vx : 18; // (-131.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
                    // (clamp(-1.00000, 1.00000) // left motor speed
-  int32_t m2 : 18; // (-132.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
+  int32_t vy : 18; // (-132.072 <-> 131.071 rad/s or -1.31072 <-> 1.31072 pwm)
                    // (clamp(-1.00000, 1.00000) // right motor speed
-  bool isPWM : 1;  // Bit indication for speed type (00 -> rad/s, 01 -> pwm)
-  uint16_t free : 11;
-
+  uint16_t isPWM : 12; // Bit indication for speed type (00 -> rad/s, 01 -> pwm)
 } packetTypeSpeedVSS;
 
 typedef union packetSpeedVSS {
