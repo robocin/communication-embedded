@@ -249,13 +249,26 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
   return answer;
 }
 
+// bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry) {
+
+//   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::VSS_TELEMETRY);
+//   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
+//   this->_mTelemetryVSS.decoded.m1 = static_cast<int32_t>(telemetry.m1 * 1000);
+//   this->_mTelemetryVSS.decoded.m2 = static_cast<int32_t>(telemetry.m2 * 1000);
+//   this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
+//   this->enable();
+//   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
+//   this->disable();
+//   return answer;
+// }
+
 bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry) {
 
   this->_mTelemetryVSS.decoded.typeMsg = static_cast<uint8_t>(msgType::VSS_TELEMETRY);
   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mTelemetryVSS.decoded.m1 = static_cast<int32_t>(telemetry.m1 * 1000);
-  this->_mTelemetryVSS.decoded.m2 = static_cast<int32_t>(telemetry.m2 * 1000);
-  this->_mTelemetryVSS.decoded.battery = static_cast<uint8_t>(telemetry.battery * 10);
+  this->_mTelemetryVSS.decoded.desiredM1 = static_cast<int32_t>(telemetry.desiredM1 * 1000);
+  this->_mTelemetryVSS.decoded.time = static_cast<uint16_t>(telemetry.time * 1000);
   this->enable();
   bool answer = this->_radio.write(this->_mTelemetryVSS.encoded, VSS_TELEMETRY_LENGTH);
   this->disable();
