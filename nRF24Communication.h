@@ -51,7 +51,7 @@ class nRF24Communication {
   void clearSSLDataKick();
   void getKick(KickFlags& isKick);
   void getPosition(RobotPosition& pos);
-  void getPose(Pose& pose);
+  void getPose(Vector& pose);
   refereeCommand getGameState();
   RobotPosition getLastPosition();
   Vector getLastPose();

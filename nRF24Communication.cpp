@@ -181,7 +181,7 @@ bool nRF24Communication::updatePacket() {
               static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
           this->_moveIsLocked = static_cast<bool>(this->_mSSL.decoded.robotLockedToMove);
           this->_criticalMoveTurbo = static_cast<bool>(this->_mSSL.decoded.criticalMoveTurbo);
-          this->_pose.theta = static_cast<double>((this->_mSSL.decoded.angle) / 10000.0);
+          this->_pose.w = static_cast<double>((this->_mSSL.decoded.angle) / 10000.0);
           this->_pose.x = static_cast<double>((this->_mSSL.decoded.pos_x) / 10000.0);
           this->_pose.y = static_cast<double>((this->_mSSL.decoded.pos_y) / 10000.0);
           this->_is_global_velocity = static_cast<bool>(this->_mSSL.decoded.is_global_velocity);
@@ -343,10 +343,12 @@ void nRF24Communication::getPosition(RobotPosition& pos) {
 }
 
 RobotPosition nRF24Communication::getLastPosition() {
-  return _pos;
+  RobotPosition pos;
+  pos = _pos;
+  return pos;
 }
 
-void nRF24Communication::getPose(Pose& pose) {
+void nRF24Communication::getPose(Vector& pose) {
   pose = _pose;
 }
 
