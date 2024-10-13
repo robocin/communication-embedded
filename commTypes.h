@@ -168,21 +168,21 @@ typedef struct {
   uint8_t count = 0;
 } RobotInfo;
 
-// typedef struct {
-//   int id = -1;
-//   msgType type;
-//   double m1;
-//   double m2;
-//   double battery = 0;
-// } VSSRobotInfo;
-
 typedef struct {
   int id = -1;
   msgType type;
   double m1;
-  double desiredM1;
-  double time;
+  double m2;
+  double battery = 0;
 } VSSRobotInfo;
+
+// typedef struct {
+//   int id = -1;
+//   msgType type;
+//   double m1;
+//   double desiredM1;
+//   double time;
+// } VSSRobotInfo;
 
 typedef struct
 {

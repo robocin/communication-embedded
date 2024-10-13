@@ -269,24 +269,24 @@ typedef union packetTelemetry {
  *  - The left and right motor speeds
  *  - One byte of free for optional flags.
  */
-// typedef struct {
-//   uint8_t typeMsg : 4;
-//   uint8_t id : 4;
-//   int32_t m1 : 18;
-//   int32_t m2 : 18;
-//   uint8_t battery : 8; // 0 - 12.8 V
-//   uint8_t free : 4;
-
-// } packetTypeVSSTelemetry;
-
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
   int32_t m1 : 18;
-  int32_t desiredM1 : 18;
-  uint8_t time : 12;
+  int32_t m2 : 18;
+  uint8_t battery : 8; // 0 - 12.8 V
+  uint8_t free : 4;
 
 } packetTypeVSSTelemetry;
+
+// typedef struct {
+//   uint8_t typeMsg : 4;
+//   uint8_t id : 4;
+//   int32_t m1 : 18;
+//   int32_t desiredM1 : 18;
+//   uint8_t time : 12;
+
+// } packetTypeVSSTelemetry;
 
 typedef union packetVSSTelemetry {
   unsigned char encoded[VSS_TELEMETRY_LENGTH];
