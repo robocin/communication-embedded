@@ -281,7 +281,7 @@ bool nRF24Communication::sendSpeedSamplePacket(VSSSpeedPacket mSpeedSample)
   this->_mVSSSpeedSample.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mVSSSpeedSample.decoded.time = static_cast<uint16_t>(mSpeedSample.time);
   this->_mVSSSpeedSample.decoded.m1 = static_cast<int32_t>(mSpeedSample.speed * 1000);
-  this->_mVSSSpeedSample.decoded.pwmSent = static_cast<int32_t>(mSpeedSample.pwmSent * 100);
+  this->_mVSSSpeedSample.decoded.pwmSent = static_cast<int32_t>(mSpeedSample.pwmSent * 10);
   this->enable();
   bool answer = this->_radio.write(this->_mVSSSpeedSample.encoded, VSS_SPEED_SAMPLE_LENGTH);
   this->disable();
