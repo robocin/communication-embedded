@@ -166,6 +166,8 @@ typedef struct {
   msgType type;
   double m1;
   double m2;
+  double m1_desired;
+  double m2_desired;
   double battery = 0;
 } VSSRobotInfo;
 

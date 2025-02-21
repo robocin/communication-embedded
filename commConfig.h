@@ -31,7 +31,7 @@
 // PAYLOAD DEFINITIONS
 #define BST_CONFIG_LENGTH 21
 
-#define VSS_PAYLOAD_LENGTH   7
+#define VSS_PAYLOAD_LENGTH   12
 #define VSS_SPEED_LENGTH     VSS_PAYLOAD_LENGTH
 #define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
 
@@ -232,11 +232,12 @@ typedef union packetTelemetry {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
+  int16_t timerId : 12;
   int32_t m1 : 18;
   int32_t m2 : 18;
-  uint8_t battery : 8; // 0 - 12.8 V
+  int32_t m1_desired : 18;
+  int32_t m2_desired : 18;
   uint8_t free : 4;
-
 } packetTypeVSSTelemetry;
 
 typedef union packetVSSTelemetry {
