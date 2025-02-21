@@ -232,12 +232,11 @@ typedef union packetTelemetry {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t timerId : 12;
   int32_t m1 : 18;
   int32_t m2 : 18;
   int32_t m1_desired : 18;
   int32_t m2_desired : 18;
-  uint8_t free : 4;
+  uint16_t free : 16;
 } packetTypeVSSTelemetry;
 
 typedef union packetVSSTelemetry {
