@@ -25,7 +25,14 @@ int nRF24Communication::setup(int robotSwitches) {
   this->enable();
   this->_configure();
   this->disable();
-  return 0;
+  bool connected = this->_radio.getPALevel() == RF24_PA_MAX;
+  bool channel = false;
+  if(this->_config.function == RadioFunction::receiver){
+    channel = this->compareChannel(this->_config.receiveChannel);
+  } else {
+    channel = this->compareChannel(this->_config.sendChannel);
+  }
+  return connected && channel;
 }
 
 bool nRF24Communication::resetRadio() {
@@ -179,6 +186,8 @@ bool nRF24Communication::updatePacket() {
           this->_kick.dribbler = static_cast<bool>(this->_mSSL.decoded.dribbler);
           this->_kick.dribblerSpeed =
               static_cast<float>((this->_mSSL.decoded.dribblerSpeed) / 10.0);
+          this->_moveIsLocked = static_cast<bool>(this->_mSSL.decoded.robotLockedToMove);
+          this->_criticalMoveTurbo = static_cast<bool>(this->_mSSL.decoded.criticalMoveTurbo);
         } else if (this->_lastPacketType == msgType::POSITION) {
           this->clearSSLDataPosition();
           this->clearSSLDataKick();
@@ -218,6 +227,7 @@ bool nRF24Communication::updatePacket() {
     this->_resetRadio();
     this->_configure();
     utils::beep(100); // warning reset signal
+    printf("reseting receive radio...\n");
   }
   this->disable();
   return false;
@@ -227,9 +237,10 @@ bool nRF24Communication::sendTelemetryPacket(RobotInfo telemetry) {
 
   this->_mTelemetry.decoded.typeMsg = static_cast<uint8_t>(msgType::TELEMETRY);
   this->_mTelemetry.decoded.id = static_cast<uint8_t>(this->getRobotId());
-  this->_mTelemetry.decoded.x = static_cast<int16_t>(telemetry.v.x * 1000);
-  this->_mTelemetry.decoded.y = static_cast<int16_t>(telemetry.v.y * 1000);
-  this->_mTelemetry.decoded.w = static_cast<int16_t>(telemetry.v.w * 10000);
+  this->_mTelemetry.decoded.current_m1 = static_cast<uint16_t>(telemetry.current.m1 * 100);
+  this->_mTelemetry.decoded.current_m2 = static_cast<uint16_t>(telemetry.current.m2 * 100);
+  this->_mTelemetry.decoded.current_m3 = static_cast<uint16_t>(telemetry.current.m3 * 100);
+  this->_mTelemetry.decoded.current_m4 = static_cast<uint16_t>(telemetry.current.m4 * 100);
   this->_mTelemetry.decoded.dribbler = static_cast<int16_t>(telemetry.dribbler * 10);
   this->_mTelemetry.decoded.kickLoad = static_cast<uint8_t>(telemetry.kickLoad * 100);
   this->_mTelemetry.decoded.ball = static_cast<bool>(telemetry.ball);
@@ -304,6 +315,8 @@ void nRF24Communication::clearSSLDataSpeed() {
   this->_v.x = 0;
   this->_v.y = 0;
   this->_v.w = 0;
+  this->_moveIsLocked = false;
+  this->_criticalMoveTurbo = false;
 }
 
 void nRF24Communication::clearSSLDataPosition() {
@@ -376,4 +389,12 @@ float nRF24Communication::getKD() {
 }
 float nRF24Communication::getAlpha() {
   return _alpha;
+}
+
+bool nRF24Communication::robotMoveIsLocked() {
+  return _moveIsLocked;
+}
+
+bool nRF24Communication::robotMoveCriticalTurbo() {
+  return _criticalMoveTurbo;
 }

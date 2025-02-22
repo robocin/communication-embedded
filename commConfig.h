@@ -6,12 +6,20 @@
 #include <cstdint>
 #include <stdint.h>
 
+/*
+Base frequency 2400
+Highest frequency 2525
+Channels 126
+
+Channel to frequency = 2400 + CHANNEL_NUM
+*/
+
 // NRF Config Defitions
 #define SSL_1_BASE_SEND_CH 103
-#define SSL_2_BASE_RECV_CH 115
+#define SSL_2_BASE_RECV_CH 114
 
 #define SSL_1_ROBOT_RECV_CH 103
-#define SSL_2_ROBOT_SEND_CH 115
+#define SSL_2_ROBOT_SEND_CH 114
 
 #define SSL_ADDR_1 0xABAAADA99ALL
 #define SSL_ADDR_2 0xADAADC9A4BLL
@@ -53,7 +61,9 @@ enum class msgType {
   TELEMETRY,
   VSS_TELEMETRY,
   ODOMETRY,
-  POSITION
+  POSITION,
+  SSL_MOTORS_PWM,
+  BST_REQ_CONFIG
 };
 
 typedef struct {
@@ -149,7 +159,9 @@ typedef struct {
   uint8_t dribbler : 1;
   int16_t dribblerSpeed : 11;
   uint8_t command : 8;
-  uint64_t free_1 : 61;
+  uint8_t robotLockedToMove : 1;
+  uint8_t criticalMoveTurbo : 1;
+  uint64_t free_1 : 59;
 
 } packetTypeSpeedSSL;
 
@@ -174,9 +186,9 @@ typedef struct {
   int16_t y : 16; // -32.767 - 32.767 m
   int16_t w : 16; // 0 - 6.5535 rad
   // motion parameters
-  uint16_t maxSpeed : 12; // 0 - 4.095 m/s
-  uint16_t minSpeed : 12; // 0 - 4.095 m/s
-  uint16_t rotateKp : 10; // 0 - 10.23
+  uint16_t maxSpeed : 12;               // 0 - 4.095 m/s
+  uint16_t minSpeed : 12;               // 0 - 4.095 m/s
+  uint16_t rotateKp : 10;               // 0 - 10.23
   uint8_t usingPropSpeed : 1;
   uint16_t minDistanceToPropSpeed : 12; // 0 - 4.095 m
   uint8_t clockwise : 1;                // In goToPoint it is High Acceleration flag
@@ -201,17 +213,18 @@ typedef union packetPosition {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;        // -32.767 - 32.767 m/s
-  int16_t y : 16;        // -32.767 - 32.767 m/s
-  int16_t w : 16;        // 0 - 6.5535 rad/s
-  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
-  uint8_t kickLoad : 8;  // 0 - 2.55
-  bool ball : 1;
-  uint8_t battery : 8; // 0 - 25.5 V
-  int16_t m1 : 16;     // -327.67 - 327.67 m/s
-  int16_t m2 : 16;     // -327.67 - 327.67 m/s
-  int16_t m3 : 16;     // -327.67 - 327.67 m/s
-  int16_t m4 : 16;     // -327.67 - 327.67 m/s
+  uint16_t current_m1 : 12;       // 0 - 50.00 A
+  uint16_t current_m2 : 12;       // 0 - 50.00 A
+  uint16_t current_m3 : 12;       // 0 - 50.00 A
+  uint16_t current_m4 : 12;       // 0 - 50.00 A
+  int16_t dribbler : 15;          // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8;           // 0 - 2.55
+  bool ball : 1;                  // 0 | 1
+  uint8_t battery : 8;            // 0 - 25.5 V
+  int16_t m1 : 16;                // -327.67 - 327.67 m/s
+  int16_t m2 : 16;                // -327.67 - 327.67 m/s
+  int16_t m3 : 16;                // -327.67 - 327.67 m/s
+  int16_t m4 : 16;                // -327.67 - 327.67 m/s
   uint8_t pcktCount : 8;
 
 } packetTypeTelemetry;
@@ -264,11 +277,11 @@ typedef struct {
   int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
   uint8_t kickLoad : 8;  // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8; // 0 - 25.5 V
-  int16_t m1 : 16;     // -327.67 - 327.67 m/s
-  int16_t m2 : 16;     // -327.67 - 327.67 m/s
-  int16_t m3 : 16;     // -327.67 - 327.67 m/s
-  int16_t m4 : 16;     // -327.67 - 327.67 m/s
+  uint8_t battery : 8;   // 0 - 25.5 V
+  int16_t m1 : 16;       // -327.67 - 327.67 m/s
+  int16_t m2 : 16;       // -327.67 - 327.67 m/s
+  int16_t m3 : 16;       // -327.67 - 327.67 m/s
+  int16_t m4 : 16;       // -327.67 - 327.67 m/s
   uint8_t pcktCount : 8;
 
 } packetTypeOdometry;
