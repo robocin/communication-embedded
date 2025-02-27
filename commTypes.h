@@ -183,6 +183,7 @@ typedef struct {
   double m2;
   double m1_desired;
   double m2_desired;
+  int counter;
   double battery = 0;
 } VSSRobotInfo;
 

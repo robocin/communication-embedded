@@ -262,7 +262,7 @@ bool nRF24Communication::sendVSSTelemetryPacket(VSSRobotInfo telemetry) {
   this->_mTelemetryVSS.decoded.id = static_cast<uint8_t>(this->getRobotId());
   this->_mTelemetryVSS.decoded.m1 = static_cast<int32_t>(telemetry.m1 * 1000);
   this->_mTelemetryVSS.decoded.m2 = static_cast<int32_t>(telemetry.m2 * 1000);
-
+  this-> _mTelemetryVSS.decoded.counter = static_cast<uint16_t>(telemetry.counter);
   this->_mTelemetryVSS.decoded.m1_desired = static_cast<int32_t>(telemetry.m1_desired * 1000);
   this->_mTelemetryVSS.decoded.m2_desired = static_cast<int32_t>(telemetry.m2_desired * 1000); 
   this->enable();

@@ -245,6 +245,7 @@ typedef union packetTelemetry {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
+  uint16_t counter : 12;
   int32_t m1 : 18;
   int32_t m2 : 18;
   int32_t m1_desired : 18;
