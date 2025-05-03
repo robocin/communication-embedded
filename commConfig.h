@@ -39,7 +39,7 @@ Channel to frequency = 2400 + CHANNEL_NUM
 // PAYLOAD DEFINITIONS
 #define BST_CONFIG_LENGTH 21
 
-#define VSS_PAYLOAD_LENGTH   12
+#define VSS_PAYLOAD_LENGTH   14
 #define VSS_SPEED_LENGTH     VSS_PAYLOAD_LENGTH
 #define VSS_TELEMETRY_LENGTH VSS_PAYLOAD_LENGTH
 
@@ -245,12 +245,13 @@ typedef union packetTelemetry {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
+  uint8_t battery : 8; // 0 - 25.5 V
   uint16_t counter : 12;
   int32_t m1 : 18;
   int32_t m2 : 18;
   int32_t m1_desired : 18;
   int32_t m2_desired : 18;
-  uint16_t free : 16;
+  uint16_t free : 12;         
 } packetTypeVSSTelemetry;
 
 typedef union packetVSSTelemetry {
