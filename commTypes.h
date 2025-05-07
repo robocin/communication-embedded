@@ -72,6 +72,23 @@ typedef struct Motors {
     b.m4 = m4 + a.m4;
     return b;
   }
+
+  inline Motors operator+=(Motors a) {
+    m1 += a.m1;
+    m2 += a.m2;
+    m3 += a.m3;
+    m4 += a.m4;
+    return *this;
+  }
+
+  inline Motors operator=(Motors a) {
+    m1 = a.m1;
+    m2 = a.m2;
+    m3 = a.m3;
+    m4 = a.m4;
+    return *this;
+  }
+
 } Motors;
 
 typedef struct Vector {
