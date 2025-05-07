@@ -47,10 +47,15 @@ typedef struct {
 } NetworkConfig;
 
 typedef struct Motors {
-  double m1 = 0;
-  double m2 = 0;
-  double m3 = 0;
-  double m4 = 0;
+  union {
+    struct {
+      double m1;
+      double m2;
+      double m3;
+      double m4;
+    };
+    double m[4];
+  };
 
   Motors() {
     m1 = 0;
