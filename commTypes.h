@@ -64,7 +64,14 @@ typedef struct Motors {
     m4 = 0;
   }
 
-  inline Motors operator+(Motors a) {
+  Motors(const Motors& other) {
+    m1 = other.m1;
+    m2 = other.m2;
+    m3 = other.m3;
+    m4 = other.m4;
+  }
+
+  inline Motors operator+(const Motors& a) const {
     Motors b;
     b.m1 = m1 + a.m1;
     b.m2 = m2 + a.m2;
@@ -73,7 +80,7 @@ typedef struct Motors {
     return b;
   }
 
-  inline Motors operator+=(Motors a) {
+  inline Motors operator+=(const Motors& a) {
     m1 += a.m1;
     m2 += a.m2;
     m3 += a.m3;
@@ -81,7 +88,7 @@ typedef struct Motors {
     return *this;
   }
 
-  inline Motors operator=(Motors a) {
+  inline Motors operator=(const Motors& a) {
     m1 = a.m1;
     m2 = a.m2;
     m3 = a.m3;
