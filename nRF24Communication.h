@@ -38,7 +38,7 @@ class nRF24Communication {
   void disable();
 
   // VSS Info
-  void getDifferentialSpeed(Motors& mSpeed);
+  void getDifferentialSpeed(Vector& velocity);
   void clearVSSData();
 
   // SSL Info
