@@ -296,9 +296,9 @@ bool nRF24Communication::sendOdometryPacket(RobotInfo odometry) {
   return answer;
 }
 
-void nRF24Communication::getDifferentialSpeed(Motors& mSpeed) {
-  mSpeed.m1 = this->_motorSpeed.m1;
-  mSpeed.m2 = this->_motorSpeed.m2;
+void nRF24Communication::getDifferentialSpeed(Vector& velocity) {
+  velocity.x = this->_motorSpeed.m1;
+  velocity.w = this->_motorSpeed.m2;
 }
 
 void nRF24Communication::clearVSSData() {
