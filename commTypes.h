@@ -181,7 +181,13 @@ typedef struct {
   msgType type;
   double m1;
   double m2;
+  double m1_desired;
+  double m2_desired;
+  int counter;
   double battery = 0;
+  double accel_x = 0;
+  double accel_y = 0;
+  double angular_velocity = 0;
 } VSSRobotInfo;
 
 #endif // COMM_TYPES_H
