@@ -276,18 +276,22 @@ typedef union packetVSSTelemetry {
 typedef struct {
   uint8_t typeMsg : 4;
   uint8_t id : 4;
-  int16_t x : 16;        // -32.767 - 32.767 m
-  int16_t y : 16;        // -32.767 - 32.767 m
-  int16_t w : 16;        // 0 - 6.5535 rad
-  int16_t dribbler : 15; // -1638.3 - 1638.3 rad/s
-  uint8_t kickLoad : 8;  // 0 - 2.55
+  int16_t x : 16;           // -32.767 - 32.767 m
+  int16_t y : 16;           // -32.767 - 32.767 m
+  int16_t w : 16;           // 0 - 6.5535 rad
+  int16_t dribbler : 15;    // -1638.3 - 1638.3 rad/s
+  uint8_t kickLoad : 8;     // 0 - 2.55
   bool ball : 1;
-  uint8_t battery : 8;   // 0 - 25.5 V
-  int16_t m1 : 16;       // -327.67 - 327.67 m/s
-  int16_t m2 : 16;       // -327.67 - 327.67 m/s
-  int16_t m3 : 16;       // -327.67 - 327.67 m/s
-  int16_t m4 : 16;       // -327.67 - 327.67 m/s
-  uint8_t pcktCount : 8;
+  uint8_t battery : 8;      // 0 - 25.5 V
+  int16_t m1 : 16;          // -327.67 - 327.67 m/s
+  int16_t m2 : 16;          // -327.67 - 327.67 m/s
+  int16_t m3 : 16;          // -327.67 - 327.67 m/s
+  int16_t m4 : 16;          // -327.67 - 327.67 m/s
+  uint8_t pcktCount : 8;    // 0 - 2.55
+  uint8_t current_m1 : 8;   // 0 - 2.55
+  uint8_t current_m2 : 8;   // 0 - 2.55
+  uint8_t current_m3 : 8;   // 0 - 2.55
+  uint8_t current_m4 : 8;   // 0 - 2.55
 
 } packetTypeOdometry;
 
